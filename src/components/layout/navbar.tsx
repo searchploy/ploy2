@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowRight, Store, Sparkles, Users2, Building2, LogOut, Settings, User, LayoutDashboard, type LucideIcon } from "lucide-react";
@@ -27,9 +27,10 @@ export function Navbar() {
   const [subscription, setSubscription] = useState<Database["public"]["Tables"]["subscriptions"]["Row"] | null>(null);
   const pathname = usePathname();
   const router = useRouter();
-  const supabase = createClient();
+  const supabaseRef = useRef(() => createClient());
 
   useEffect(() => {
+    const supabase = supabaseRef.current();
     const getUser = async () => {
       const { data: { user: authUser } } = await supabase.auth.getUser();
       setUser(authUser);
@@ -59,10 +60,10 @@ export function Navbar() {
     });
 
     return () => authSubscription?.unsubscribe();
-  }, [supabase]);
+  }, []);
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
+    await supabaseRef.current().auth.signOut();
     router.push("/");
     setProfileOpen(false);
   };
