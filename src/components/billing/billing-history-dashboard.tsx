@@ -19,7 +19,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Download, Eye, RotateCcw } from 'lucide-react'
+import { Download, Eye } from 'lucide-react'
 
 interface BillingRecord {
   id: string

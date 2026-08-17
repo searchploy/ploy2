@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import Link from "next/link";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus } from "lucide-react";
 
 function formatDate(dateString: string) {
   return new Date(dateString).toLocaleDateString("en-US", {
@@ -20,11 +20,12 @@ export default async function ReportsPage() {
 
   if (!user) return <div>Not authenticated</div>;
 
-  const { data: reports = [] } = await supabase
+  const result = await supabase
     .from("consultant_reports")
     .select("*, client:consultant_clients(business_name)")
     .eq("user_id", user.id)
     .order("created_at", { ascending: false });
+  const reports = (result.data as unknown[]) || [];
 
   return (
     <div className="flex flex-col gap-8">
@@ -53,22 +54,25 @@ export default async function ReportsPage() {
             </TableHeader>
             <TableBody>
               {reports.length > 0 ? (
-                reports.map((report) => (
-                  <TableRow key={report.id}>
+                reports.map((report) => {
+                  const r = report as Record<string, unknown>;
+                  return (
+                  <TableRow key={r.id as string}>
                     <TableCell className="font-medium">
-                      {/* @ts-ignore */}
-                      {report.client?.business_name || "Unknown"}
+                      {/* @ts-expect-error Supabase join type */}
+                      {(r.client as Record<string, unknown>)?.business_name || "Unknown"}
                     </TableCell>
                     <TableCell className="text-sm text-muted-foreground">
-                      {formatDate(report.created_at)}
+                      {formatDate(String(r.created_at))}
                     </TableCell>
                     <TableCell className="text-right">
                       <Button asChild variant="ghost" size="sm">
-                        <Link href={`/report/${report.report_id}`}>View Report</Link>
+                        <Link href={`/report/${String(r.report_id)}`}>View Report</Link>
                       </Button>
                     </TableCell>
                   </TableRow>
-                ))
+                );
+                })
               ) : (
                 <TableRow>
                   <TableCell colSpan={3} className="text-center py-12 text-muted-foreground">

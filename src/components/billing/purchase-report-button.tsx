@@ -15,15 +15,11 @@ import { purchaseReportAction } from '@/app/actions/stripe'
 
 interface PurchaseReportButtonProps {
   reportId: string
-  businessName?: string
-  onSuccess?: () => void
   className?: string
 }
 
 export function PurchaseReportButton({
   reportId,
-  businessName = 'Report',
-  onSuccess,
   className,
 }: PurchaseReportButtonProps) {
   const router = useRouter()

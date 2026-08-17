@@ -168,7 +168,7 @@ export default function ForAgenciesPage() {
                     className="animate-slide-right rounded-2xl border border-border bg-card p-6 opacity-0"
                     style={{ animationDelay: `${i * 100}ms`, animationFillMode: "forwards" }}
                   >
-                    <p className="mb-4 text-sm italic text-muted-foreground">"{testimonial.quote}"</p>
+                    <p className="mb-4 text-sm italic text-muted-foreground">&quot;{testimonial.quote}&quot;</p>
                     <div>
                       <p className="font-semibold">{testimonial.author}</p>
                       <p className="text-xs text-ploy-blue">{testimonial.role}</p>

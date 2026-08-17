@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Users2, BarChart3, TrendingUp, DollarSign, ArrowUpRight, Plus } from "lucide-react";
+import { Users2, BarChart3, TrendingUp, DollarSign } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -44,8 +44,8 @@ export default async function ConsultantDashboardPage() {
   }
 
   // Fetch clients and reports
-  let clients: any[] = [];
-  let reports: any[] = [];
+  let clients: Record<string, unknown>[] = [];
+  let reports: Record<string, unknown>[] = [];
 
   try {
     const { data: clientsData } = await supabase
@@ -141,20 +141,20 @@ export default async function ConsultantDashboardPage() {
               <TableBody>
                 {recentClients.length > 0 ? (
                   recentClients.map((client) => (
-                    <TableRow key={client.id}>
-                      <TableCell className="font-medium">{client.business_name}</TableCell>
-                      <TableCell className="text-sm text-muted-foreground">{client.industry || "—"}</TableCell>
+                    <TableRow key={client.id as string}>
+                      <TableCell className="font-medium">{String(client.business_name)}</TableCell>
+                      <TableCell className="text-sm text-muted-foreground">{String(client.industry) || "—"}</TableCell>
                       <TableCell>
-                        <Badge className={`${statusColors[client.status] || "bg-secondary"} border-0`}>
-                          {client.status}
+                        <Badge className={`${statusColors[client.status as string] || "bg-secondary"} border-0`}>
+                          {String(client.status)}
                         </Badge>
                       </TableCell>
                       <TableCell className="text-sm text-muted-foreground">
-                        {formatDate(client.updated_at)}
+                        {formatDate(String(client.updated_at))}
                       </TableCell>
                       <TableCell className="text-right">
                         <Button asChild variant="ghost" size="sm">
-                          <Link href={`/dashboard/consultant/clients/${client.id}`}>Open</Link>
+                          <Link href={`/dashboard/consultant/clients/${String(client.id)}`}>Open</Link>
                         </Button>
                       </TableCell>
                     </TableRow>
@@ -194,16 +194,16 @@ export default async function ConsultantDashboardPage() {
               <TableBody>
                 {reports.length > 0 ? (
                   reports.map((report) => (
-                    <TableRow key={report.id}>
+                    <TableRow key={report.id as string}>
                       <TableCell className="font-medium">
-                        {clients.find((c) => c.id === report.client_id)?.business_name || "Unknown"}
+                        {String(clients.find((c) => String(c.id) === String(report.client_id))?.business_name || "Unknown")}
                       </TableCell>
                       <TableCell className="text-sm text-muted-foreground">
-                        {formatDate(report.created_at)}
+                        {formatDate(String(report.created_at))}
                       </TableCell>
                       <TableCell className="text-right">
                         <Button asChild variant="ghost" size="sm">
-                          <Link href={`/report/${report.report_id}`}>View</Link>
+                          <Link href={`/report/${String(report.report_id)}`}>View</Link>
                         </Button>
                       </TableCell>
                     </TableRow>

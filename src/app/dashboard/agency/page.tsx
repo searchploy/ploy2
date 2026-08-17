@@ -6,7 +6,6 @@ import { StatusBadge } from "@/components/dashboard/status-badge";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { formatDate } from "@/lib/utils";
 import { DEMO_AGENCY_ID } from "@/lib/data/users";
 import { getEmployeesByAgency } from "@/lib/data/employees";
 import { getDemoRequestsForAgency } from "@/lib/data/demo-requests";

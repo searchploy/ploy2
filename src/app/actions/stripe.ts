@@ -7,19 +7,19 @@
  * They run on the server for security and return results to the client.
  */
 
-import { redirect } from 'next/navigation'
-import { stripe, getPriceId } from '@/lib/stripe'
+import Stripe from 'stripe'
+import { stripe } from '@/lib/stripe'
 import {
   getOrCreateStripeCustomer,
   setDefaultPaymentMethod,
 } from '@/lib/stripe/customers'
 import {
-  createSubscription,
   updateSubscription,
   cancelSubscription,
   cancelSubscriptionAtPeriodEnd,
 } from '@/lib/stripe/subscriptions'
 import { REPORT_PRICE_CENTS } from '@/lib/stripe/report-purchases'
+import { getPriceId } from '@/lib/stripe/server'
 import { getServerUser } from '@/lib/supabase/server'
 import { createClient } from '@/lib/supabase/server'
 
@@ -33,8 +33,7 @@ export interface CheckoutResult {
  * Create a checkout session for subscription
  */
 export async function createCheckoutSession(
-  subscriptionType: 'business' | 'consultant' | 'agency',
-  interval: 'month' | 'year'
+  subscriptionType: 'business' | 'consultant' | 'agency'
 ): Promise<CheckoutResult> {
   try {
     const user = await getServerUser()
@@ -46,11 +45,11 @@ export async function createCheckoutSession(
     const customerId = await getOrCreateStripeCustomer(
       user.id,
       user.email,
-      user.user_metadata?.full_name
+      user.full_name || undefined
     )
 
-    // Get the price ID for this subscription type and interval
-    const priceId = getPriceId(subscriptionType, interval)
+    // Get the price ID for this subscription type
+    const priceId = getPriceId(subscriptionType)
     if (!priceId) {
       return { error: 'Price not configured', sessionId: '' }
     }
@@ -94,9 +93,7 @@ export async function createCheckoutSession(
 /**
  * Upgrade or downgrade subscription
  */
-export async function updateSubscriptionPlan(
-  interval: 'month' | 'year'
-): Promise<{ error?: string; success?: boolean }> {
+export async function updateSubscriptionPlan(): Promise<{ error?: string; success?: boolean }> {
   try {
     const user = await getServerUser()
     if (!user) {
@@ -116,8 +113,8 @@ export async function updateSubscriptionPlan(
       return { error: 'No active subscription found' }
     }
 
-    // Get new price for same type, different interval
-    const newPriceId = getPriceId(subscription.type, interval)
+    // Get new price for same type
+    const newPriceId = getPriceId(subscription.type)
     if (!newPriceId) {
       return { error: 'Price not configured' }
     }
@@ -296,7 +293,9 @@ export async function removePaymentMethodAction(paymentMethodId: string): Promis
 /**
  * Get checkout session details (for success page)
  */
-export async function getCheckoutSession(sessionId: string): Promise<any> {
+export async function getCheckoutSession(
+  sessionId: string
+): Promise<Stripe.Checkout.Session> {
   try {
     return await stripe.checkout.sessions.retrieve(sessionId, {
       expand: ['customer', 'subscription'],
@@ -349,7 +348,7 @@ export async function purchaseReportAction(reportId: string): Promise<{
     }
 
     // Get or create Stripe customer
-    const customerId = await getOrCreateStripeCustomer(user.id, user.email, user.user_metadata?.full_name)
+    const customerId = await getOrCreateStripeCustomer(user.id, user.email, user.full_name || undefined)
 
     // Create charge for report
     const charge = await stripe.charges.create({

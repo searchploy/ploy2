@@ -5,6 +5,7 @@
  * Sync invoice data to database for user dashboards.
  */
 
+import Stripe from 'stripe'
 import { stripe } from './index'
 import { createClient } from '@/lib/supabase/server'
 
@@ -22,35 +23,35 @@ export interface InvoiceData {
   pdf_url?: string
   hosted_invoice_url?: string
   description?: string
-  metadata?: Record<string, any>
+  metadata?: Record<string, string>
 }
 
 /**
  * Sync invoice from Stripe to our database
  */
 export async function syncInvoiceToDatabase(
-  stripeInvoice: any,
+  stripeInvoice: Stripe.Invoice,
   profileId: string
 ): Promise<void> {
   const invoiceData: InvoiceData = {
     stripe_invoice_id: stripeInvoice.id,
     profile_id: profileId,
-    subscription_id: stripeInvoice.subscription || undefined,
+    subscription_id: (stripeInvoice as unknown as Record<string, unknown>).subscription as string | undefined,
     amount_cents: stripeInvoice.amount_due,
     amount_paid_cents: stripeInvoice.amount_paid,
     currency: stripeInvoice.currency,
-    status: stripeInvoice.status,
+    status: (stripeInvoice.status || 'open') as 'draft' | 'void' | 'open' | 'paid' | 'uncollectible',
     invoice_date: new Date(stripeInvoice.created * 1000).toISOString(),
     due_date: stripeInvoice.due_date
       ? new Date(stripeInvoice.due_date * 1000).toISOString()
       : new Date().toISOString(),
-    paid_at: stripeInvoice.paid_at
-      ? new Date(stripeInvoice.paid_at * 1000).toISOString()
+    paid_at: (stripeInvoice as unknown as Record<string, unknown>).paid_at
+      ? new Date(((stripeInvoice as unknown as Record<string, unknown>).paid_at as number) * 1000).toISOString()
       : undefined,
-    pdf_url: stripeInvoice.invoice_pdf,
-    hosted_invoice_url: stripeInvoice.hosted_invoice_url,
-    description: stripeInvoice.description,
-    metadata: stripeInvoice.metadata,
+    pdf_url: stripeInvoice.invoice_pdf || undefined,
+    hosted_invoice_url: stripeInvoice.hosted_invoice_url || undefined,
+    description: stripeInvoice.description || undefined,
+    metadata: stripeInvoice.metadata || undefined,
   }
 
   const supabase = await createClient()

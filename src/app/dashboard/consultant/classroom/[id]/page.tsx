@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { type ReactNode } from "react";
 import { classroomModules } from "@/lib/data/classroom-content";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,7 +9,7 @@ import { ChevronLeft, ChevronRight, BookOpen, Clock } from "lucide-react";
 import { useParams } from "next/navigation";
 import { notFound } from "next/navigation";
 
-function renderContent(content: string | string[]): JSX.Element {
+function renderContent(content: string | string[]): ReactNode {
   if (Array.isArray(content)) {
     return (
       <ul className="list-disc list-inside space-y-2">

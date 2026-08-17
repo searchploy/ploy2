@@ -5,11 +5,13 @@ import { useState, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowRight, Store, Sparkles, Users2, Building2, LogOut, Settings, User, LayoutDashboard, type LucideIcon } from "lucide-react";
+import type { User as AuthUser } from "@supabase/supabase-js";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/shared/logo";
 import { NAV_LINKS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
+import type { Database } from "@/lib/types/database";
 
 const NAV_ICONS: Record<string, LucideIcon> = {
   "/marketplace": Store,
@@ -21,8 +23,8 @@ const NAV_ICONS: Record<string, LucideIcon> = {
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
-  const [user, setUser] = useState<any>(null);
-  const [subscription, setSubscription] = useState<any>(null);
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [subscription, setSubscription] = useState<Database["public"]["Tables"]["subscriptions"]["Row"] | null>(null);
   const pathname = usePathname();
   const router = useRouter();
   const supabase = createClient();

@@ -5,6 +5,7 @@
  * Users generate a report for free, then pay to unlock/export it.
  */
 
+import Stripe from 'stripe'
 import { stripe } from './index'
 import { createClient } from '@/lib/supabase/server'
 
@@ -30,7 +31,7 @@ export interface ReportPurchase {
   paid_at?: string
   refunded_at?: string
   refund_reason?: string
-  metadata?: Record<string, any>
+  metadata?: Record<string, string>
   created_at: string
   updated_at: string
 }
@@ -120,7 +121,7 @@ export async function createReportPaymentIntent({
   })
 
   return {
-    clientSecret: intent.client_secret,
+    clientSecret: intent.client_secret!,
     paymentIntentId: intent.id,
   }
 }
@@ -223,9 +224,9 @@ export async function refundReportPurchase(
   }
 
   // Refund in Stripe
-  const refund = await stripe.refunds.create({
+  await stripe.refunds.create({
     charge: purchase.stripe_charge_id,
-    reason: reason as any,
+    reason: reason as unknown as Stripe.RefundCreateParams['reason'],
   })
 
   // Update database

@@ -27,13 +27,13 @@ export async function handleSubscriptionCreated(
     profile_id: profileId,
     stripe_subscription_id: subscription.id,
     stripe_price_id: item.price.id,
-    type: (subscription.metadata?.subscription_type || 'business') as any,
-    status: subscription.status,
+    type: (subscription.metadata?.subscription_type || 'business') as 'business' | 'consultant' | 'agency',
+    status: subscription.status as 'active' | 'trialing' | 'past_due' | 'canceled' | 'unpaid',
     current_period_start: new Date(
-      subscription.current_period_start * 1000
+      ((subscription as unknown as Record<string, unknown>).current_period_start as number) * 1000
     ).toISOString(),
     current_period_end: new Date(
-      subscription.current_period_end * 1000
+      ((subscription as unknown as Record<string, unknown>).current_period_end as number) * 1000
     ).toISOString(),
   })
 
@@ -56,10 +56,15 @@ export async function handleSubscriptionUpdated(
   const supabase = await createClient()
   const item = subscription.items.data[0]
 
-  const updates: any = {
+  const updates: {
+    status: string
+    current_period_end: string
+    cancel_at_period_end: boolean
+    stripe_price_id?: string
+  } = {
     status: subscription.status,
     current_period_end: new Date(
-      subscription.current_period_end * 1000
+      ((subscription as unknown as Record<string, unknown>).current_period_end as number) * 1000
     ).toISOString(),
     cancel_at_period_end: subscription.cancel_at_period_end,
   }
@@ -123,7 +128,7 @@ export async function handleInvoicePaid(invoice: Stripe.Invoice): Promise<void> 
     .from('stripe_invoices')
     .update({
       status: 'paid',
-      paid_at: new Date(invoice.paid_at! * 1000).toISOString(),
+      paid_at: new Date(((invoice as unknown as Record<string, unknown>).paid_at as number) * 1000).toISOString(),
       amount_paid_cents: invoice.amount_paid,
     })
     .eq('stripe_invoice_id', invoice.id)
@@ -236,7 +241,7 @@ export async function handleChargeSucceeded(charge: Stripe.Charge): Promise<void
       description: charge.description,
       receipt_email: charge.receipt_email,
       paid: true,
-      metadata: charge.metadata as any,
+      metadata: charge.metadata as Record<string, string>,
     })
   }
 }
@@ -267,9 +272,9 @@ export async function handleChargeFailed(charge: Stripe.Charge): Promise<void> {
     receipt_email: charge.receipt_email,
     paid: false,
     metadata: {
-      failure_code: charge.failure_code,
-      failure_message: charge.failure_message,
-    } as any,
+      failure_code: charge.failure_code || '',
+      failure_message: charge.failure_message || '',
+    } as Record<string, string>,
   })
 
   // Notify user
@@ -286,7 +291,7 @@ export async function handleChargeFailed(charge: Stripe.Charge): Promise<void> {
  * Handle charge refunded event
  */
 export async function handleChargeRefunded(charge: Stripe.Charge): Promise<void> {
-  if (!charge.refunded || charge.refunded_amount === 0) return
+  if (!charge.refunded || charge.amount_refunded === 0) return
 
   const supabase = await createClient()
 
@@ -295,7 +300,7 @@ export async function handleChargeRefunded(charge: Stripe.Charge): Promise<void>
     .from('stripe_charges')
     .update({
       refunded: true,
-      refunded_amount_cents: charge.refunded_amount,
+      refunded_amount_cents: charge.amount_refunded,
     })
     .eq('stripe_charge_id', charge.id)
 }

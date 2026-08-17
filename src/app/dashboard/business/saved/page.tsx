@@ -9,7 +9,13 @@ export default async function SavedEmployeesPage() {
     getFavoritesForUser(DEMO_BUSINESS_USER_ID),
     getEmployees(),
   ]);
-  const saved = employees.filter((e) => favorites.some((f) => f.employee_id === e.id));
+  const saved = employees
+    .filter((e) => favorites.some((f) => f.employee_id === e.id))
+    .map((e) => ({
+      ...e,
+      agency: { name: "Agency", slug: "agency", is_verified: false },
+      categories: [],
+    }));
 
   return (
     <div className="flex flex-col gap-8">

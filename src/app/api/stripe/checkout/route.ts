@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create checkout session
-    const result = await createCheckoutSession(subscriptionType, interval)
+    const result = await createCheckoutSession(subscriptionType)
 
     if (result.error) {
       return NextResponse.json(

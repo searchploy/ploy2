@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BookOpen, CheckCircle, Clock } from "lucide-react";
+import { BookOpen, Clock } from "lucide-react";
 import Link from "next/link";
 
 const modules = [

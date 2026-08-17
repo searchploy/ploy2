@@ -1,13 +1,4 @@
-import type {
-  Employee,
-  EmployeeFeature,
-  EmployeeImage,
-  Pricing,
-  Review,
-  EmployeeWithRelations,
-} from "@/lib/types/mock";
-import { categories } from "./categories";
-import { agencies } from "./agencies";
+import type { Employee } from "@/lib/types/mock";
 
 export const employees: Employee[] = [
   {

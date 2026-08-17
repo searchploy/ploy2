@@ -9,11 +9,7 @@ import {
   FileBarChart,
   Presentation,
   Phone,
-  ShoppingBag,
   DollarSign,
-  Workflow,
-  BookOpen,
-  Users,
   Zap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -302,7 +298,7 @@ export default function ConsultantsPage() {
               <div className="text-4xl">⚡</div>
               <div>
                 <p className="font-semibold">Instead of starting from scratch...</p>
-                <p className="mt-1 text-sm text-muted-foreground">Use Ploy's reports, templates, CRM, and consulting system.</p>
+                <p className="mt-1 text-sm text-muted-foreground">Use Ploy&apos;s reports, templates, CRM, and consulting system.</p>
               </div>
             </div>
           </div>

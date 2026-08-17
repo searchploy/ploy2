@@ -10,22 +10,16 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
 } from '@/components/ui/dialog'
 import { Textarea } from '@/components/ui/textarea'
-import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Loader2, AlertCircle, CheckCircle2, RotateCcw } from 'lucide-react'
 
 interface RefundRequestDialogProps {
-  reportId: string
-  businessName?: string
   amount: number
   onRefundSuccess?: () => void
 }
@@ -40,8 +34,6 @@ const REFUND_REASONS: Record<RefundReason, string> = {
 }
 
 export function RefundRequestDialog({
-  reportId,
-  businessName = 'Report',
   amount,
   onRefundSuccess,
 }: RefundRequestDialogProps) {
@@ -104,15 +96,15 @@ export function RefundRequestDialog({
         Request Refund
       </Button>
 
-      <AlertDialog open={open} onOpenChange={handleOpenChange}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Request Refund</AlertDialogTitle>
-            <AlertDialogDescription>
-              We're sorry to hear you want to refund this report. Please let us know why so we can
+      <Dialog open={open} onOpenChange={handleOpenChange}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Request Refund</DialogTitle>
+            <DialogDescription>
+              We&apos;re sorry to hear you want to refund this report. Please let us know why so we can
               improve.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
+            </DialogDescription>
+          </DialogHeader>
 
           {status === 'success' ? (
             <div className="space-y-4 py-4">
@@ -121,17 +113,17 @@ export function RefundRequestDialog({
                 <div>
                   <p className="font-medium text-green-500">Refund Requested</p>
                   <p className="text-sm text-green-400">
-                    We'll process your refund of ${(amount / 100).toFixed(2)} within 5-10 business days.
+                    We&apos;ll process your refund of ${(amount / 100).toFixed(2)} within 5-10 business days.
                   </p>
                 </div>
               </div>
             </div>
           ) : status === 'error' ? (
             <div className="space-y-4 py-4">
-              <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
-                <AlertDescription>{errorMessage}</AlertDescription>
-              </Alert>
+              <div className="flex items-center gap-2 rounded-lg border border-red-500/30 bg-red-500/10 p-3">
+                <AlertCircle className="h-4 w-4 text-red-600" />
+                <p className="text-xs text-red-700">{errorMessage}</p>
+              </div>
             </div>
           ) : (
             <div className="space-y-4 py-4">
@@ -175,32 +167,32 @@ export function RefundRequestDialog({
               )}
 
               {/* Warning */}
-              <Alert>
-                <AlertCircle className="h-4 w-4" />
-                <AlertDescription className="text-xs">
+              <div className="flex items-center gap-2 rounded-lg border border-yellow-500/30 bg-yellow-500/10 p-3">
+                <AlertCircle className="h-4 w-4 text-yellow-600" />
+                <p className="text-xs text-yellow-700">
                   Refunds are processed within 5-10 business days to your original payment method.
-                </AlertDescription>
-              </Alert>
+                </p>
+              </div>
 
               {/* Error Message */}
               {errorMessage && (
-                <Alert variant="destructive">
-                  <AlertCircle className="h-4 w-4" />
-                  <AlertDescription>{errorMessage}</AlertDescription>
-                </Alert>
+                <div className="flex items-center gap-2 rounded-lg border border-red-500/30 bg-red-500/10 p-3">
+                  <AlertCircle className="h-4 w-4 text-red-600" />
+                  <p className="text-xs text-red-700">{errorMessage}</p>
+                </div>
               )}
             </div>
           )}
 
-          <AlertDialogFooter>
+          <div className="flex gap-3 justify-end mt-6">
             {status === 'success' ? (
-              <AlertDialogCancel>Close</AlertDialogCancel>
+              <Button onClick={() => setOpen(false)}>Close</Button>
             ) : (
               <>
-                <AlertDialogCancel disabled={loading}>Cancel</AlertDialogCancel>
-                <AlertDialogAction
+                <Button variant="outline" onClick={() => setOpen(false)} disabled={loading}>Cancel</Button>
+                <Button
                   onClick={handleSubmitRefund}
-                  disabled={loading || !reason || status === 'success'}
+                  disabled={loading || !reason}
                   className="gap-2 bg-destructive hover:bg-destructive/90"
                 >
                   {loading ? (
@@ -211,12 +203,12 @@ export function RefundRequestDialog({
                   ) : (
                     'Request Refund'
                   )}
-                </AlertDialogAction>
+                </Button>
               </>
             )}
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   )
 }

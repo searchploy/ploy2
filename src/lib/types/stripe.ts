@@ -36,7 +36,7 @@ export type StripeInvoice = {
   pdf_url?: string;
   hosted_invoice_url?: string;
   description?: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, string>;
   created_at: string;
   updated_at: string;
 };
@@ -52,7 +52,7 @@ export type StripeCharge = {
   paid: boolean;
   refunded: boolean;
   refunded_amount_cents: number;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, string>;
   created_at: string;
   updated_at: string;
 };
@@ -193,7 +193,7 @@ export type StripePaymentIntent = {
       return_url?: string;
       url: string;
     };
-    use_stripe_sdk?: Record<string, any>;
+    use_stripe_sdk?: Record<string, string>;
   };
   payment_method?: string;
   payment_method_types: string[];
@@ -336,7 +336,7 @@ export type StripeInvoiceObject = {
   paid_out_of_band: boolean;
   payment_intent?: string;
   payment_settings?: {
-    payment_method_options?: Record<string, any>;
+    payment_method_options?: Record<string, string>;
     payment_method_types?: string[];
     default_mandate?: string;
     save_default_payment_method?: 'off' | 'on_subscription';
@@ -436,8 +436,8 @@ export type StripeWebhookEvent = {
   api_version?: string;
   created: number;
   data: {
-    object: any;
-    previous_attributes?: Record<string, any>;
+    object: Record<string, unknown>;
+    previous_attributes?: Record<string, string>;
   };
   livemode: boolean;
   pending_webhooks: number;

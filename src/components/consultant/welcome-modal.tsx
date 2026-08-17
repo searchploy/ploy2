@@ -102,15 +102,15 @@ export function WelcomeModal({ userId, hasSeen }: { userId: string; hasSeen: boo
           <div className="space-y-4 py-6">
             <div className="text-center space-y-3">
               <p className="text-lg font-semibold text-ploy-blue">
-                We're excited to have you! 🚀
+                We&apos;re excited to have you! 🚀
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                Start by completing the lessons in our Classroom to learn everything you need to know about AI consulting. Then, you'll be ready to start working with clients and building your consulting business.
+                Start by completing the lessons in our Classroom to learn everything you need to know about AI consulting. Then, you&apos;ll be ready to start working with clients and building your consulting business.
               </p>
             </div>
 
             <div className="bg-ploy-blue/10 border border-ploy-blue/30 rounded-lg p-4 space-y-2">
-              <h4 className="font-semibold text-sm">Here's what to do first:</h4>
+              <h4 className="font-semibold text-sm">Here&apos;s what to do first:</h4>
               <ol className="text-sm text-muted-foreground space-y-2">
                 <li>📚 Go through the Classroom lessons</li>
                 <li>💼 Add your first client</li>

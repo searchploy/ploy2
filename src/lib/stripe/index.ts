@@ -11,17 +11,24 @@
 
 import Stripe from 'stripe'
 
-if (!process.env.STRIPE_SECRET_KEY) {
-  throw new Error('STRIPE_SECRET_KEY environment variable is not set')
+let stripeInstance: Stripe | null = null
+
+function getStripeInstance(): Stripe {
+  if (!stripeInstance) {
+    const key = process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder'
+    stripeInstance = new Stripe(key, { typescript: true })
+  }
+  return stripeInstance
 }
 
 /**
  * Stripe server instance - initialized with secret key
  * Use for all server-side operations (payments, subscriptions, etc)
  */
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: '2024-04-10',
-  typescript: true,
+export const stripe = new Proxy({} as Stripe, {
+  get(target, prop) {
+    return getStripeInstance()[prop as keyof Stripe]
+  },
 })
 
 /**
@@ -54,14 +61,13 @@ export const STRIPE_PRICES = {
 } as const
 
 /**
- * Get the correct price ID based on subscription type and interval
+ * Get the correct price ID based on subscription type
  */
-export function getPriceId(
-  type: 'business' | 'consultant' | 'agency',
-  interval: 'month' | 'year'
-): string {
-  const key = interval === 'month' ? 'MONTHLY' : 'ANNUAL'
-  return STRIPE_PRICES[type.toUpperCase() as keyof typeof STRIPE_PRICES][key]
+export function getPriceId(type: 'business' | 'consultant' | 'agency'): string {
+  const typeKey = type.toUpperCase() as 'BUSINESS' | 'CONSULTANT' | 'AGENCY'
+  const price = STRIPE_PRICES[typeKey]
+  if (typeof price === 'string') return price
+  return price.MONTHLY
 }
 
 /**

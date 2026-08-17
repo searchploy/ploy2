@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { createCheckoutAction } from "@/app/pricing/actions";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";

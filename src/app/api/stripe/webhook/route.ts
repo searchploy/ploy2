@@ -71,6 +71,6 @@ export async function POST(request: NextRequest) {
 }
 
 // Stripe requires webhook endpoints to respond to HEAD requests
-export async function HEAD(request: NextRequest) {
+export async function HEAD() {
   return NextResponse.json({ ok: true })
 }

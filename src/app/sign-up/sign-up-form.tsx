@@ -32,8 +32,6 @@ export function SignUpForm() {
   const [verificationCode, setVerificationCode] = useState("");
   const [verifyingCode, setVerifyingCode] = useState(false);
   const [signUpEmail, setSignUpEmail] = useState("");
-  const [signUpPassword, setSignUpPassword] = useState("");
-  const [signUpData, setSignUpData] = useState<{ full_name: string; role: UserRole; company_name: string } | null>(null);
   const redirectTo = searchParams.get("redirect");
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -64,8 +62,6 @@ export function SignUpForm() {
     }
 
     setSignUpEmail(email);
-    setSignUpPassword(password);
-    setSignUpData({ full_name: fullName, role, company_name: companyName });
     setShowCodeModal(true);
     toast.success("Account created", { description: "Check your email for the 6-digit code." });
   }
@@ -100,7 +96,7 @@ export function SignUpForm() {
         const destination = redirectTo || (role === "agency" ? "/for-agencies" : role === "consultant" ? "/consultants" : "/pricing");
         router.push(destination);
       }, 500);
-    } catch (err) {
+    } catch {
       toast.error("Verification failed", { description: "Please try again." });
       setVerifyingCode(false);
     }

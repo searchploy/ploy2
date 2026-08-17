@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Search, Check, Clock, DollarSign, TrendingUp } from "lucide-react";
+import { Search, Check } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { FilterSidebar } from "./filter-sidebar";
 import type { Employee } from "@/lib/types/mock";
@@ -76,7 +76,7 @@ export function EmployeeGrid({ employees }: EmployeeGridProps) {
         {/* Employee Cards - One per row */}
         {filtered.length > 0 ? (
           <div className="flex flex-col gap-3">
-            {filtered.map((emp, index) => (
+            {filtered.map((emp) => (
               <Card key={emp.id} className="overflow-hidden transition-all hover:shadow-lg hover:shadow-ploy-blue/10 hover-glow-border">
                 <div className="flex flex-col gap-3 p-4">
                   {/* Title and Agency */}

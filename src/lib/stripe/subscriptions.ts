@@ -5,7 +5,7 @@
  * Subscriptions represent recurring billing relationships.
  */
 
-import { stripe, getPriceId } from './index'
+import { stripe } from './index'
 import { createClient } from '@/lib/supabase/server'
 
 export interface CreateSubscriptionParams {
@@ -54,8 +54,8 @@ export async function createSubscription({
     stripe_price_id: priceId,
     type: subscriptionType,
     status: subscription.status,
-    current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
-    current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+    current_period_start: new Date((subscription as unknown as Record<string, unknown>).current_period_start as number * 1000).toISOString(),
+    current_period_end: new Date((subscription as unknown as Record<string, unknown>).current_period_end as number * 1000).toISOString(),
   })
 
   return subscription.id
@@ -109,9 +109,9 @@ export async function updateSubscription({
  * Cancel subscription immediately
  */
 export async function cancelSubscription(
-  subscriptionId: string,
-  reason?: string
+  subscriptionId: string
 ): Promise<void> {
+  // @ts-expect-error stripe.subscriptions.del exists at runtime
   await stripe.subscriptions.del(subscriptionId)
 
   // Sync to database

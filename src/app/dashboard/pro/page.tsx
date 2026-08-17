@@ -104,11 +104,11 @@ export default async function ProOverviewPage() {
             {favorites.slice(0, 3).map((fav) => (
               <Card key={fav.id} className="flex flex-col gap-4 p-4 hover-glow-border">
                 <div>
-                  <h3 className="font-semibold">{fav.name || "AI Employee"}</h3>
-                  <p className="text-xs text-muted-foreground">Category placeholder</p>
+                  <h3 className="font-semibold">AI Employee</h3>
+                  <p className="text-xs text-muted-foreground">Favorite</p>
                 </div>
                 <div className="flex items-center justify-between gap-2 pt-2">
-                  <p className="text-xs text-muted-foreground">Agency placeholder</p>
+                  <p className="text-xs text-muted-foreground">{new Date(fav.created_at).toLocaleDateString()}</p>
                   <Button variant="ghost" size="sm">
                     <Link href="#">View</Link>
                   </Button>

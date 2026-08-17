@@ -31,7 +31,12 @@ export default async function AgencyProfilePage({ params }: { params: Promise<{ 
 
   const allEmployees = await getEmployees();
   const agencyEmployees = allEmployees.filter((e) => e.agency_id === agency.id);
-  const allReviews = agencyEmployees.flatMap((e) => e.reviews || []);
+  const enrichedEmployees = agencyEmployees.map((e) => ({
+    ...e,
+    agency: { name: agency.name, slug: agency.slug, is_verified: agency.is_verified },
+    categories: [],
+  }));
+  const allReviews: never[] = [];
 
   return (
     <div className="flex flex-col">
@@ -72,10 +77,10 @@ export default async function AgencyProfilePage({ params }: { params: Promise<{ 
             </section>
 
             <section className="flex flex-col gap-6">
-              <h2 className="text-xl font-semibold">AI Employees ({agencyEmployees.length})</h2>
-              {agencyEmployees.length > 0 ? (
+              <h2 className="text-xl font-semibold">AI Employees ({enrichedEmployees.length})</h2>
+              {enrichedEmployees.length > 0 ? (
                 <div className="grid gap-6 sm:grid-cols-2">
-                  {agencyEmployees.map((e, i) => (
+                  {enrichedEmployees.map((e, i) => (
                     <EmployeeCard key={e.id} employee={e} index={i} />
                   ))}
                 </div>

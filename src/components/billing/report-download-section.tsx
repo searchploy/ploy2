@@ -10,7 +10,7 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { FileDown, Share2, Copy, Loader2, CheckCircle2 } from 'lucide-react'
+import { FileDown, Share2, Loader2, CheckCircle2 } from 'lucide-react'
 
 interface ReportDownloadSectionProps {
   reportId: string

@@ -2,7 +2,6 @@
 
 import { useState, useCallback } from "react";
 import { departments, industries } from "@/lib/data/employees";
-import { cn } from "@/lib/utils";
 
 interface FilterSidebarProps {
   onFilterChange: (filters: { departments: string[]; industries: string[] }) => void;

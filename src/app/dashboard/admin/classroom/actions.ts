@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 
 export async function deleteModuleAction(formData: FormData) {
   const id = formData.get("id") as string;
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { error } = await supabase.from("classroom_modules").delete().eq("id", id);
 
@@ -30,7 +30,7 @@ export async function saveModuleAction(
     throw new Error("Title and content are required");
   }
 
-  const supabase = createClient();
+  const supabase = await createClient();
 
   if (moduleId) {
     // Update existing module

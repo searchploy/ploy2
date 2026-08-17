@@ -33,7 +33,7 @@ export default async function AdminClassroomPage() {
             <div>
               <p className="font-medium text-lg">Database Setup Required</p>
               <p className="text-muted-foreground mt-2 max-w-md">
-                The classroom_modules table hasn't been created yet. Please apply the migration <code className="bg-secondary px-2 py-1 rounded text-xs">0007_classroom_modules.sql</code> to your Supabase database to enable this feature.
+                The classroom_modules table hasn&apos;t been created yet. Please apply the migration <code className="bg-secondary px-2 py-1 rounded text-xs">0007_classroom_modules.sql</code> to your Supabase database to enable this feature.
               </p>
             </div>
           </div>

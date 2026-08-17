@@ -25,12 +25,12 @@ export async function hasPaywallAccess(requiredTier: "business" | "consultant" |
   if (!user) return false;
 
   // Check subscription tier
-  if (user.subscription_tier === "premium" || user.subscription_tier === requiredTier) {
+  if (user.subscription_plan === "pro" || user.subscription_type === requiredTier) {
     return true;
   }
 
   // Free users have limited access to business tier
-  if (requiredTier === "business" && user.subscription_tier === "free") {
+  if (requiredTier === "business" && user.subscription_plan === "free") {
     return true;
   }
 

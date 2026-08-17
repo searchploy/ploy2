@@ -29,7 +29,7 @@ export default async function ClientsPage() {
 
   if (!user) return <div>Not authenticated</div>;
 
-  let clients: any[] = [];
+  let clients: Record<string, unknown>[] = [];
   try {
     const { data: clientsData } = await supabase
       .from("consultant_clients")
@@ -72,27 +72,27 @@ export default async function ClientsPage() {
             <TableBody>
               {clients.length > 0 ? (
                 clients.map((client) => (
-                  <TableRow key={client.id}>
-                    <TableCell className="font-medium">{client.business_name}</TableCell>
-                    <TableCell className="text-sm text-muted-foreground">{client.industry || "—"}</TableCell>
+                  <TableRow key={client.id as string}>
+                    <TableCell className="font-medium">{String(client.business_name)}</TableCell>
+                    <TableCell className="text-sm text-muted-foreground">{String(client.industry) || "—"}</TableCell>
                     <TableCell>
-                      <Badge className={`${statusColors[client.status] || "bg-secondary"} border-0`}>
-                        {client.status}
+                      <Badge className={`${statusColors[client.status as string] || "bg-secondary"} border-0`}>
+                        {String(client.status)}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-sm">{client.contact_name || "—"}</TableCell>
+                    <TableCell className="text-sm">{String(client.contact_name) || "—"}</TableCell>
                     <TableCell className="text-sm text-muted-foreground">
-                      {formatDate(client.updated_at)}
+                      {formatDate(String(client.updated_at))}
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex gap-2 justify-end">
                         <Button asChild size="sm" variant="ghost">
-                          <Link href={`/dashboard/consultant/clients/${client.id}/edit`}>
+                          <Link href={`/dashboard/consultant/clients/${String(client.id)}/edit`}>
                             <Edit2 className="h-4 w-4" />
                           </Link>
                         </Button>
                         <form action={deleteClientAction}>
-                          <input type="hidden" name="id" value={client.id} />
+                          <input type="hidden" name="id" value={String(client.id)} />
                           <Button type="submit" size="sm" variant="ghost" className="text-red-500 hover:text-red-600">
                             <Trash2 className="h-4 w-4" />
                           </Button>
