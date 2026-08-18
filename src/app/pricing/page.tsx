@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 const freeKeyFeatures = [
   "Browse AI employees",
   "AI Readiness Score",
-  "Basic report",
+  "Limited AI reports",
 ];
 
 const proKeyFeatures = [

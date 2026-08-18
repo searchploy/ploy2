@@ -12,7 +12,8 @@ export const metadata: Metadata = {
 };
 
 const freeKeyFeatures = [
-  "List AI employees",
+  "List 1 AI employee",
+  "Limited AI reports",
   "Basic analytics",
   "Agency profile",
 ];
@@ -82,10 +83,10 @@ export default function ForAgenciesPage() {
         <div className="container flex flex-col items-center gap-6 text-center">
           <span className="text-xs font-bold uppercase tracking-wide text-ploy-blue">For Agencies</span>
           <h1 className="text-balance max-w-3xl text-4xl font-bold tracking-tighter sm:text-6xl">
-            Grow Your AI Agency with <span className="gradient-text">Ploy Pro</span>
+            Unlock More with <span className="gradient-text">Ploy Pro</span>
           </h1>
           <p className="max-w-xl text-balance text-lg text-muted-foreground">
-            Get premium marketplace visibility, appear in more AI reports, and generate unlimited reports to share with your prospects.
+            Agencies: Get premium marketplace visibility, list unlimited AI employees, and appear in more AI reports. Businesses: Generate unlimited AI reports to share with prospects and stakeholders.
           </p>
         </div>
       </header>
@@ -93,7 +94,7 @@ export default function ForAgenciesPage() {
       <section className="pb-24">
         <div className="container">
           <div className="mx-auto max-w-5xl">
-            <h2 className="mb-12 text-center text-2xl font-bold tracking-tight">Why Agencies Choose Ploy Pro</h2>
+            <h2 className="mb-12 text-center text-2xl font-bold tracking-tight">Why Choose Ploy Pro</h2>
 
             {/* Pricing Cards - Primary Focus */}
             <div className="mb-16 grid gap-6 sm:grid-cols-2">
@@ -137,7 +138,7 @@ export default function ForAgenciesPage() {
                     $29.99<span className="text-base font-normal text-muted-foreground">/mo</span>
                   </p>
                 </div>
-                <p className="text-sm text-muted-foreground">Get premium visibility and grow faster.</p>
+                <p className="text-sm text-muted-foreground">Get premium visibility, unlimited reports, and grow faster.</p>
 
                 {/* Key Features */}
                 <div className="space-y-2 py-4">
@@ -160,7 +161,7 @@ export default function ForAgenciesPage() {
 
             {/* Testimonials Section */}
             <div className="mt-24">
-              <h2 className="mb-12 text-center text-2xl font-bold tracking-tight">Loved by Agencies Like Yours</h2>
+              <h2 className="mb-12 text-center text-2xl font-bold tracking-tight">Loved by Teams Everywhere</h2>
               <div className="grid gap-6 sm:grid-cols-2">
                 {testimonials.map((testimonial, i) => (
                   <div
