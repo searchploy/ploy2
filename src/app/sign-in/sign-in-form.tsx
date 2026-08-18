@@ -53,22 +53,24 @@ export function SignInForm() {
       return;
     }
 
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("subscription_type, subscription_plan")
-      .eq("id", data.user.id)
-      .single();
+    // Entitlements come from the subscriptions table — a user can own both
+    // products, which profiles.subscription_type cannot represent.
+    const { data: subs } = await supabase
+      .from("subscriptions")
+      .select("type")
+      .eq("profile_id", data.user.id)
+      .eq("status", "active")
+      .eq("plan", "pro");
 
-    const subscriptionType = profile?.subscription_type ?? "pro";
-    const isConsulting = subscriptionType === "consulting";
+    const owned = new Set((subs ?? []).map((s) => s.type));
 
-    // No paid plan yet — send them into the existing pricing flow.
-    if (profile?.subscription_plan !== "pro") {
-      router.push(isConsulting ? "/consultants" : "/pricing");
-      return;
+    if (owned.has("pro")) {
+      router.push(redirectTo || "/dashboard/pro");
+    } else if (owned.has("consulting")) {
+      router.push(redirectTo || "/dashboard/consultant");
+    } else {
+      router.push("/pricing");
     }
-
-    router.push(redirectTo || (isConsulting ? "/dashboard/consultant" : "/dashboard/pro"));
   }
 
   return (

@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Logo } from "@/components/shared/logo";
 import { DashboardSwitcher } from "@/components/dashboard/dashboard-switcher";
 import { cn, initials } from "@/lib/utils";
+import type { Entitlements } from "@/lib/auth/entitlements";
 
 /** Structural shape both the mock `User` and real `Profile` types satisfy. */
 export interface DashboardSidebarUser {
@@ -32,10 +33,12 @@ export function DashboardSidebar({
   navItems,
   user,
   roleLabel,
+  entitlements,
 }: {
   navItems: DashboardNavItem[];
   user: DashboardSidebarUser;
   roleLabel: string;
+  entitlements: Entitlements;
 }) {
   const pathname = usePathname();
 
@@ -48,7 +51,7 @@ export function DashboardSidebar({
       </div>
 
       <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-4">
-        <DashboardSwitcher />
+        <DashboardSwitcher owned={entitlements.owned} />
         <p className="px-2 pb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">{roleLabel}</p>
         {navItems.map((item) => {
           const active = pathname === item.href;

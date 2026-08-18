@@ -12,7 +12,7 @@ import {
 import { DashboardSidebar, type DashboardNavItem } from "@/components/dashboard/sidebar";
 import { getDemoUser, DEMO_BUSINESS_USER_ID } from "@/lib/data/users";
 import { getServerUser } from "@/lib/supabase/server";
-import { isAdminUser } from "@/lib/auth/admin";
+import { getEntitlements } from "@/lib/auth/entitlements";
 import { redirect } from "next/navigation";
 
 const navItems: DashboardNavItem[] = [
@@ -29,23 +29,24 @@ const navItems: DashboardNavItem[] = [
 
 export default async function ProDashboardLayout({ children }: { children: React.ReactNode }) {
   const serverUser = await getServerUser();
-  const isAdmin = await isAdminUser();
+  const entitlements = await getEntitlements();
 
   // Admins can access without restrictions
-  if (isAdmin) {
+  if (entitlements.isAdmin) {
     const user = serverUser || (await getDemoUser(DEMO_BUSINESS_USER_ID))!;
     return (
       <div className="flex min-h-screen">
-        <DashboardSidebar navItems={navItems} user={user} roleLabel="Ploy Pro (Admin Access)" />
+        <DashboardSidebar
+          navItems={navItems}
+          user={user}
+          roleLabel="Ploy Pro (Admin Access)"
+          entitlements={entitlements}
+        />
         <main className="flex-1 overflow-y-auto bg-secondary/20 p-8">{children}</main>
       </div>
     );
   }
 
-  // Regular users must have:
-  // 1. Email verified
-  // 2. Active pro subscription
-  // 3. Correct subscription type (pro)
   if (!serverUser) {
     redirect("/sign-in?redirect=/dashboard/pro");
   }
@@ -54,17 +55,20 @@ export default async function ProDashboardLayout({ children }: { children: React
     redirect("/verify-email?redirect=/dashboard/pro");
   }
 
-  if (serverUser.subscription_type !== "pro") {
-    redirect("/pricing");
-  }
-
-  if (serverUser.subscription_plan !== "pro") {
+  // Owning Consulting Pro as well is fine — entitlements are per-product, so
+  // a second purchase never revokes access to the first.
+  if (!entitlements.pro) {
     redirect("/pricing");
   }
 
   return (
     <div className="flex min-h-screen">
-      <DashboardSidebar navItems={navItems} user={serverUser} roleLabel="Ploy Pro" />
+      <DashboardSidebar
+        navItems={navItems}
+        user={serverUser}
+        roleLabel="Ploy Pro"
+        entitlements={entitlements}
+      />
       <main className="flex-1 overflow-y-auto bg-secondary/20 p-8">{children}</main>
     </div>
   );

@@ -80,7 +80,7 @@ export function SignUpForm() {
     const supabase = createClient();
 
     try {
-      const { data, error } = await supabase.auth.verifyOtp({
+      const { error } = await supabase.auth.verifyOtp({
         email: signUpEmail,
         token: verificationCode,
         type: "signup",
@@ -92,14 +92,8 @@ export function SignUpForm() {
         return;
       }
 
-      // Mirror the confirmation onto the profile row. A DB trigger also covers
-      // this, but writing it here means the flag is set before we navigate.
-      if (data.user?.id) {
-        await supabase
-          .from("profiles")
-          .update({ email_verified: true, email_verified_at: new Date().toISOString() })
-          .eq("id", data.user.id);
-      }
+      // profiles.email_verified is mirrored from auth by a DB trigger — it is
+      // deliberately not writable from the client.
 
       setShowCodeModal(false);
       setVerificationCode("");

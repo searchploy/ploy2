@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import { DashboardSidebar, type DashboardNavItem } from "@/components/dashboard/sidebar";
 import { getServerUser } from "@/lib/supabase/server";
-import { isAdminUser } from "@/lib/auth/admin";
+import { getEntitlements } from "@/lib/auth/entitlements";
 
 const navItems: DashboardNavItem[] = [
   { label: "Dashboard", href: "/dashboard/consultant", icon: <LayoutDashboard className="h-4 w-4" /> },
@@ -20,23 +20,24 @@ const navItems: DashboardNavItem[] = [
 
 export default async function ConsultantDashboardLayout({ children }: { children: React.ReactNode }) {
   const serverUser = await getServerUser();
-  const isAdmin = await isAdminUser();
+  const entitlements = await getEntitlements();
 
   // Admins can access without restrictions
-  if (isAdmin) {
+  if (entitlements.isAdmin) {
     if (!serverUser) redirect("/sign-in");
     return (
       <div className="flex min-h-screen">
-        <DashboardSidebar navItems={navItems} user={serverUser} roleLabel="Consultant Dashboard (Admin Access)" />
+        <DashboardSidebar
+          navItems={navItems}
+          user={serverUser}
+          roleLabel="Consultant Dashboard (Admin Access)"
+          entitlements={entitlements}
+        />
         <main className="flex-1 overflow-y-auto bg-secondary/20 p-8">{children}</main>
       </div>
     );
   }
 
-  // Regular users must have:
-  // 1. Email verified
-  // 2. Active consulting subscription
-  // 3. Correct subscription type (consulting)
   if (!serverUser) {
     redirect("/sign-in?redirect=/dashboard/consultant");
   }
@@ -45,17 +46,20 @@ export default async function ConsultantDashboardLayout({ children }: { children
     redirect("/verify-email?redirect=/dashboard/consultant");
   }
 
-  if (serverUser.subscription_type !== "consulting") {
-    redirect("/consultants");
-  }
-
-  if (serverUser.subscription_plan !== "pro") {
+  // Owning Ploy Pro as well is fine — entitlements are per-product, so a
+  // second purchase never revokes access to the first.
+  if (!entitlements.consulting) {
     redirect("/consultants");
   }
 
   return (
     <div className="flex min-h-screen">
-      <DashboardSidebar navItems={navItems} user={serverUser} roleLabel="Consulting Pro" />
+      <DashboardSidebar
+        navItems={navItems}
+        user={serverUser}
+        roleLabel="Consulting Pro"
+        entitlements={entitlements}
+      />
       <main className="flex-1 overflow-y-auto bg-secondary/20 p-8">{children}</main>
     </div>
   );

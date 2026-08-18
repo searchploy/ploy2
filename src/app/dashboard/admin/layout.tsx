@@ -9,15 +9,11 @@ import {
   BookOpen,
   FileText,
 } from "lucide-react";
+import { redirect } from "next/navigation";
 import { DashboardSidebar, type DashboardNavItem } from "@/components/dashboard/sidebar";
 import { getDemoUser, DEMO_ADMIN_USER_ID } from "@/lib/data/users";
-
-/**
- * In production this layout calls `getServerUser()`, verifies
- * `is_admin === true`, and redirects everyone else. Seeded with a demo
- * admin user here since no live Supabase session exists in this
- * environment.
- */
+import { getServerUser } from "@/lib/supabase/server";
+import { getEntitlements } from "@/lib/auth/entitlements";
 const navItems: DashboardNavItem[] = [
   { label: "Overview", href: "/dashboard/admin", icon: <LayoutDashboard className="h-4 w-4" /> },
   { label: "Agencies", href: "/dashboard/admin/agencies", icon: <Building2 className="h-4 w-4" /> },
@@ -31,11 +27,25 @@ const navItems: DashboardNavItem[] = [
 ];
 
 export default async function AdminDashboardLayout({ children }: { children: React.ReactNode }) {
-  const user = (await getDemoUser(DEMO_ADMIN_USER_ID))!;
+  const entitlements = await getEntitlements();
+
+  // Admin-only. This runs before any page renders, so the URL cannot be
+  // used to reach the admin dashboard without an admin session.
+  if (!entitlements.isAdmin) {
+    const serverUser = await getServerUser();
+    redirect(serverUser ? "/" : "/sign-in?redirect=/dashboard/admin");
+  }
+
+  const user = (await getServerUser()) ?? (await getDemoUser(DEMO_ADMIN_USER_ID))!;
 
   return (
     <div className="flex min-h-screen">
-      <DashboardSidebar navItems={navItems} user={user} roleLabel="Admin dashboard" />
+      <DashboardSidebar
+        navItems={navItems}
+        user={user}
+        roleLabel="Admin dashboard"
+        entitlements={entitlements}
+      />
       <main className="flex-1 overflow-y-auto bg-secondary/20 p-8">{children}</main>
     </div>
   );

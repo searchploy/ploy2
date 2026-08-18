@@ -45,20 +45,24 @@ export function Navbar() {
         return;
       }
 
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("subscription_type, subscription_plan")
-        .eq("id", authUser.id)
-        .single();
+      // Read the subscriptions table, not profiles.subscription_type — that
+      // column holds a single value, so owning both products would hide one.
+      const { data: subs } = await supabase
+        .from("subscriptions")
+        .select("type")
+        .eq("profile_id", authUser.id)
+        .eq("status", "active")
+        .eq("plan", "pro");
 
-      if (profile?.subscription_plan !== "pro") {
+      const owned = new Set((subs ?? []).map((s) => s.type));
+
+      if (owned.has("pro")) {
+        setDashboardPath("/dashboard/pro");
+      } else if (owned.has("consulting")) {
+        setDashboardPath("/dashboard/consultant");
+      } else {
         setDashboardPath(null);
-        return;
       }
-
-      setDashboardPath(
-        profile.subscription_type === "consulting" ? "/dashboard/consultant" : "/dashboard/pro"
-      );
     };
 
     const init = async () => {

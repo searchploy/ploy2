@@ -2,17 +2,20 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Users2, Building2 } from "lucide-react";
+import { LayoutDashboard, Users2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import type { SubscriptionType } from "@/lib/types/database";
 
 const dashboards = [
   {
+    type: "pro" as const,
     name: "Ploy Pro",
     href: "/dashboard/pro",
     icon: LayoutDashboard,
     description: "For business & agencies",
   },
   {
+    type: "consulting" as const,
     name: "Consulting Pro",
     href: "/dashboard/consultant",
     icon: Users2,
@@ -20,11 +23,20 @@ const dashboards = [
   },
 ];
 
-export function DashboardSwitcher() {
+/**
+ * Lists only the dashboards the user actually owns, so a single-product
+ * subscriber never sees a link that would just bounce them to pricing.
+ * Presentation only — each dashboard re-checks entitlements server-side.
+ */
+export function DashboardSwitcher({ owned }: { owned: SubscriptionType[] }) {
   const pathname = usePathname();
 
-  // Determine current dashboard based on pathname
-  const currentDashboard = dashboards.find((d) => pathname.startsWith(d.href))?.name;
+  const available = dashboards.filter((d) => owned.includes(d.type));
+
+  // Nothing to switch between — hide the section entirely.
+  if (available.length < 2) return null;
+
+  const currentDashboard = available.find((d) => pathname.startsWith(d.href))?.name;
 
   return (
     <div className="mb-8 space-y-2 border-b border-border pb-6">
@@ -32,7 +44,7 @@ export function DashboardSwitcher() {
         Dashboards
       </h3>
       <nav className="space-y-1">
-        {dashboards.map((dashboard) => {
+        {available.map((dashboard) => {
           const Icon = dashboard.icon;
           const isActive = currentDashboard === dashboard.name;
 

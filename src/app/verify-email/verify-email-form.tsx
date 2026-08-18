@@ -67,14 +67,8 @@ export function VerifyEmailForm() {
         return;
       }
 
-      // Mark email as verified in the profiles table
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user?.id) {
-        await supabase
-          .from("profiles")
-          .update({ email_verified: true, email_verified_at: new Date().toISOString() })
-          .eq("id", user.id);
-      }
+      // profiles.email_verified is mirrored from auth by a DB trigger — it is
+      // deliberately not writable from the client.
 
       toast.success("Email verified!", { description: "Redirecting..." });
       setTimeout(() => {
