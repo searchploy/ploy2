@@ -8,8 +8,8 @@ import {
   Settings,
   User,
   Store,
-  Zap,
   CreditCard,
+  LayoutDashboard,
   type LucideIcon,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
@@ -32,9 +32,11 @@ interface AccountMenuProps {
   isOpen: boolean;
   onClose: () => void;
   userEmail?: string;
+  /** Set only when the user actually has dashboard access; hidden otherwise. */
+  dashboardPath?: string | null;
 }
 
-export function AccountMenu({ isOpen, onClose, userEmail }: AccountMenuProps) {
+export function AccountMenu({ isOpen, onClose, userEmail, dashboardPath }: AccountMenuProps) {
   const router = useRouter();
   const supabase = createClient();
 
@@ -45,6 +47,16 @@ export function AccountMenu({ isOpen, onClose, userEmail }: AccountMenuProps) {
   };
 
   const menuSections: MenuSection[] = [
+    ...(dashboardPath
+      ? [
+          {
+            label: "Dashboard",
+            items: [
+              { icon: LayoutDashboard, label: "Go to Dashboard", href: dashboardPath },
+            ],
+          },
+        ]
+      : []),
     {
       label: "Profile",
       items: [

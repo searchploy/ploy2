@@ -9,10 +9,9 @@ import type { User as AuthUser } from "@supabase/supabase-js";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/shared/logo";
 import { AccountMenu } from "@/components/layout/account-menu";
-import { NAV_LINKS } from "@/lib/constants";
+import { NAV_LINKS, ADMIN_EMAIL } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
-import type { Database } from "@/lib/types/database";
 
 const NAV_ICONS: Record<string, LucideIcon> = {
   "/marketplace": Store,
@@ -25,53 +24,58 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [user, setUser] = useState<AuthUser | null>(null);
-  const [subscription, setSubscription] = useState<Database["public"]["Tables"]["subscriptions"]["Row"] | null>(null);
+  const [dashboardPath, setDashboardPath] = useState<string | null>(null);
   const pathname = usePathname();
   const supabaseRef = useRef(() => createClient());
 
   useEffect(() => {
     const supabase = supabaseRef.current();
-    const getUser = async () => {
+
+    // Mirrors the checks the dashboard layouts enforce server-side, so the link
+    // only shows when it would actually resolve. profiles is the source of
+    // truth here (same columns the layouts read), not the subscriptions table.
+    const resolveDashboard = async (authUser: AuthUser | null) => {
+      if (!authUser) {
+        setDashboardPath(null);
+        return;
+      }
+
+      if (authUser.email === ADMIN_EMAIL) {
+        setDashboardPath("/dashboard/pro");
+        return;
+      }
+
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("subscription_type, subscription_plan")
+        .eq("id", authUser.id)
+        .single();
+
+      if (profile?.subscription_plan !== "pro") {
+        setDashboardPath(null);
+        return;
+      }
+
+      setDashboardPath(
+        profile.subscription_type === "consulting" ? "/dashboard/consultant" : "/dashboard/pro"
+      );
+    };
+
+    const init = async () => {
       const { data: { user: authUser } } = await supabase.auth.getUser();
       setUser(authUser);
-
-      if (authUser) {
-        const { data: userSubscription } = await supabase
-          .from('subscriptions')
-          .select('*')
-          .eq('user_id', authUser.id)
-          .single();
-
-        setSubscription(userSubscription);
-      }
+      await resolveDashboard(authUser);
     };
-    getUser();
+    init();
 
     const { data: { subscription: authSubscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user || null);
-      if (session?.user) {
-        supabase
-          .from('subscriptions')
-          .select('*')
-          .eq('user_id', session.user.id)
-          .single()
-          .then(({ data }) => setSubscription(data));
-      }
+      const nextUser = session?.user ?? null;
+      setUser(nextUser);
+      resolveDashboard(nextUser);
     });
 
     return () => authSubscription?.unsubscribe();
   }, []);
-
-
-  const getDashboardPath = () => {
-    if (!subscription) return null;
-    if (subscription.type === 'pro') return '/dashboard/pro';
-    if (subscription.type === 'consulting') return '/dashboard/consultant';
-    return null;
-  };
-
-  const hasPaidSubscription = subscription && (subscription.type === 'pro' || subscription.type === 'consulting');
-  const dashboardPath = getDashboardPath();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-black">
@@ -117,6 +121,7 @@ export function Navbar() {
                 isOpen={profileOpen}
                 onClose={() => setProfileOpen(false)}
                 userEmail={user.email || ""}
+                dashboardPath={dashboardPath}
               />
             </div>
           ) : (
@@ -173,7 +178,7 @@ export function Navbar() {
               <div className={cn("flex flex-col gap-2 pt-2 border-t border-border")}>
                 {user ? (
                   <>
-                    {hasPaidSubscription && dashboardPath && (
+                    {dashboardPath && (
                       <Link
                         href={dashboardPath}
                         onClick={() => setOpen(false)}
