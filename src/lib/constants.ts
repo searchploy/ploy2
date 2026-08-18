@@ -29,3 +29,11 @@ export const FOOTER_LINKS = {
 } as const;
 
 export const COMMISSION_PCT = 15;
+
+/**
+ * Admin account. Lives here (not in lib/auth/admin.ts) so Client Components can
+ * import it without pulling in server-only modules like next/headers.
+ * Authorization itself is still enforced server-side — this is only used to
+ * pick a landing route after sign-in.
+ */
+export const ADMIN_EMAIL = "admin@searchploy.com";

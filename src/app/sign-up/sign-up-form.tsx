@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
+import { OTPInput } from "@/components/auth/otp-input";
 import type { UserRole } from "@/lib/types/database";
 
 // Map signup selection to user role
@@ -79,7 +80,7 @@ export function SignUpForm() {
     const supabase = createClient();
 
     try {
-      const { error } = await supabase.auth.verifyOtp({
+      const { data, error } = await supabase.auth.verifyOtp({
         email: signUpEmail,
         token: verificationCode,
         type: "signup",
@@ -89,6 +90,15 @@ export function SignUpForm() {
         toast.error("Invalid code", { description: error.message });
         setVerifyingCode(false);
         return;
+      }
+
+      // Mirror the confirmation onto the profile row. A DB trigger also covers
+      // this, but writing it here means the flag is set before we navigate.
+      if (data.user?.id) {
+        await supabase
+          .from("profiles")
+          .update({ email_verified: true, email_verified_at: new Date().toISOString() })
+          .eq("id", data.user.id);
       }
 
       setShowCodeModal(false);
@@ -186,16 +196,11 @@ export function SignUpForm() {
 
           <div className="flex flex-col gap-4 py-4">
             <div className="flex flex-col gap-2">
-              <Label htmlFor="code">6-digit code</Label>
-              <Input
-                id="code"
-                type="text"
-                inputMode="numeric"
-                placeholder="000000"
-                maxLength={6}
+              <Label className="text-center">6-digit code</Label>
+              <OTPInput
                 value={verificationCode}
-                onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
-                className="text-center text-2xl tracking-widest"
+                onChange={setVerificationCode}
+                onComplete={handleVerifyCode}
                 disabled={verifyingCode}
               />
             </div>

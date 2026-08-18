@@ -1,6 +1,7 @@
 import { getServerUser } from "@/lib/supabase/server";
+import { ADMIN_EMAIL } from "@/lib/constants";
 
-export const ADMIN_EMAIL = "admin@searchploy.com";
+export { ADMIN_EMAIL };
 
 /**
  * Check if the current user is an admin

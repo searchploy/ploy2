@@ -6,11 +6,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { Mail, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { createClient } from "@/lib/supabase/client";
-import { getServerUser } from "@/lib/supabase/server";
+import { OTPInput } from "@/components/auth/otp-input";
 
 export function VerifyEmailForm() {
   const router = useRouter();
@@ -137,16 +136,11 @@ export function VerifyEmailForm() {
 
         <form onSubmit={handleVerifyCode} className="flex flex-col gap-4">
           <div className="flex flex-col gap-2">
-            <Label htmlFor="code">Verification Code</Label>
-            <Input
-              id="code"
-              type="text"
-              placeholder="000000"
-              maxLength={6}
+            <Label className="text-center">Verification Code</Label>
+            <OTPInput
               value={verificationCode}
-              onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, ""))}
+              onChange={setVerificationCode}
               disabled={verifyingCode}
-              className="text-center text-lg tracking-widest"
             />
           </div>
 

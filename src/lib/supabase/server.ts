@@ -59,5 +59,10 @@ export async function getServerUser(): Promise<Profile | null> {
     .eq("id", user.id)
     .single();
 
-  return profile;
+  if (!profile) return null;
+
+  // Supabase Auth is the source of truth for email verification. The profiles
+  // column is only a mirror (kept in sync by a trigger), so never let a stale
+  // `false` there lock out a user Auth already confirmed.
+  return { ...profile, email_verified: Boolean(user.email_confirmed_at) };
 }
