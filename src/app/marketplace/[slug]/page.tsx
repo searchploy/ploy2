@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { BadgeCheck, Check, Star, Clock, TrendingUp } from "lucide-react";
+import { BadgeCheck, Check, Star, Clock, TrendingUp, ExternalLink } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -115,6 +115,41 @@ export default async function EmployeeDetailPage({ params }: { params: Promise<{
             </section>
           )}
 
+          {employee.primary_tasks && employee.primary_tasks.length > 0 && (
+            <section>
+              <h2 className="mb-3 text-lg font-bold">What it does</h2>
+              <ul className="grid gap-2 sm:grid-cols-2">
+                {employee.primary_tasks.map((task: string) => (
+                  <li key={task} className="flex items-start gap-2.5 text-sm">
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-ploy-blue" />
+                    {task}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {((employee.industries && employee.industries.length > 0) ||
+            employee.best_for_description) && (
+            <section>
+              <h2 className="mb-3 text-lg font-bold">Best for</h2>
+              {employee.industries && employee.industries.length > 0 && (
+                <div className="flex flex-wrap gap-1.5">
+                  {employee.industries.map((item: string) => (
+                    <Badge key={item} variant="outline">
+                      {item}
+                    </Badge>
+                  ))}
+                </div>
+              )}
+              {employee.best_for_description && (
+                <p className="mt-3 text-sm text-muted-foreground">
+                  {employee.best_for_description}
+                </p>
+              )}
+            </section>
+          )}
+
           <section>
             <h2 className="mb-3 text-lg font-bold">About {employee.name}</h2>
             <p className="leading-relaxed text-muted-foreground">{employee.description}</p>
@@ -194,13 +229,25 @@ export default async function EmployeeDetailPage({ params }: { params: Promise<{
             </div>
 
             <div className="flex flex-col gap-3">
-              <DemoRequestDialog employeeName={employee.name} agencyName={employee.agency_name ?? "the agency"} />
-              {employee.demo_url && (
-                <Button asChild size="lg" variant="outline">
-                  <a href={employee.demo_url} target="_blank" rel="noopener noreferrer">
-                    Watch Demo
-                  </a>
-                </Button>
+              {/* Ploy refers interested businesses to the agency — it does not
+                  process the sale, so this leaves Ploy entirely. */}
+              {employee.website_url ? (
+                <>
+                  <Button asChild size="lg">
+                    <a href={employee.website_url} target="_blank" rel="noopener noreferrer">
+                      Visit Agency Website
+                      <ExternalLink className="h-4 w-4" />
+                    </a>
+                  </Button>
+                  <p className="text-center text-xs text-muted-foreground">
+                    You&apos;ll continue on {employee.agency_name ?? "the agency"}&apos;s website.
+                  </p>
+                </>
+              ) : (
+                <DemoRequestDialog
+                  employeeName={employee.name}
+                  agencyName={employee.agency_name ?? "the agency"}
+                />
               )}
             </div>
           </Card>

@@ -680,6 +680,9 @@ export type Database = {
           industries: string[] | null
           integrations: string[] | null
           is_published: boolean | null
+          best_for_description: string | null
+          primary_tasks: string[] | null
+          website_url: string | null
           name: string
           outcomes: string[] | null
           price_annual: number | null
@@ -714,6 +717,9 @@ export type Database = {
           industries?: string[] | null
           integrations?: string[] | null
           is_published?: boolean | null
+          best_for_description?: string | null
+          primary_tasks?: string[] | null
+          website_url?: string | null
           name: string
           outcomes?: string[] | null
           price_annual?: number | null
@@ -748,6 +754,9 @@ export type Database = {
           industries?: string[] | null
           integrations?: string[] | null
           is_published?: boolean | null
+          best_for_description?: string | null
+          primary_tasks?: string[] | null
+          website_url?: string | null
           name?: string
           outcomes?: string[] | null
           price_annual?: number | null
