@@ -1,12 +1,9 @@
 import {
   LayoutDashboard,
   Heart,
-  Layers,
-  BarChart3,
-  TrendingUp,
-  Users,
-  Receipt,
-  MessageSquare,
+  FileText,
+  Store,
+  Sparkles,
   Settings,
 } from "lucide-react";
 import { DashboardSidebar, type DashboardNavItem } from "@/components/dashboard/sidebar";
@@ -15,15 +12,14 @@ import { getServerUser } from "@/lib/supabase/server";
 import { getEntitlements } from "@/lib/auth/entitlements";
 import { redirect } from "next/navigation";
 
+// Ploy is a discovery/referral marketplace — it does not process AI employee
+// purchases — so Sales, Invoices, Leads and Messages have been removed.
 const navItems: DashboardNavItem[] = [
   { label: "Overview", href: "/dashboard/pro", icon: <LayoutDashboard className="h-4 w-4" /> },
-  { label: "Listings", href: "/dashboard/pro/listings", icon: <Layers className="h-4 w-4" /> },
-  { label: "Saved", href: "/dashboard/pro/saved", icon: <Heart className="h-4 w-4" /> },
-  { label: "Analytics", href: "/dashboard/pro/analytics", icon: <BarChart3 className="h-4 w-4" /> },
-  { label: "Sales", href: "/dashboard/pro/sales", icon: <TrendingUp className="h-4 w-4" /> },
-  { label: "Leads", href: "/dashboard/pro/leads", icon: <Users className="h-4 w-4" /> },
-  { label: "Invoices", href: "/dashboard/pro/invoices", icon: <Receipt className="h-4 w-4" /> },
-  { label: "Messages", href: "/dashboard/pro/messages", icon: <MessageSquare className="h-4 w-4" /> },
+  { label: "AI Reports", href: "/dashboard/pro/reports", icon: <FileText className="h-4 w-4" /> },
+  { label: "Marketplace", href: "/marketplace", icon: <Store className="h-4 w-4" /> },
+  { label: "Saved AI Employees", href: "/dashboard/pro/saved", icon: <Heart className="h-4 w-4" /> },
+  { label: "My AI Employee", href: "/account/marketplace/listing", icon: <Sparkles className="h-4 w-4" /> },
   { label: "Settings", href: "/dashboard/pro/settings", icon: <Settings className="h-4 w-4" /> },
 ];
 
