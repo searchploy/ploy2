@@ -55,11 +55,11 @@ export default async function ProDashboardLayout({ children }: { children: React
   }
 
   if (serverUser.subscription_type !== "pro") {
-    redirect("/pricing/pro");
+    redirect("/pricing");
   }
 
   if (serverUser.subscription_plan !== "pro") {
-    redirect("/pricing/pro");
+    redirect("/pricing");
   }
 
   return (

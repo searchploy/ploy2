@@ -152,7 +152,7 @@ export default function BusinessPricingPage() {
 
                 <div className="mt-auto space-y-4">
                   <p className="text-xs text-muted-foreground">Ploy takes 10% commission on sales</p>
-                  <UpgradeButton subscriptionType="pro" returnTo="/pricing/pro" size="lg" className="w-full">
+                  <UpgradeButton subscriptionType="pro" returnTo="/pricing" size="lg" className="w-full">
                     Upgrade to Ploy Pro
                   </UpgradeButton>
                 </div>

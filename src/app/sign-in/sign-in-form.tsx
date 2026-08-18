@@ -64,7 +64,7 @@ export function SignInForm() {
 
     // No paid plan yet — send them into the existing pricing flow.
     if (profile?.subscription_plan !== "pro") {
-      router.push(isConsulting ? "/consultants/pricing" : "/pricing/pro");
+      router.push(isConsulting ? "/consultants" : "/pricing");
       return;
     }
 

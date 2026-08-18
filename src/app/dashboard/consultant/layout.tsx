@@ -46,11 +46,11 @@ export default async function ConsultantDashboardLayout({ children }: { children
   }
 
   if (serverUser.subscription_type !== "consulting") {
-    redirect("/consultants/pricing");
+    redirect("/consultants");
   }
 
   if (serverUser.subscription_plan !== "pro") {
-    redirect("/consultants/pricing");
+    redirect("/consultants");
   }
 
   return (
