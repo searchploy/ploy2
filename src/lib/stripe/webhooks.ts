@@ -233,7 +233,7 @@ export async function handleChargeSucceeded(charge: Stripe.Charge): Promise<void
       type: 'report_purchased',
       title: 'Report Unlocked',
       body: 'Your AI report has been purchased and is now available for download.',
-      link: `/dashboard/business/reports/${reportId}`,
+      link: `/dashboard/pro/reports/${reportId}`,
     })
   } else {
     // Log general charge

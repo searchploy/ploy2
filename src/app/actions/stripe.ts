@@ -399,7 +399,7 @@ export async function purchaseReportAction(reportId: string): Promise<{
         type: 'report_purchased',
         title: 'Report Purchased',
         body: `Your AI report has been purchased for $39.00. Download it now!`,
-        link: `/dashboard/business/reports/${reportId}`,
+        link: `/dashboard/pro/reports/${reportId}`,
       })
     }
 

@@ -15,7 +15,7 @@ import type { Employee, PricingModel } from "@/lib/types/mock";
 export function ListingForm({
   employee,
   agencies,
-  redirectTo = "/dashboard/agency/listings",
+  redirectTo = "/dashboard/pro/listings",
 }: {
   employee?: Employee;
   /** Admin-only: when provided, renders an agency picker so an admin can create/reassign a listing. */

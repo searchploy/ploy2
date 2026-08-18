@@ -7,22 +7,16 @@ import { cn } from "@/lib/utils";
 
 const dashboards = [
   {
-    name: "Business",
-    href: "/dashboard/business",
+    name: "Ploy Pro",
+    href: "/dashboard/pro",
     icon: LayoutDashboard,
-    description: "For business teams",
+    description: "For business & agencies",
   },
   {
-    name: "Consultant",
+    name: "Consulting Pro",
     href: "/dashboard/consultant",
     icon: Users2,
     description: "For AI consultants",
-  },
-  {
-    name: "Agency",
-    href: "/dashboard/agency",
-    icon: Building2,
-    description: "For AI agencies",
   },
 ];
 

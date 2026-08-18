@@ -67,7 +67,7 @@ export function ListingsTable({ initialEmployees }: { initialEmployees: Employee
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link href={`/dashboard/agency/listings/${employee.id}/edit`}>
+                      <Link href={`/dashboard/pro/listings/${employee.id}/edit`}>
                         <Pencil className="h-3.5 w-3.5" /> Edit
                       </Link>
                     </DropdownMenuItem>

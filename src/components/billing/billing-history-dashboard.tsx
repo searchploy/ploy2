@@ -186,7 +186,7 @@ export function BillingHistoryDashboard({ records, isLoading = false }: BillingH
                           <div className="flex items-center justify-end gap-2">
                             {record.reportId && (
                               <Button asChild variant="ghost" size="sm">
-                                <a href={`/dashboard/business/reports/${record.reportId}`}>
+                                <a href={`/dashboard/pro/reports/${record.reportId}`}>
                                   <Eye className="h-4 w-4" />
                                 </a>
                               </Button>
