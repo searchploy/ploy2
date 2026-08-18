@@ -1464,3 +1464,26 @@ export type CompositeTypes<
   : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
     ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never
+
+// Type aliases for commonly imported types
+export type Profile = Tables<"profiles">
+export type Employee = Tables<"employees">
+export type Agency = Tables<"agencies">
+export type Category = Tables<"categories">
+export type Subscription = Tables<"subscriptions">
+export type Report = Tables<"reports">
+export type ConsultantContact = Tables<"consultant_contacts">
+export type ConsultantTask = Tables<"consultant_tasks">
+export type ConsultantNote = Tables<"consultant_notes">
+export type ClassroomModule = Tables<"classroom_modules">
+
+export type SubscriptionType = Enums<"subscription_type">
+export type SubscriptionPlan = Enums<"subscription_plan">
+export type SubscriptionStatus = Enums<"subscription_status">
+export type UserRole = Enums<"user_role">
+export type ContactStage = Enums<"contact_stage">
+export type ContactType = Enums<"contact_type">
+export type ListingStatus = Enums<"listing_status">
+export type OrderStatus = Enums<"order_status">
+export type ReportStatus = Enums<"report_status">
+export type ContactActivityType = Enums<"contact_activity_type">
