@@ -70,13 +70,12 @@ export function Navbar() {
 
   const getDashboardPath = () => {
     if (!subscription) return null;
-    if (subscription.type === 'business') return '/dashboard/pro';
-    if (subscription.type === 'consultant') return '/dashboard/consultant';
-    if (subscription.type === 'agency') return '/dashboard/agency';
+    if (subscription.type === 'pro') return '/dashboard/pro';
+    if (subscription.type === 'consulting') return '/dashboard/consultant';
     return null;
   };
 
-  const hasPaidSubscription = subscription && (subscription.type === 'business' || subscription.type === 'consultant' || subscription.type === 'agency');
+  const hasPaidSubscription = subscription && (subscription.type === 'pro' || subscription.type === 'consulting');
   const dashboardPath = getDashboardPath();
 
   return (

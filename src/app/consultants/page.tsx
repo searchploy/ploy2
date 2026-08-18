@@ -161,7 +161,7 @@ export default function ConsultantsPage() {
                   ))}
                 </div>
 
-                <UpgradeButton subscriptionType="consultant" returnTo="/consultants" size="lg" className="mt-auto">
+                <UpgradeButton subscriptionType="consulting" returnTo="/consultants/pricing" size="lg" className="mt-auto">
                   Start Your Consulting Business
                 </UpgradeButton>
               </div>

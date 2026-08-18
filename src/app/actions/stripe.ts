@@ -33,12 +33,17 @@ export interface CheckoutResult {
  * Create a checkout session for subscription
  */
 export async function createCheckoutSession(
-  subscriptionType: 'business' | 'consultant' | 'agency'
+  subscriptionType: 'pro' | 'consulting'
 ): Promise<CheckoutResult> {
   try {
     const user = await getServerUser()
     if (!user?.email) {
       return { error: 'User not authenticated', sessionId: '' }
+    }
+
+    // Must have verified email to checkout
+    if (!user.email_verified) {
+      return { error: 'Please verify your email first', sessionId: '' }
     }
 
     // Get or create Stripe customer
@@ -56,6 +61,9 @@ export async function createCheckoutSession(
 
     // Create checkout session
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+    const dashboardPath = subscriptionType === 'pro' ? 'pro' : 'consultant'
+    const pricingPath = subscriptionType === 'pro' ? 'pricing/pro' : 'consultants/pricing'
+
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       payment_method_types: ['card'],
@@ -66,8 +74,8 @@ export async function createCheckoutSession(
         },
       ],
       mode: 'subscription',
-      success_url: `${baseUrl}/dashboard/${subscriptionType}/billing?session_id={CHECKOUT_SESSION_ID}&success=true`,
-      cancel_url: `${baseUrl}/${subscriptionType === 'business' ? '' : subscriptionType}/pricing?canceled=true`,
+      success_url: `${baseUrl}/dashboard/${dashboardPath}/billing?session_id={CHECKOUT_SESSION_ID}&success=true`,
+      cancel_url: `${baseUrl}/${pricingPath}?canceled=true`,
       subscription_data: {
         metadata: {
           profile_id: user.id,

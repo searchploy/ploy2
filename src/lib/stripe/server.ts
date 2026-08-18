@@ -21,9 +21,8 @@ export function isStripeConfigured(): boolean {
 
 /** Env var name per subscription product — set these once real Stripe Price IDs exist. */
 const PRICE_ENV_VAR: Record<SubscriptionType, string> = {
-  business: "STRIPE_PRICE_ID_BUSINESS_MONTHLY",
-  consultant: "STRIPE_PRICE_ID_CONSULTANT_MONTHLY",
-  agency: "STRIPE_PRICE_ID_AGENCY_MONTHLY",
+  pro: "STRIPE_PRICE_ID_BUSINESS_MONTHLY",
+  consulting: "STRIPE_PRICE_ID_CONSULTANT_MONTHLY",
 };
 
 export function getPriceId(type: SubscriptionType): string | null {

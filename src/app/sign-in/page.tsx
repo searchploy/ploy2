@@ -33,13 +33,22 @@ export default function SignInPage() {
     }
 
     const { data: profile } = await supabase
-      .from("users")
-      .select("role")
+      .from("profiles")
+      .select("subscription_type, email_verified")
       .eq("id", data.user.id)
       .single();
 
-    const role = (profile as { role?: string } | null)?.role ?? "business";
-    router.push(role === "agency" ? "/dashboard/agency" : role === "admin" ? "/dashboard/admin" : "/dashboard/business");
+    const subscriptionType = (profile as { subscription_type?: string; email_verified?: boolean } | null)?.subscription_type ?? "pro";
+    const emailVerified = (profile as { subscription_type?: string; email_verified?: boolean } | null)?.email_verified ?? false;
+
+    // If email not verified, go to verification page
+    if (!emailVerified) {
+      router.push("/verify-email");
+      return;
+    }
+
+    // Route based on subscription type to appropriate dashboard
+    router.push(subscriptionType === "consulting" ? "/dashboard/consultant" : "/dashboard/pro");
   }
 
   return (

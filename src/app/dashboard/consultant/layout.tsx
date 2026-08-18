@@ -19,16 +19,43 @@ const navItems: DashboardNavItem[] = [
 ];
 
 export default async function ConsultantDashboardLayout({ children }: { children: React.ReactNode }) {
-  const user = await getServerUser();
+  const serverUser = await getServerUser();
   const isAdmin = await isAdminUser();
 
-  if (!user) redirect("/sign-in?redirect=/dashboard/consultant");
-  // Admin users can access consultant dashboard, others need consultant role
-  if (!isAdmin && user.role !== "consultant") redirect("/");
+  // Admins can access without restrictions
+  if (isAdmin) {
+    if (!serverUser) redirect("/sign-in");
+    return (
+      <div className="flex min-h-screen">
+        <DashboardSidebar navItems={navItems} user={serverUser} roleLabel="Consultant Dashboard (Admin Access)" />
+        <main className="flex-1 overflow-y-auto bg-secondary/20 p-8">{children}</main>
+      </div>
+    );
+  }
+
+  // Regular users must have:
+  // 1. Email verified
+  // 2. Active consulting subscription
+  // 3. Correct subscription type (consulting)
+  if (!serverUser) {
+    redirect("/sign-in?redirect=/dashboard/consultant");
+  }
+
+  if (!serverUser.email_verified) {
+    redirect("/verify-email?redirect=/dashboard/consultant");
+  }
+
+  if (serverUser.subscription_type !== "consulting") {
+    redirect("/consultants/pricing");
+  }
+
+  if (serverUser.subscription_plan !== "pro") {
+    redirect("/consultants/pricing");
+  }
 
   return (
     <div className="flex min-h-screen">
-      <DashboardSidebar navItems={navItems} user={user} roleLabel="Consultant dashboard" />
+      <DashboardSidebar navItems={navItems} user={serverUser} roleLabel="Consulting Pro" />
       <main className="flex-1 overflow-y-auto bg-secondary/20 p-8">{children}</main>
     </div>
   );

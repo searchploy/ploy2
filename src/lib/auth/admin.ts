@@ -13,10 +13,11 @@ export async function isAdminUser(): Promise<boolean> {
 }
 
 /**
- * Check if user has access (either admin or has paid subscription)
+ * Check if user has access to a specific dashboard
+ * Enforces: email verification + active subscription + correct type
  */
-export async function hasPaywallAccess(requiredTier: "business" | "consultant" | "agency"): Promise<boolean> {
-  // Admins bypass all paywalls
+export async function hasPaywallAccess(requiredType: "pro" | "consulting"): Promise<boolean> {
+  // Admins bypass all paywalls and don't need email verification
   if (await isAdminUser()) {
     return true;
   }
@@ -24,15 +25,14 @@ export async function hasPaywallAccess(requiredTier: "business" | "consultant" |
   const user = await getServerUser();
   if (!user) return false;
 
-  // Check subscription tier
-  if (user.subscription_plan === "pro" || user.subscription_type === requiredTier) {
-    return true;
-  }
+  // Must have verified email to access any dashboard
+  if (!user.email_verified) return false;
 
-  // Free users have limited access to business tier
-  if (requiredTier === "business" && user.subscription_plan === "free") {
-    return true;
-  }
+  // Must have matching subscription type
+  if (user.subscription_type !== requiredType) return false;
 
-  return false;
+  // Must have active subscription (not free/canceled)
+  if (user.subscription_plan !== "pro") return false;
+
+  return true;
 }

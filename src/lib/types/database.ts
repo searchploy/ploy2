@@ -821,6 +821,8 @@ export type Database = {
           avatar_url: string | null
           created_at: string
           email: string | null
+          email_verified: boolean
+          email_verified_at: string | null
           full_name: string | null
           id: string
           role: Database["public"]["Enums"]["user_role"]
@@ -833,6 +835,8 @@ export type Database = {
           avatar_url?: string | null
           created_at?: string
           email?: string | null
+          email_verified?: boolean
+          email_verified_at?: string | null
           full_name?: string | null
           id: string
           role?: Database["public"]["Enums"]["user_role"]
@@ -845,6 +849,8 @@ export type Database = {
           avatar_url?: string | null
           created_at?: string
           email?: string | null
+          email_verified?: boolean
+          email_verified_at?: string | null
           full_name?: string | null
           id?: string
           role?: Database["public"]["Enums"]["user_role"]
@@ -1209,7 +1215,7 @@ export type Database = {
       report_status: "draft" | "processing" | "complete" | "failed"
       subscription_plan: "free" | "pro"
       subscription_status: "active" | "cancelled" | "past_due" | "trialing"
-      subscription_type: "business" | "consultant" | "agency"
+      subscription_type: "pro" | "consulting"
       user_role: "business" | "agency" | "admin" | "consultant"
     }
     CompositeTypes: {
@@ -1364,7 +1370,7 @@ export const Constants = {
       report_status: ["draft", "processing", "complete", "failed"],
       subscription_plan: ["free", "pro"],
       subscription_status: ["active", "cancelled", "past_due", "trialing"],
-      subscription_type: ["business", "consultant", "agency"],
+      subscription_type: ["pro", "consulting"],
       user_role: ["business", "agency", "admin", "consultant"],
     },
   },
@@ -1400,18 +1406,11 @@ export type ContactStage = Enums<"contact_stage">
 export type ContactActivityType = Enums<"contact_activity_type">
 
 /**
- * A profile has Pro access if its plan is 'pro', regardless of which
- * product funded it — a Consultant Pro subscription automatically unlocks
- * every Business Pro feature, so callers should never need to check
- * `subscription_type` for baseline Pro gating, only `subscription_plan`.
+ * True if the profile is on a pro subscription (business/agency or consulting).
+ * After consolidation, both businesses and agencies use subscription_type "pro".
  */
-export function hasProAccess(plan: SubscriptionPlan | null | undefined): boolean {
-  return plan === "pro"
-}
-
-/** True only for a paid Agency Partner Pro subscription (agency-specific perks like boosted listings). */
-export function hasAgencyPartnerAccess(profile: { subscription_type: SubscriptionType; subscription_plan: SubscriptionPlan } | null | undefined): boolean {
-  return profile?.subscription_type === "agency" && profile.subscription_plan === "pro"
+export function hasProAccess(profile: { subscription_type: SubscriptionType; subscription_plan: SubscriptionPlan } | null | undefined): boolean {
+  return profile?.subscription_type === "pro" && profile.subscription_plan === "pro"
 }
 
 export type EmployeeWithRelations = Employee & {

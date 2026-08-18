@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    if (!['business', 'consultant', 'agency'].includes(subscriptionType)) {
+    if (!['pro', 'consulting'].includes(subscriptionType)) {
       return NextResponse.json(
         { error: 'Invalid subscription type' },
         { status: 400 }

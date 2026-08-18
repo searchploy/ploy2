@@ -12,7 +12,7 @@ export interface CreateSubscriptionParams {
   customerId: string
   priceId: string
   profileId: string
-  subscriptionType: 'business' | 'consultant' | 'agency'
+  subscriptionType: 'pro' | 'consulting'
   metadata?: Record<string, string>
 }
 

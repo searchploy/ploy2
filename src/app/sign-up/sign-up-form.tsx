@@ -20,8 +20,11 @@ import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 import type { UserRole } from "@/lib/types/database";
 
+// Map signup selection to user role
+// business/agency users select "pro" → store as business role
+// consultant users select "consulting" → store as consultant role
 const roleFromParam = (value: string | null): UserRole =>
-  value === "agency" || value === "consultant" ? value : "business";
+  value === "consulting" || value === "consultant" ? "consultant" : "business";
 
 export function SignUpForm() {
   const router = useRouter();
@@ -93,7 +96,7 @@ export function SignUpForm() {
       toast.success("Email confirmed!", { description: "Signing you in..." });
 
       setTimeout(() => {
-        const destination = redirectTo || (role === "agency" ? "/for-agencies" : role === "consultant" ? "/consultants" : "/pricing");
+        const destination = redirectTo || (role === "consultant" ? "/consultants/pricing" : "/pricing/pro");
         router.push(destination);
       }, 500);
     } catch {
@@ -111,7 +114,7 @@ export function SignUpForm() {
             <p className="text-sm text-muted-foreground">Hire AI employees or list your agency&apos;s on Ploy.</p>
           </div>
 
-          <div className="mb-6 grid grid-cols-3 gap-2.5">
+          <div className="mb-6 grid grid-cols-2 gap-2.5">
             <button
               type="button"
               onClick={() => setRole("business")}
@@ -120,9 +123,9 @@ export function SignUpForm() {
                 role === "business" ? "border-primary bg-secondary" : "border-border hover:bg-accent"
               )}
             >
-              <Briefcase className="h-5 w-5" />
-              <span className="font-medium">I&apos;m hiring</span>
-              <span className="text-xs text-muted-foreground">Business</span>
+              <Building2 className="h-5 w-5" />
+              <span className="font-medium">Business/Agency</span>
+              <span className="text-xs text-muted-foreground">Ploy Pro</span>
             </button>
             <button
               type="button"
@@ -133,20 +136,8 @@ export function SignUpForm() {
               )}
             >
               <Users className="h-5 w-5" />
-              <span className="font-medium">I consult</span>
-              <span className="text-xs text-muted-foreground">Consultant</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setRole("agency")}
-              className={cn(
-                "flex flex-col items-center gap-2 rounded-xl border p-3.5 text-sm transition-colors",
-                role === "agency" ? "border-primary bg-secondary" : "border-border hover:bg-accent"
-              )}
-            >
-              <Building2 className="h-5 w-5" />
-              <span className="font-medium">I&apos;m an agency</span>
-              <span className="text-xs text-muted-foreground">List AI</span>
+              <span className="font-medium">Consultant</span>
+              <span className="text-xs text-muted-foreground">Consulting Pro</span>
             </button>
           </div>
 

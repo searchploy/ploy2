@@ -34,27 +34,21 @@ export const stripe = new Proxy({} as Stripe, {
 /**
  * Constants for product and price IDs
  *
- * Products:
- * - BUSINESS_PRO: Ploy Pro ($29.99/month) - unlimited reports
- * - CONSULTANT_PRO: Ploy Consultant ($0.00/month) - free tier
- * - AGENCY_PRO: Agency subscription
- * - AI_REPORT: AI Report ($39.00) - one-time charge
+ * Consolidated to 2 products:
+ * - PRO: Ploy Pro ($29.99/month) - for businesses and agencies
+ * - CONSULTING: Consulting Pro ($X/month) - for consultants
  */
 export const STRIPE_PRODUCTS = {
-  BUSINESS_PRO: process.env.STRIPE_PRODUCT_ID_BUSINESS_PRO || '',
-  CONSULTANT_PRO: process.env.STRIPE_PRODUCT_ID_CONSULTANT_PRO || '',
-  AGENCY_PRO: process.env.STRIPE_PRODUCT_ID_AGENCY_PRO || '',
+  PRO: process.env.STRIPE_PRODUCT_ID_BUSINESS_PRO || '',
+  CONSULTING: process.env.STRIPE_PRODUCT_ID_CONSULTANT_PRO || '',
 } as const
 
 export const STRIPE_PRICES = {
-  BUSINESS: {
+  PRO: {
     MONTHLY: process.env.STRIPE_PRICE_ID_BUSINESS_MONTHLY || '',
   },
-  CONSULTANT: {
+  CONSULTING: {
     MONTHLY: process.env.STRIPE_PRICE_ID_CONSULTANT_MONTHLY || '',
-  },
-  AGENCY: {
-    MONTHLY: process.env.STRIPE_PRICE_ID_AGENCY_MONTHLY || '',
   },
   // One-time charges
   AI_REPORT: process.env.STRIPE_PRICE_ID_AI_REPORT || '', // $39.00
@@ -62,9 +56,10 @@ export const STRIPE_PRICES = {
 
 /**
  * Get the correct price ID based on subscription type
+ * Maps the consolidated subscription types to Stripe prices
  */
-export function getPriceId(type: 'business' | 'consultant' | 'agency'): string {
-  const typeKey = type.toUpperCase() as 'BUSINESS' | 'CONSULTANT' | 'AGENCY'
+export function getPriceId(type: 'pro' | 'consulting'): string {
+  const typeKey = type.toUpperCase() as 'PRO' | 'CONSULTING'
   const price = STRIPE_PRICES[typeKey]
   if (typeof price === 'string') return price
   return price.MONTHLY

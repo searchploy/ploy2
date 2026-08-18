@@ -6,9 +6,8 @@ import { getStripe, isStripeConfigured, getPriceId } from "@/lib/stripe/server";
 import type { SubscriptionType } from "@/lib/types/database";
 
 const DASHBOARD_BY_TYPE: Record<SubscriptionType, string> = {
-  business: "/dashboard/business",
-  consultant: "/dashboard/consultant",
-  agency: "/dashboard/agency",
+  pro: "/dashboard/pro",
+  consulting: "/dashboard/consultant",
 };
 
 /**

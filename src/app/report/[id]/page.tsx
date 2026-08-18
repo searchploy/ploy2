@@ -67,7 +67,7 @@ export default async function ReportResultsPage({ params }: { params: Promise<{ 
     .order("priority", { ascending: true });
 
   const profile = await getServerUser();
-  const isPro = hasProAccess(profile?.subscription_plan);
+  const isPro = hasProAccess(profile);
 
   const allRecs = (recommendations ?? []) as unknown as RecommendationRow[];
   const visibleRecs = isPro ? allRecs : allRecs.slice(0, 3);

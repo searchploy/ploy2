@@ -31,17 +31,40 @@ export default async function ProDashboardLayout({ children }: { children: React
   const serverUser = await getServerUser();
   const isAdmin = await isAdminUser();
 
-  const user = serverUser || (await getDemoUser(DEMO_BUSINESS_USER_ID))!;
+  // Admins can access without restrictions
+  if (isAdmin) {
+    const user = serverUser || (await getDemoUser(DEMO_BUSINESS_USER_ID))!;
+    return (
+      <div className="flex min-h-screen">
+        <DashboardSidebar navItems={navItems} user={user} roleLabel="Ploy Pro (Admin Access)" />
+        <main className="flex-1 overflow-y-auto bg-secondary/20 p-8">{children}</main>
+      </div>
+    );
+  }
 
-  // Allow only business and agency users with Ploy Pro subscription, plus admins
-  // Free tier users (consultants, other roles) should NOT have dashboard access
-  if (!isAdmin && (serverUser?.role !== "business" && serverUser?.role !== "agency")) {
-    redirect("/sign-in");
+  // Regular users must have:
+  // 1. Email verified
+  // 2. Active pro subscription
+  // 3. Correct subscription type (pro)
+  if (!serverUser) {
+    redirect("/sign-in?redirect=/dashboard/pro");
+  }
+
+  if (!serverUser.email_verified) {
+    redirect("/verify-email?redirect=/dashboard/pro");
+  }
+
+  if (serverUser.subscription_type !== "pro") {
+    redirect("/pricing/pro");
+  }
+
+  if (serverUser.subscription_plan !== "pro") {
+    redirect("/pricing/pro");
   }
 
   return (
     <div className="flex min-h-screen">
-      <DashboardSidebar navItems={navItems} user={user} roleLabel="Ploy Pro" />
+      <DashboardSidebar navItems={navItems} user={serverUser} roleLabel="Ploy Pro" />
       <main className="flex-1 overflow-y-auto bg-secondary/20 p-8">{children}</main>
     </div>
   );

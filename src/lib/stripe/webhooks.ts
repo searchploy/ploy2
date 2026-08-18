@@ -23,11 +23,14 @@ export async function handleSubscriptionCreated(
   const item = subscription.items.data[0]
   if (!item?.price) return
 
+  // Determine subscription type from metadata (pro or consulting)
+  const subscriptionType = (subscription.metadata?.subscription_type || 'pro') as 'pro' | 'consulting'
+
   await supabase.from('subscriptions').insert({
     profile_id: profileId,
     stripe_subscription_id: subscription.id,
     stripe_price_id: item.price.id,
-    type: (subscription.metadata?.subscription_type || 'business') as 'business' | 'consultant' | 'agency',
+    type: subscriptionType,
     status: subscription.status as 'active' | 'trialing' | 'past_due' | 'canceled' | 'unpaid',
     current_period_start: new Date(
       ((subscription as unknown as Record<string, unknown>).current_period_start as number) * 1000
@@ -37,10 +40,11 @@ export async function handleSubscriptionCreated(
     ).toISOString(),
   })
 
-  // Update profile subscription plan
+  // Update profile: set subscription plan to pro and mark email as verified
+  // (user must have verified email to complete checkout)
   await supabase
     .from('profiles')
-    .update({ subscription_plan: 'pro' })
+    .update({ subscription_plan: 'pro', email_verified: true, email_verified_at: new Date().toISOString() })
     .eq('id', profileId)
 }
 

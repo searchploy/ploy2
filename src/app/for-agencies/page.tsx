@@ -152,7 +152,7 @@ export default function ForAgenciesPage() {
                   </div>
                 </div>
 
-                <UpgradeButton subscriptionType="agency" returnTo="/for-agencies" size="lg" className="mt-auto">
+                <UpgradeButton subscriptionType="pro" returnTo="/pricing/pro" size="lg" className="mt-auto">
                   Upgrade to Ploy Pro
                 </UpgradeButton>
               </div>
