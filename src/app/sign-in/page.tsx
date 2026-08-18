@@ -34,18 +34,11 @@ export default function SignInPage() {
 
     const { data: profile } = await supabase
       .from("profiles")
-      .select("subscription_type, email_verified")
+      .select("subscription_type")
       .eq("id", data.user.id)
       .single();
 
-    const subscriptionType = (profile as { subscription_type?: string; email_verified?: boolean } | null)?.subscription_type ?? "pro";
-    const emailVerified = (profile as { subscription_type?: string; email_verified?: boolean } | null)?.email_verified ?? false;
-
-    // If email not verified, go to verification page
-    if (!emailVerified) {
-      router.push("/verify-email");
-      return;
-    }
+    const subscriptionType = (profile as { subscription_type?: string } | null)?.subscription_type ?? "pro";
 
     // Route based on subscription type to appropriate dashboard
     router.push(subscriptionType === "consulting" ? "/dashboard/consultant" : "/dashboard/pro");
