@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ArrowRight, Store, Sparkles, Users2, Building2, LogOut, Settings, User, LayoutDashboard, type LucideIcon } from "lucide-react";
+import { Menu, X, ArrowRight, Store, Sparkles, Users2, Building2, LayoutDashboard, User, type LucideIcon } from "lucide-react";
 import type { User as AuthUser } from "@supabase/supabase-js";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/shared/logo";
+import { AccountMenu } from "@/components/layout/account-menu";
 import { NAV_LINKS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
@@ -26,7 +27,6 @@ export function Navbar() {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [subscription, setSubscription] = useState<Database["public"]["Tables"]["subscriptions"]["Row"] | null>(null);
   const pathname = usePathname();
-  const router = useRouter();
   const supabaseRef = useRef(() => createClient());
 
   useEffect(() => {
@@ -62,11 +62,6 @@ export function Navbar() {
     return () => authSubscription?.unsubscribe();
   }, []);
 
-  const handleLogout = async () => {
-    await supabaseRef.current().auth.signOut();
-    router.push("/");
-    setProfileOpen(false);
-  };
 
   const getDashboardPath = () => {
     if (!subscription) return null;
@@ -118,50 +113,11 @@ export function Navbar() {
                 </div>
                 <span className="text-foreground">{user.email?.split("@")[0]}</span>
               </button>
-              <AnimatePresence>
-                {profileOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    className="absolute right-0 mt-2 w-48 rounded-lg border border-border bg-card shadow-lg"
-                  >
-                    <Link
-                      href="/profile"
-                      onClick={() => setProfileOpen(false)}
-                      className="flex items-center gap-2 px-4 py-3 text-sm text-foreground hover:bg-secondary/50 transition-colors border-b border-border"
-                    >
-                      <User className="h-4 w-4" />
-                      Profile
-                    </Link>
-                    {hasPaidSubscription && dashboardPath && (
-                      <Link
-                        href={dashboardPath}
-                        onClick={() => setProfileOpen(false)}
-                        className="flex items-center gap-2 px-4 py-3 text-sm text-foreground hover:bg-secondary/50 transition-colors border-b border-border"
-                      >
-                        <LayoutDashboard className="h-4 w-4" />
-                        Dashboard
-                      </Link>
-                    )}
-                    <Link
-                      href="/profile"
-                      onClick={() => setProfileOpen(false)}
-                      className="flex items-center gap-2 px-4 py-3 text-sm text-foreground hover:bg-secondary/50 transition-colors border-b border-border"
-                    >
-                      <Settings className="h-4 w-4" />
-                      Settings
-                    </Link>
-                    <button
-                      onClick={handleLogout}
-                      className="w-full flex items-center gap-2 px-4 py-3 text-sm text-destructive hover:bg-secondary/50 transition-colors"
-                    >
-                      <LogOut className="h-4 w-4" />
-                      Sign out
-                    </button>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              <AccountMenu
+                isOpen={profileOpen}
+                onClose={() => setProfileOpen(false)}
+                userEmail={user.email || ""}
+              />
             </div>
           ) : (
             <>
@@ -217,14 +173,6 @@ export function Navbar() {
               <div className={cn("flex flex-col gap-2 pt-2 border-t border-border")}>
                 {user ? (
                   <>
-                    <Link
-                      href="/profile"
-                      onClick={() => setOpen(false)}
-                      className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-ploy-blue"
-                    >
-                      <User className="h-4 w-4" />
-                      Profile
-                    </Link>
                     {hasPaidSubscription && dashboardPath && (
                       <Link
                         href={dashboardPath}
@@ -236,23 +184,13 @@ export function Navbar() {
                       </Link>
                     )}
                     <Link
-                      href="/profile"
+                      href="/account/profile"
                       onClick={() => setOpen(false)}
                       className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-ploy-blue"
                     >
-                      <Settings className="h-4 w-4" />
-                      Settings
+                      <User className="h-4 w-4" />
+                      My Account
                     </Link>
-                    <button
-                      onClick={() => {
-                        handleLogout();
-                        setOpen(false);
-                      }}
-                      className="flex items-center gap-2 text-sm font-medium text-destructive hover:text-red-400"
-                    >
-                      <LogOut className="h-4 w-4" />
-                      Sign out
-                    </button>
                   </>
                 ) : (
                   <>

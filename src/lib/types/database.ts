@@ -261,30 +261,30 @@ export type Database = {
       classroom_modules: {
         Row: {
           content: string
-          created_at: string
+          created_at: string | null
           description: string | null
           id: string
           sort_order: number | null
           title: string
-          updated_at: string
+          updated_at: string | null
         }
         Insert: {
           content: string
-          created_at?: string
+          created_at?: string | null
           description?: string | null
           id?: string
           sort_order?: number | null
           title: string
-          updated_at?: string
+          updated_at?: string | null
         }
         Update: {
           content?: string
-          created_at?: string
+          created_at?: string | null
           description?: string | null
           id?: string
           sort_order?: number | null
           title?: string
-          updated_at?: string
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -329,6 +329,48 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      consultant_clients: {
+        Row: {
+          business_name: string
+          contact_name: string | null
+          created_at: string | null
+          email: string | null
+          id: string
+          industry: string | null
+          notes: string | null
+          phone: string | null
+          status: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          business_name: string
+          contact_name?: string | null
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          industry?: string | null
+          notes?: string | null
+          phone?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          business_name?: string
+          contact_name?: string | null
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          industry?: string | null
+          notes?: string | null
+          phone?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
       }
       consultant_contacts: {
         Row: {
@@ -428,6 +470,69 @@ export type Database = {
             columns: ["profile_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      consultant_progress: {
+        Row: {
+          completed: boolean | null
+          created_at: string | null
+          id: string
+          module: number
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean | null
+          created_at?: string | null
+          id?: string
+          module: number
+          user_id: string
+        }
+        Update: {
+          completed?: boolean | null
+          created_at?: string | null
+          id?: string
+          module?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      consultant_reports: {
+        Row: {
+          client_id: string | null
+          created_at: string | null
+          id: string
+          report_id: string | null
+          user_id: string
+        }
+        Insert: {
+          client_id?: string | null
+          created_at?: string | null
+          id?: string
+          report_id?: string | null
+          user_id: string
+        }
+        Update: {
+          client_id?: string | null
+          created_at?: string | null
+          id?: string
+          report_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "consultant_reports_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "consultant_clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "consultant_reports_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "reports"
             referencedColumns: ["id"]
           },
         ]
@@ -574,11 +679,13 @@ export type Database = {
           id: string
           industries: string[] | null
           integrations: string[] | null
+          is_published: boolean | null
           name: string
           outcomes: string[] | null
           price_annual: number | null
           price_monthly: number | null
           price_type: string
+          profile_id: string | null
           role: string
           screenshots: string[] | null
           setup_time: string | null
@@ -606,11 +713,13 @@ export type Database = {
           id?: string
           industries?: string[] | null
           integrations?: string[] | null
+          is_published?: boolean | null
           name: string
           outcomes?: string[] | null
           price_annual?: number | null
           price_monthly?: number | null
           price_type?: string
+          profile_id?: string | null
           role: string
           screenshots?: string[] | null
           setup_time?: string | null
@@ -638,11 +747,13 @@ export type Database = {
           id?: string
           industries?: string[] | null
           integrations?: string[] | null
+          is_published?: boolean | null
           name?: string
           outcomes?: string[] | null
           price_annual?: number | null
           price_monthly?: number | null
           price_type?: string
+          profile_id?: string | null
           role?: string
           screenshots?: string[] | null
           setup_time?: string | null
@@ -668,6 +779,13 @@ export type Database = {
             columns: ["category_id"]
             isOneToOne: false
             referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employees_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -828,7 +946,9 @@ export type Database = {
           role: Database["public"]["Enums"]["user_role"]
           stripe_customer_id: string | null
           subscription_plan: Database["public"]["Enums"]["subscription_plan"]
-          subscription_type: Database["public"]["Enums"]["subscription_type"]
+          subscription_type:
+            | Database["public"]["Enums"]["subscription_type"]
+            | null
           updated_at: string
         }
         Insert: {
@@ -842,7 +962,9 @@ export type Database = {
           role?: Database["public"]["Enums"]["user_role"]
           stripe_customer_id?: string | null
           subscription_plan?: Database["public"]["Enums"]["subscription_plan"]
-          subscription_type?: Database["public"]["Enums"]["subscription_type"]
+          subscription_type?:
+            | Database["public"]["Enums"]["subscription_type"]
+            | null
           updated_at?: string
         }
         Update: {
@@ -856,7 +978,9 @@ export type Database = {
           role?: Database["public"]["Enums"]["user_role"]
           stripe_customer_id?: string | null
           subscription_plan?: Database["public"]["Enums"]["subscription_plan"]
-          subscription_type?: Database["public"]["Enums"]["subscription_type"]
+          subscription_type?:
+            | Database["public"]["Enums"]["subscription_type"]
+            | null
           updated_at?: string
         }
         Relationships: []
@@ -937,7 +1061,7 @@ export type Database = {
           industry: string | null
           is_premium: boolean
           pain_points: string[] | null
-          profile_id: string
+          profile_id: string | null
           recommended_ai_stack: Json | null
           revenue_range: string | null
           roadmap_30_day: Json | null
@@ -975,7 +1099,7 @@ export type Database = {
           industry?: string | null
           is_premium?: boolean
           pain_points?: string[] | null
-          profile_id: string
+          profile_id?: string | null
           recommended_ai_stack?: Json | null
           revenue_range?: string | null
           roadmap_30_day?: Json | null
@@ -1013,7 +1137,7 @@ export type Database = {
           industry?: string | null
           is_premium?: boolean
           pain_points?: string[] | null
-          profile_id?: string
+          profile_id?: string | null
           recommended_ai_stack?: Json | null
           revenue_range?: string | null
           roadmap_30_day?: Json | null
@@ -1115,7 +1239,7 @@ export type Database = {
           status?: Database["public"]["Enums"]["subscription_status"]
           stripe_price_id?: string | null
           stripe_subscription_id?: string | null
-          type: Database["public"]["Enums"]["subscription_type"]
+          type?: Database["public"]["Enums"]["subscription_type"]
           updated_at?: string
         }
         Update: {
@@ -1189,7 +1313,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      verify_email: { Args: { user_id: string }; Returns: undefined }
     }
     Enums: {
       contact_activity_type:
@@ -1340,81 +1464,3 @@ export type CompositeTypes<
   : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
     ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never
-
-export const Constants = {
-  public: {
-    Enums: {
-      contact_activity_type: [
-        "contacted",
-        "meeting_booked",
-        "proposal_sent",
-        "deal_closed",
-      ],
-      contact_stage: [
-        "new",
-        "contacted",
-        "meeting_booked",
-        "proposal_sent",
-        "won",
-        "lost",
-      ],
-      contact_type: ["prospect", "client"],
-      listing_status: [
-        "draft",
-        "pending_review",
-        "published",
-        "rejected",
-        "archived",
-      ],
-      order_status: ["pending", "completed", "refunded", "cancelled"],
-      report_status: ["draft", "processing", "complete", "failed"],
-      subscription_plan: ["free", "pro"],
-      subscription_status: ["active", "cancelled", "past_due", "trialing"],
-      subscription_type: ["pro", "consulting"],
-      user_role: ["business", "agency", "admin", "consultant"],
-    },
-  },
-} as const
-
-// ── Convenience row/enum aliases used throughout the app ───────────────────
-export type Profile = Tables<"profiles">
-export type Business = Tables<"businesses">
-export type Agency = Tables<"agencies">
-export type Category = Tables<"categories">
-export type Employee = Tables<"employees">
-export type Review = Tables<"reviews">
-export type Favorite = Tables<"favorites">
-export type Order = Tables<"orders">
-export type DemoRequest = Tables<"demo_requests">
-export type Report = Tables<"reports">
-export type ReportRecommendation = Tables<"report_recommendations">
-export type Subscription = Tables<"subscriptions">
-export type Notification = Tables<"notifications">
-export type ConsultantContact = Tables<"consultant_contacts">
-export type ConsultantTask = Tables<"consultant_tasks">
-export type ConsultantNote = Tables<"consultant_notes">
-export type ConsultantActivity = Tables<"consultant_activities">
-export type ClassroomModule = Tables<"classroom_modules">
-
-export type UserRole = Enums<"user_role">
-export type SubscriptionType = Enums<"subscription_type">
-export type SubscriptionPlan = Enums<"subscription_plan">
-export type ListingStatus = Enums<"listing_status">
-export type ReportStatus = Enums<"report_status">
-export type ContactType = Enums<"contact_type">
-export type ContactStage = Enums<"contact_stage">
-export type ContactActivityType = Enums<"contact_activity_type">
-
-/**
- * True if the profile is on a pro subscription (business/agency or consulting).
- * After consolidation, both businesses and agencies use subscription_type "pro".
- */
-export function hasProAccess(profile: { subscription_type: SubscriptionType; subscription_plan: SubscriptionPlan } | null | undefined): boolean {
-  return profile?.subscription_type === "pro" && profile.subscription_plan === "pro"
-}
-
-export type EmployeeWithRelations = Employee & {
-  agency: Agency | null
-  category: Category | null
-  reviews?: Review[]
-}

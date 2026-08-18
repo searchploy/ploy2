@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { CheckCircle2, TriangleAlert, Lock } from "lucide-react";
 import { createClient, getServerUser } from "@/lib/supabase/server";
-import { hasProAccess } from "@/lib/types/database";
 import { Button } from "@/components/ui/button";
 import { Paywall } from "@/components/shared/paywall";
 import { RoadmapTabs } from "@/app/report/[id]/roadmap-tabs";
@@ -67,7 +66,7 @@ export default async function ReportResultsPage({ params }: { params: Promise<{ 
     .order("priority", { ascending: true });
 
   const profile = await getServerUser();
-  const isPro = hasProAccess(profile);
+  const isPro = profile?.subscription_plan === "pro";
 
   const allRecs = (recommendations ?? []) as unknown as RecommendationRow[];
   const visibleRecs = isPro ? allRecs : allRecs.slice(0, 3);
