@@ -1,51 +1,12 @@
+import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FileDown, Eye } from "lucide-react";
-
-const resources = [
-  {
-    id: 1,
-    title: "Cold Email Templates",
-    description: "Proven email templates to reach new businesses",
-  },
-  {
-    id: 2,
-    title: "Cold DM Templates",
-    description: "LinkedIn and social media outreach templates",
-  },
-  {
-    id: 3,
-    title: "Cold Call Script",
-    description: "Phone outreach script for confident calls",
-  },
-  {
-    id: 4,
-    title: "Discovery Questions",
-    description: "Questions to ask during discovery calls",
-  },
-  {
-    id: 5,
-    title: "Proposal Template",
-    description: "Professional proposal document template",
-  },
-  {
-    id: 6,
-    title: "Follow-up Templates",
-    description: "Email templates for follow-up sequences",
-  },
-  {
-    id: 7,
-    title: "Pricing Guide",
-    description: "Guide to pricing your AI consulting services",
-  },
-  {
-    id: 8,
-    title: "AI Consulting Checklist",
-    description: "Checklist for running your consulting business",
-  },
-];
+import { getAllResources } from "@/lib/consultant-resources";
 
 export default function ResourcesPage() {
+  const resources = getAllResources();
+
   return (
     <div className="flex flex-col gap-8">
       <div>
@@ -63,10 +24,12 @@ export default function ResourcesPage() {
                 <p className="text-sm text-muted-foreground mt-1">{resource.description}</p>
               </div>
             </div>
-            <Button size="sm" variant="outline" className="w-full">
-              <Eye className="h-4 w-4 mr-2" />
-              View
-            </Button>
+            <Link href={`/dashboard/consultant/resources/${resource.id}`} className="w-full">
+              <Button size="sm" variant="outline" className="w-full">
+                <Eye className="h-4 w-4 mr-2" />
+                View
+              </Button>
+            </Link>
           </Card>
         ))}
       </div>
