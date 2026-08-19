@@ -56,7 +56,7 @@ export default function ConsultantsPage() {
       <SuccessCarousel />
 
       {/* Pricing */}
-      <section className="py-24">
+      <section className="py-12">
         <div className="container flex flex-col gap-16">
           <div className="text-center">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Simple, Transparent Pricing</h2>

@@ -47,7 +47,7 @@ export function SuccessCarousel() {
   ];
 
   return (
-    <section className="relative py-24 overflow-hidden">
+    <section className="relative py-8 overflow-hidden">
       <div className="container">
         <div className="mx-auto max-w-5xl">
           <div className="text-center mb-12">
