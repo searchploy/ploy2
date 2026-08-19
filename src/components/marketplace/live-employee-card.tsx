@@ -52,7 +52,7 @@ export function LiveEmployeeCard({
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-start justify-between gap-2">
             <div>
-              <p className="text-xs font-bold uppercase tracking-wide text-ploy-blue">{employee.role}</p>
+              <p className="text-xs font-bold uppercase tracking-wide text-ploy-gold">{employee.role}</p>
               <h3 className="text-lg font-bold">{employee.name}</h3>
               <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
                 {employee.avg_rating != null && employee.avg_rating > 0 && (
@@ -73,7 +73,7 @@ export function LiveEmployeeCard({
             <div className="mt-3 flex flex-col gap-1">
               {highlights.slice(0, 2).map((o: string) => (
                 <p key={o} className="flex gap-2 text-sm text-muted-foreground">
-                  <span className="text-ploy-blue">↳</span>
+                  <span className="text-ploy-gold">↳</span>
                   {o}
                 </p>
               ))}
@@ -82,7 +82,7 @@ export function LiveEmployeeCard({
 
           <div className="mt-3 flex flex-wrap gap-1.5">
             {isReportMatch && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-secondary px-2.5 py-1 text-xs font-semibold text-ploy-blue">
+              <span className="inline-flex items-center gap-1 rounded-full bg-secondary px-2.5 py-1 text-xs font-semibold text-ploy-gold">
                 <Sparkles className="h-3 w-3" />
                 Report Match
               </span>

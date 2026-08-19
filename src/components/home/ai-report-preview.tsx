@@ -37,7 +37,7 @@ export function AiReportPreview() {
       <div className="container grid gap-14 lg:grid-cols-2 lg:items-center">
         <div className="flex flex-col gap-8">
           <div className="flex flex-col gap-4">
-            <span className="text-xs font-bold uppercase tracking-wide text-ploy-blue">The AI Report</span>
+            <span className="text-xs font-bold uppercase tracking-wide text-ploy-gold">The AI Report</span>
             <h2 className="text-balance text-3xl font-bold tracking-tighter sm:text-4xl">
               Like hiring McKinsey — for your AI workforce
             </h2>
@@ -50,7 +50,7 @@ export function AiReportPreview() {
           <div className="flex flex-col gap-5">
             {benefits.map((b) => (
               <div key={b.title} className="flex items-start gap-4">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-secondary text-ploy-blue">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-secondary text-ploy-gold">
                   <b.icon className="h-4.5 w-4.5" />
                 </span>
                 <div>
@@ -74,7 +74,7 @@ export function AiReportPreview() {
               <p className="font-bold">Northwind Supply Co.</p>
               <p className="text-xs text-muted-foreground">Logistics · 42 employees</p>
             </div>
-            <span className="rounded-full bg-secondary px-2.5 py-1 text-xs font-semibold text-ploy-blue">
+            <span className="rounded-full bg-secondary px-2.5 py-1 text-xs font-semibold text-ploy-gold">
               Complete
             </span>
           </div>
@@ -92,7 +92,7 @@ export function AiReportPreview() {
                   strokeLinecap="round"
                   strokeDasharray="251"
                   strokeDashoffset="48"
-                  className="stroke-ploy-blue"
+                  className="stroke-ploy-gold"
                 />
               </svg>
               <span className="absolute font-mono text-lg font-bold">81</span>
@@ -112,7 +112,7 @@ export function AiReportPreview() {
                 <span className="w-28 shrink-0 text-muted-foreground">{row.label}</span>
                 <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-secondary/60">
                   <span
-                    className="block h-full rounded-full bg-ploy-blue"
+                    className="block h-full rounded-full bg-ploy-gold"
                     style={{ width: `${row.value}%` }}
                   />
                 </span>
@@ -122,14 +122,14 @@ export function AiReportPreview() {
           </div>
 
           <div className="rounded-xl bg-secondary/40 p-4">
-            <p className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-ploy-blue">
+            <p className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-ploy-gold">
               Top Recommended AI Employees
             </p>
             <div className="flex flex-col gap-1.5">
               {recommendations.map((rec) => (
                 <div key={rec.name} className="flex items-center justify-between text-sm">
                   <span className="font-medium">{rec.name}</span>
-                  <span className="font-mono text-xs text-ploy-blue">ROI {rec.roi}</span>
+                  <span className="font-mono text-xs text-ploy-gold">ROI {rec.roi}</span>
                 </div>
               ))}
             </div>

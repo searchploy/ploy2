@@ -17,7 +17,7 @@ export function Paywall({
 }) {
   return (
     <div className="shadow-glow-card mx-auto flex w-full max-w-lg flex-col items-center gap-5 rounded-3xl border border-transparent bg-card p-8 text-center sm:p-10">
-      <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-secondary text-ploy-blue">
+      <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-secondary text-ploy-gold">
         <Lock className="h-5 w-5" />
       </span>
       <div className="flex flex-col gap-2">
@@ -29,7 +29,7 @@ export function Paywall({
         <ul className="flex w-full flex-col gap-2.5 text-left">
           {features.map((f) => (
             <li key={f} className="flex items-start gap-2.5 text-sm text-muted-foreground">
-              <Check className="mt-0.5 h-4 w-4 shrink-0 text-ploy-blue" />
+              <Check className="mt-0.5 h-4 w-4 shrink-0 text-ploy-gold" />
               {f}
             </li>
           ))}

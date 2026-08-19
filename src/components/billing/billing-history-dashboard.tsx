@@ -52,10 +52,13 @@ function formatDate(dateString: string): string {
 
 function getStatusBadge(status: BillingRecord['status']) {
   const variants: Record<BillingRecord['status'], { badge: string; text: string }> = {
-    succeeded: { badge: 'bg-green-500/20 text-green-300 border-green-500/30', text: 'Paid' },
-    pending: { badge: 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30', text: 'Pending' },
-    failed: { badge: 'bg-red-500/20 text-red-300 border-red-500/30', text: 'Failed' },
-    refunded: { badge: 'bg-blue-500/20 text-blue-300 border-blue-500/30', text: 'Refunded' },
+    // On the semantic tokens rather than raw palette colors: pending uses the
+    // orange warning token so it stays distinct from the gold brand accent, and
+    // refunded is neutral since it carries no pass/fail meaning.
+    succeeded: { badge: 'bg-success/15 text-success border-success/30', text: 'Paid' },
+    pending: { badge: 'bg-warning/15 text-warning border-warning/30', text: 'Pending' },
+    failed: { badge: 'bg-destructive/15 text-destructive border-destructive/30', text: 'Failed' },
+    refunded: { badge: 'bg-white/[0.08] text-muted-foreground border-white/10', text: 'Refunded' },
   }
   const v = variants[status]
   return <Badge className={`border ${v.badge}`}>{v.text}</Badge>

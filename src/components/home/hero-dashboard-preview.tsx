@@ -32,7 +32,7 @@ function ScoreRing({ value }: { value: number }) {
           strokeLinecap="round"
           strokeDasharray={circumference}
           strokeDashoffset={offset}
-          className="stroke-ploy-blue"
+          className="stroke-ploy-gold"
         />
       </svg>
       <span className="absolute inset-0 flex items-center justify-center font-mono text-sm font-bold">{value}</span>
@@ -104,7 +104,7 @@ export function HeroDashboardPreview() {
               {[40, 55, 48, 65, 60, 78, 72, 90].map((h, i) => (
                 <span
                   key={i}
-                  className="flex-1 rounded-sm bg-gradient-to-t from-ploy-blue/20 to-ploy-blue"
+                  className="flex-1 rounded-sm bg-gradient-to-t from-ploy-gold/20 to-ploy-gold"
                   style={{ height: `${h}%` }}
                 />
               ))}
@@ -113,7 +113,7 @@ export function HeroDashboardPreview() {
 
           {/* Recommendations */}
           <div className="rounded-2xl border border-border bg-secondary/20 p-5">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-ploy-blue">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-ploy-gold">
               Top Recommended AI Employees
             </p>
             <div className="flex flex-col gap-3">

@@ -63,7 +63,7 @@ export default async function EmployeeDetailPage({ params }: { params: Promise<{
               />
             )}
             <div className="min-w-0">
-              <p className="text-sm font-semibold uppercase tracking-wide text-ploy-blue">{employee.role}</p>
+              <p className="text-sm font-semibold uppercase tracking-wide text-ploy-gold">{employee.role}</p>
               <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{employee.name}</h1>
               {employee.tagline && <p className="mt-2 text-lg text-muted-foreground">{employee.tagline}</p>}
             </div>
@@ -85,10 +85,10 @@ export default async function EmployeeDetailPage({ params }: { params: Promise<{
               <div>
                 <div className="flex items-center gap-1.5 text-sm font-medium">
                   {employee.agency_name}
-                  {agency?.verified && <BadgeCheck className="h-3.5 w-3.5 text-ploy-blue" />}
+                  {agency?.verified && <BadgeCheck className="h-3.5 w-3.5 text-ploy-gold" />}
                 </div>
                 {agency ? (
-                  <Link href={`/agencies/${agency.slug}`} className="text-xs text-ploy-blue hover:underline">
+                  <Link href={`/agencies/${agency.slug}`} className="text-xs text-ploy-gold hover:underline">
                     View agency profile
                   </Link>
                 ) : (
@@ -117,7 +117,7 @@ export default async function EmployeeDetailPage({ params }: { params: Promise<{
               <div className="flex flex-col gap-2">
                 {employee.outcomes.map((o) => (
                   <div key={o} className="flex items-start gap-2.5 text-sm">
-                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-ploy-blue" />
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-ploy-gold" />
                     {o}
                   </div>
                 ))}
@@ -131,7 +131,7 @@ export default async function EmployeeDetailPage({ params }: { params: Promise<{
               <ul className="grid gap-2 sm:grid-cols-2">
                 {employee.primary_tasks.map((task: string) => (
                   <li key={task} className="flex items-start gap-2.5 text-sm">
-                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-ploy-blue" />
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-ploy-gold" />
                     {task}
                   </li>
                 ))}
@@ -190,7 +190,7 @@ export default async function EmployeeDetailPage({ params }: { params: Promise<{
                         {r.rating}
                       </span>
                       {r.verified_purchase && (
-                        <span className="inline-flex items-center gap-1 text-xs text-ploy-blue">
+                        <span className="inline-flex items-center gap-1 text-xs text-ploy-gold">
                           <BadgeCheck className="h-3 w-3" /> Verified purchase
                         </span>
                       )}

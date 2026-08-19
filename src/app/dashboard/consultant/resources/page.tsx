@@ -18,7 +18,7 @@ export default function ResourcesPage() {
         {resources.map((resource) => (
           <Card key={resource.id} className="p-6 flex flex-col gap-4">
             <div className="flex items-start gap-3">
-              <FileDown className="h-5 w-5 text-ploy-blue flex-shrink-0 mt-1" />
+              <FileDown className="h-5 w-5 text-ploy-gold flex-shrink-0 mt-1" />
               <div className="flex-1">
                 <h3 className="font-semibold">{resource.title}</h3>
                 <p className="text-sm text-muted-foreground mt-1">{resource.description}</p>
@@ -34,7 +34,7 @@ export default function ResourcesPage() {
         ))}
       </div>
 
-      <Card className="p-6 bg-ploy-blue/5 border-ploy-blue/20">
+      <Card className="p-6 bg-ploy-gold/5 border-ploy-gold/20">
         <h3 className="font-semibold">Discord Community</h3>
         <p className="text-sm text-muted-foreground mt-2">
           Join other AI consultants to share strategies, ask questions, and network.

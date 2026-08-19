@@ -81,7 +81,7 @@ export default function ForAgenciesPage() {
 
       <header className="relative overflow-hidden py-24">
         <div className="container flex flex-col items-center gap-6 text-center">
-          <span className="text-xs font-bold uppercase tracking-wide text-ploy-blue">For Agencies</span>
+          <span className="text-xs font-bold uppercase tracking-wide text-ploy-gold">For Agencies</span>
           <h1 className="text-balance max-w-3xl text-4xl font-bold tracking-tighter sm:text-6xl">
             Unlock More with <span className="gradient-text">Ploy Pro</span>
           </h1>
@@ -111,7 +111,7 @@ export default function ForAgenciesPage() {
                 <div className="space-y-2 py-4">
                   {freeKeyFeatures.map((feature) => (
                     <div key={feature} className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-ploy-blue flex-shrink-0" />
+                      <Check className="h-4 w-4 text-ploy-gold flex-shrink-0" />
                       <span className="text-sm">{feature}</span>
                     </div>
                   ))}
@@ -130,7 +130,7 @@ export default function ForAgenciesPage() {
 
               <div className="shadow-glow-card flex flex-col gap-4 rounded-3xl border border-transparent bg-card p-8">
                 <div>
-                  <p className="mb-3 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-ploy-blue">
+                  <p className="mb-3 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-ploy-gold">
                     <Sparkles className="h-3.5 w-3.5" />
                     Ploy Pro
                   </p>
@@ -144,7 +144,7 @@ export default function ForAgenciesPage() {
                 <div className="space-y-2 py-4">
                   {proKeyFeatures.map((feature) => (
                     <div key={feature} className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-ploy-blue flex-shrink-0" />
+                      <Check className="h-4 w-4 text-ploy-gold flex-shrink-0" />
                       <span className="text-sm">{feature}</span>
                     </div>
                   ))}
@@ -172,7 +172,7 @@ export default function ForAgenciesPage() {
                     <p className="mb-4 text-sm italic text-muted-foreground">&quot;{testimonial.quote}&quot;</p>
                     <div>
                       <p className="font-semibold">{testimonial.author}</p>
-                      <p className="text-xs text-ploy-blue">{testimonial.role}</p>
+                      <p className="text-xs text-ploy-gold">{testimonial.role}</p>
                       <p className="text-xs text-muted-foreground">{testimonial.company}</p>
                     </div>
                   </div>

@@ -12,7 +12,7 @@ export function TestimonialsSection() {
         <div className="grid gap-6 md:grid-cols-2">
           {testimonials.map((t) => (
             <div key={t.id} className="flex flex-col gap-5 rounded-2xl border border-border bg-card p-8">
-              <Quote className="h-6 w-6 text-ploy-blue" />
+              <Quote className="h-6 w-6 text-ploy-gold" />
               <p className="text-balance text-lg leading-relaxed">&ldquo;{t.quote}&rdquo;</p>
               <div className="mt-auto flex items-center gap-3">
                 <Avatar>

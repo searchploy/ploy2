@@ -68,7 +68,7 @@ export function ProfilePageContent({ profile }: ProfilePageContentProps) {
             {/* Avatar */}
             <div>
               <label className="block text-sm font-medium mb-2">Avatar</label>
-              <div className="h-16 w-16 rounded-full bg-ploy-blue/20 flex items-center justify-center border border-border">
+              <div className="h-16 w-16 rounded-full bg-ploy-gold/20 flex items-center justify-center border border-border">
                 {profile.avatar_url ? (
                   <img
                     src={profile.avatar_url}
@@ -76,7 +76,7 @@ export function ProfilePageContent({ profile }: ProfilePageContentProps) {
                     className="h-full w-full rounded-full object-cover"
                   />
                 ) : (
-                  <div className="h-full w-full rounded-full bg-gradient-to-br from-ploy-blue to-ploy-blue/50 flex items-center justify-center text-white font-semibold">
+                  <div className="h-full w-full rounded-full bg-gradient-to-br from-ploy-gold to-ploy-gold/50 flex items-center justify-center text-white font-semibold">
                     {profile.full_name?.charAt(0) || profile.email?.charAt(0)}
                   </div>
                 )}

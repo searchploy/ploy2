@@ -80,8 +80,8 @@ export function WelcomeModal({ userId, hasSeen }: { userId: string; hasSeen: boo
       `}</style>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-md border border-ploy-blue/20 bg-secondary/80 backdrop-blur-sm">
-          <div className="absolute inset-0 -z-10 rounded-lg bg-gradient-to-br from-ploy-blue/10 via-transparent to-transparent" />
+        <DialogContent className="max-w-md border border-ploy-gold/20 bg-secondary/80 backdrop-blur-sm">
+          <div className="absolute inset-0 -z-10 rounded-lg bg-gradient-to-br from-ploy-gold/10 via-transparent to-transparent" />
 
           <DialogHeader>
             <div className="flex justify-center mb-6">
@@ -101,7 +101,7 @@ export function WelcomeModal({ userId, hasSeen }: { userId: string; hasSeen: boo
 
           <div className="space-y-4 py-6">
             <div className="text-center space-y-3">
-              <p className="text-lg font-semibold text-ploy-blue">
+              <p className="text-lg font-semibold text-ploy-gold">
                 We&apos;re excited to have you! 🚀
               </p>
               <p className="text-muted-foreground leading-relaxed">
@@ -109,7 +109,7 @@ export function WelcomeModal({ userId, hasSeen }: { userId: string; hasSeen: boo
               </p>
             </div>
 
-            <div className="bg-ploy-blue/10 border border-ploy-blue/30 rounded-lg p-4 space-y-2">
+            <div className="bg-ploy-gold/10 border border-ploy-gold/30 rounded-lg p-4 space-y-2">
               <h4 className="font-semibold text-sm">Here&apos;s what to do first:</h4>
               <ol className="text-sm text-muted-foreground space-y-2">
                 <li>📚 Go through the Classroom lessons</li>
@@ -130,7 +130,7 @@ export function WelcomeModal({ userId, hasSeen }: { userId: string; hasSeen: boo
             </Button>
             <Button
               asChild
-              className="flex-1 bg-ploy-blue hover:bg-ploy-blue/90"
+              className="flex-1 bg-ploy-gold hover:bg-ploy-gold/90"
               onClick={handleClose}
             >
               <Link href="/dashboard/consultant/classroom">

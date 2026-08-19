@@ -26,7 +26,7 @@ export default async function BlogIndexPage() {
               )}
             </div>
             <p className="text-xs text-muted-foreground">{post.published_at && formatDate(post.published_at)}</p>
-            <h3 className="font-semibold leading-snug transition-colors group-hover:text-ploy-blue">{post.title}</h3>
+            <h3 className="font-semibold leading-snug transition-colors group-hover:text-ploy-gold">{post.title}</h3>
             <p className="line-clamp-2 text-sm text-muted-foreground">{post.excerpt}</p>
           </Link>
         ))}

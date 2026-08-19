@@ -56,7 +56,7 @@ export function FilterSidebar({ onFilterChange }: FilterSidebarProps) {
                   industries: selectedIndustries,
                 });
               }}
-              className="text-xs text-ploy-blue hover:underline"
+              className="text-xs text-ploy-gold hover:underline"
             >
               Clear
             </button>
@@ -72,7 +72,7 @@ export function FilterSidebar({ onFilterChange }: FilterSidebarProps) {
                 type="checkbox"
                 checked={selectedDepartments.includes(dept)}
                 onChange={() => handleDepartmentToggle(dept)}
-                className="h-4 w-4 cursor-pointer rounded border-border accent-ploy-blue"
+                className="h-4 w-4 cursor-pointer rounded border-border accent-ploy-gold"
               />
               <span className="text-sm text-muted-foreground">{dept}</span>
             </label>
@@ -93,7 +93,7 @@ export function FilterSidebar({ onFilterChange }: FilterSidebarProps) {
                   industries: [],
                 });
               }}
-              className="text-xs text-ploy-blue hover:underline"
+              className="text-xs text-ploy-gold hover:underline"
             >
               Clear
             </button>
@@ -109,7 +109,7 @@ export function FilterSidebar({ onFilterChange }: FilterSidebarProps) {
                 type="checkbox"
                 checked={selectedIndustries.includes(ind)}
                 onChange={() => handleIndustryToggle(ind)}
-                className="h-4 w-4 cursor-pointer rounded border-border accent-ploy-blue"
+                className="h-4 w-4 cursor-pointer rounded border-border accent-ploy-gold"
               />
               <span className="text-sm text-muted-foreground">{ind}</span>
             </label>
@@ -128,7 +128,7 @@ export function FilterSidebar({ onFilterChange }: FilterSidebarProps) {
               industries: [],
             });
           }}
-          className="rounded-lg border border-border px-4 py-2 text-sm font-medium text-ploy-blue transition-colors hover:bg-secondary/50"
+          className="rounded-lg border border-border px-4 py-2 text-sm font-medium text-ploy-gold transition-colors hover:bg-secondary/50"
         >
           Reset All Filters
         </button>

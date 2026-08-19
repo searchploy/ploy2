@@ -59,7 +59,7 @@ export default async function AgencyProfilePage({ params }: { params: Promise<{ 
             <div className="pb-2">
               <div className="flex items-center gap-2">
                 <h1 className="text-2xl font-semibold sm:text-3xl">{agency.name}</h1>
-                {agency.is_verified && <BadgeCheck className="h-5 w-5 text-ploy-blue" />}
+                {agency.is_verified && <BadgeCheck className="h-5 w-5 text-ploy-gold" />}
               </div>
               <p className="text-muted-foreground">{agency.tagline}</p>
             </div>

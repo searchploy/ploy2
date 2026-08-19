@@ -98,7 +98,7 @@ export default function LessonPage() {
         </span>
         <div className="h-2 flex-1 bg-secondary rounded-full overflow-hidden">
           <div
-            className="h-full bg-ploy-blue"
+            className="h-full bg-ploy-gold"
             style={{ width: `${(lesson.id / classroomModules.length) * 100}%` }}
           ></div>
         </div>
@@ -110,8 +110,8 @@ export default function LessonPage() {
           {/* Title */}
           <div className="mb-8">
             <div className="flex items-center gap-3 mb-4">
-              <BookOpen className="h-5 w-5 text-ploy-blue" />
-              <span className="text-sm font-medium text-ploy-blue">Module {lesson.id}</span>
+              <BookOpen className="h-5 w-5 text-ploy-gold" />
+              <span className="text-sm font-medium text-ploy-gold">Module {lesson.id}</span>
             </div>
             <h1 className="text-4xl font-bold mb-3">{lesson.title}</h1>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">

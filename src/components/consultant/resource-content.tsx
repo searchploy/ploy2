@@ -44,7 +44,7 @@ function Line({ line }: { line: string }) {
       <label className="flex cursor-pointer items-start gap-3 text-sm">
         <input
           type="checkbox"
-          className="mt-0.5 h-4 w-4 shrink-0 accent-ploy-blue cursor-pointer"
+          className="mt-0.5 h-4 w-4 shrink-0 accent-ploy-gold cursor-pointer"
         />
         <span className="leading-relaxed">{trimmed.replace(/^□\s*/, "")}</span>
       </label>
@@ -58,7 +58,7 @@ function Line({ line }: { line: string }) {
     trimmed.startsWith("IMPORTANT:")
   ) {
     return (
-      <div className="rounded-r border-l-4 border-ploy-blue bg-ploy-blue/5 p-4">
+      <div className="rounded-r border-l-4 border-ploy-gold bg-ploy-gold/5 p-4">
         <p className="text-sm leading-relaxed">{trimmed}</p>
       </div>
     );

@@ -56,8 +56,13 @@ const config: Config = {
           foreground: "hsl(var(--card-foreground))",
         },
         ploy: {
-          blue: "hsl(var(--ploy-blue))",
-          "blue-light": "hsl(var(--ploy-blue-light))",
+          gold: "hsl(var(--ploy-gold))",
+          "gold-light": "hsl(var(--ploy-gold-light))",
+          // Deprecated aliases kept pointing at the gold tokens so any
+          // straggling ploy-blue class still renders the accent rather than
+          // collapsing to an invalid color. Prefer ploy-gold in new code.
+          blue: "hsl(var(--ploy-gold))",
+          "blue-light": "hsl(var(--ploy-gold-light))",
         },
       },
       borderRadius: {

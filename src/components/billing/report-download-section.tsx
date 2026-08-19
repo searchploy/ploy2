@@ -79,7 +79,7 @@ export function ReportDownloadSection({
   }
 
   return (
-    <Card className="border-ploy-blue/20 bg-ploy-blue/5 p-6">
+    <Card className="border-ploy-gold/20 bg-ploy-gold/5 p-6">
       <div className="space-y-4">
         {/* Header */}
         <div>

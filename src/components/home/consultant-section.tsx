@@ -25,7 +25,7 @@ export function ConsultantSection() {
               key={item.label}
               className="flex flex-col items-center gap-3 rounded-xl border border-border bg-secondary/30 p-5"
             >
-              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary text-ploy-blue">
+              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary text-ploy-gold">
                 <item.icon className="h-4.5 w-4.5" />
               </span>
               <p className="text-sm font-medium">{item.label}</p>

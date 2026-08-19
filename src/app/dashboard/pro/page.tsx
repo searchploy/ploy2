@@ -31,7 +31,7 @@ function SectionHeader({
     <div className="mb-4 flex items-center justify-between">
       <h2 className="text-lg font-semibold">{title}</h2>
       {href && linkLabel && (
-        <Link href={href} className="flex items-center gap-1 text-sm text-ploy-blue hover:underline">
+        <Link href={href} className="flex items-center gap-1 text-sm text-ploy-gold hover:underline">
           {linkLabel} <ArrowUpRight className="h-3.5 w-3.5" />
         </Link>
       )}
@@ -163,7 +163,7 @@ export default async function ProOverviewPage() {
                   >
                     {isPublished ? "Published" : "Draft"}
                   </span>
-                  <span className="inline-flex items-center gap-1 rounded-full bg-ploy-blue/10 px-2.5 py-1 text-xs font-medium text-ploy-blue">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-ploy-gold/10 px-2.5 py-1 text-xs font-medium text-ploy-gold">
                     <Sparkles className="h-3 w-3" />
                     Enhanced placement active
                   </span>

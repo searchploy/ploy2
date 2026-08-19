@@ -42,7 +42,7 @@ function ScoreRing({ value, label }: { value: number; label: string }) {
             strokeLinecap="round"
             strokeDasharray={circumference}
             strokeDashoffset={offset}
-            className="stroke-ploy-blue"
+            className="stroke-ploy-gold"
           />
         </svg>
         <span className="absolute inset-0 flex items-center justify-center font-mono text-2xl font-bold">{value}</span>
@@ -117,7 +117,7 @@ export default async function ReportResultsPage({ params }: { params: Promise<{ 
       {(report.biggest_bottlenecks?.length ?? 0) > 0 && (
         <section className="mb-10">
           <h2 className="mb-4 flex items-center gap-2.5 text-lg font-bold">
-            <span className="block h-4 w-1 rounded-full bg-ploy-blue" />
+            <span className="block h-4 w-1 rounded-full bg-ploy-gold" />
             Biggest Operational Bottlenecks
           </h2>
           <div className="flex flex-col gap-2.5">
@@ -133,7 +133,7 @@ export default async function ReportResultsPage({ params }: { params: Promise<{ 
 
       <section className="mb-10">
         <h2 className="mb-4 flex items-center gap-2.5 text-lg font-bold">
-          <span className="block h-4 w-1 rounded-full bg-ploy-blue" />
+          <span className="block h-4 w-1 rounded-full bg-ploy-gold" />
           Recommended AI Employees
         </h2>
         <div className="flex flex-col gap-3.5">
@@ -144,12 +144,12 @@ export default async function ReportResultsPage({ params }: { params: Promise<{ 
               className="hover-glow-border flex items-start justify-between gap-4 rounded-2xl border border-border bg-card p-5"
             >
               <div>
-                <p className="mb-1 text-xs font-bold uppercase tracking-wide text-ploy-blue">
+                <p className="mb-1 text-xs font-bold uppercase tracking-wide text-ploy-gold">
                   Priority {rec.priority} · {rec.employee?.role}
                 </p>
                 <p className="mb-1.5 font-bold">{rec.employee?.name}</p>
                 <p className="text-sm text-muted-foreground">{rec.reason}</p>
-                <span className="mt-2 inline-block text-xs font-semibold text-ploy-blue">View in Marketplace →</span>
+                <span className="mt-2 inline-block text-xs font-semibold text-ploy-gold">View in Marketplace →</span>
               </div>
               <div className="shrink-0 text-right">
                 <p className="font-mono text-xl font-bold text-success">{rec.estimated_roi_percent}%</p>
@@ -179,7 +179,7 @@ export default async function ReportResultsPage({ params }: { params: Promise<{ 
       {isPro ? (
         <section className="mb-10">
           <h2 className="mb-4 flex items-center gap-2.5 text-lg font-bold">
-            <span className="block h-4 w-1 rounded-full bg-ploy-blue" />
+            <span className="block h-4 w-1 rounded-full bg-ploy-gold" />
             Implementation Roadmap
           </h2>
           <RoadmapTabs roadmap30={roadmap30} roadmap90={roadmap90} roadmapYear={roadmapYear} />

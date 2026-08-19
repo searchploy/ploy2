@@ -27,7 +27,7 @@ export function AgencyCard({
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.4, delay: Math.min(index * 0.05, 0.3) }}
     >
-      <Card className="flex h-full flex-col gap-4 p-6 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-ploy-blue/5">
+      <Card className="flex h-full flex-col gap-4 p-6 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-ploy-gold/5">
         <div className="flex items-center gap-3">
           <Avatar className="h-12 w-12 border border-border">
             <AvatarImage src={agency.logo_url ?? undefined} alt={agency.name} />
@@ -36,7 +36,7 @@ export function AgencyCard({
           <div>
             <div className="flex items-center gap-1.5">
               <h3 className="font-semibold">{agency.name}</h3>
-              {agency.is_verified && <BadgeCheck className="h-4 w-4 text-ploy-blue" />}
+              {agency.is_verified && <BadgeCheck className="h-4 w-4 text-ploy-gold" />}
             </div>
             <div className="flex items-center gap-1 text-sm text-muted-foreground">
               <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />

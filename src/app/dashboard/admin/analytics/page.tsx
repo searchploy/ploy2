@@ -36,7 +36,7 @@ export default async function AdminAnalyticsPage() {
                 </div>
                 <div className="h-2 overflow-hidden rounded-full bg-secondary">
                   <div
-                    className="h-full rounded-full bg-ploy-blue"
+                    className="h-full rounded-full bg-ploy-gold"
                     style={{ width: `${(row.value / maxBreakdown) * 100}%` }}
                   />
                 </div>

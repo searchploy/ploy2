@@ -87,7 +87,7 @@ export function PurchaseReportButton({
           onClick={handlePurchase}
           disabled={loading}
           size="lg"
-          className={`w-full bg-ploy-blue hover:bg-ploy-blue/90 ${className}`}
+          className={`w-full bg-ploy-gold hover:bg-ploy-gold/90 ${className}`}
         >
           {loading ? (
             <>
@@ -108,7 +108,7 @@ export function PurchaseReportButton({
       onClick={handlePurchase}
       disabled={loading}
       size="lg"
-      className={`w-full bg-ploy-blue hover:bg-ploy-blue/90 ${className}`}
+      className={`w-full bg-ploy-gold hover:bg-ploy-gold/90 ${className}`}
     >
       {loading ? (
         <>

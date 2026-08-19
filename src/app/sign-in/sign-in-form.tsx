@@ -113,7 +113,7 @@ export function SignInForm() {
 
         <p className="mt-6 text-center text-sm text-muted-foreground">
           Don&apos;t have an account?{" "}
-          <Link href="/sign-up" className="font-medium text-foreground hover:text-ploy-blue">
+          <Link href="/sign-up" className="font-medium text-foreground hover:text-ploy-gold">
             Sign up
           </Link>
         </p>

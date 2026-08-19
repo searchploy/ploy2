@@ -16,7 +16,7 @@ export function ProgressSteps({ current }: { current: number }) {
               <span
                 className={cn(
                   "absolute right-1/2 top-3 h-px w-full -translate-y-1/2",
-                  state === "upcoming" && step - 1 >= current ? "bg-border" : "bg-ploy-blue"
+                  state === "upcoming" && step - 1 >= current ? "bg-border" : "bg-ploy-gold"
                 )}
                 aria-hidden="true"
               />
@@ -24,8 +24,8 @@ export function ProgressSteps({ current }: { current: number }) {
             <span
               className={cn(
                 "z-10 flex h-6 w-6 items-center justify-center rounded-full border-2 font-mono text-[11px] font-bold transition-colors",
-                state === "done" && "border-ploy-blue bg-ploy-blue text-white",
-                state === "active" && "border-ploy-blue bg-secondary text-ploy-blue",
+                state === "done" && "border-ploy-gold bg-ploy-gold text-primary-foreground",
+                state === "active" && "border-ploy-gold bg-secondary text-ploy-gold",
                 state === "upcoming" && "border-border bg-background text-muted-foreground"
               )}
             >

@@ -62,10 +62,10 @@ export default function ClassroomPage() {
               <p className="text-sm font-medium">Learning Progress</p>
               <p className="text-xs text-muted-foreground mt-1">0 of 8 lessons completed</p>
             </div>
-            <div className="text-2xl font-bold text-ploy-blue">0%</div>
+            <div className="text-2xl font-bold text-ploy-gold">0%</div>
           </div>
           <div className="h-2 bg-secondary rounded-full overflow-hidden">
-            <div className="h-full bg-ploy-blue" style={{ width: "0%" }}></div>
+            <div className="h-full bg-ploy-gold" style={{ width: "0%" }}></div>
           </div>
         </div>
       </Card>
@@ -75,7 +75,7 @@ export default function ClassroomPage() {
         {modules.map((module) => (
           <Card key={module.id} className="p-6 flex flex-col gap-4 hover:shadow-lg transition-shadow">
             <div className="flex items-start gap-3">
-              <BookOpen className="h-5 w-5 text-ploy-blue flex-shrink-0 mt-1" />
+              <BookOpen className="h-5 w-5 text-ploy-gold flex-shrink-0 mt-1" />
               <div className="flex-1">
                 <h3 className="font-semibold">{module.title}</h3>
                 <p className="text-sm text-muted-foreground mt-1">{module.description}</p>

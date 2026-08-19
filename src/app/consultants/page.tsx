@@ -41,7 +41,7 @@ export default function ConsultantsPage() {
       {/* Hero */}
       <header className="relative overflow-hidden py-24">
         <div className="container flex flex-col items-center gap-6 text-center">
-          <span className="text-xs font-bold uppercase tracking-wide text-ploy-blue">For Consultants</span>
+          <span className="text-xs font-bold uppercase tracking-wide text-ploy-gold">For Consultants</span>
           <h1 className="text-balance max-w-3xl text-4xl font-bold tracking-tighter sm:text-6xl">
             Build an AI Consulting Business with Ploy
           </h1>
@@ -83,7 +83,7 @@ export default function ConsultantsPage() {
                 <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-4">By The Numbers</p>
                 <div className="space-y-3">
                   <div>
-                    <p className="text-2xl font-bold text-ploy-blue">847+</p>
+                    <p className="text-2xl font-bold text-ploy-gold">847+</p>
                     <p className="text-xs text-muted-foreground">Consultants Earning</p>
                   </div>
                   <div>
@@ -98,7 +98,7 @@ export default function ConsultantsPage() {
                 <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-4">Average Results</p>
                 <div className="space-y-3">
                   <div>
-                    <p className="text-2xl font-bold text-ploy-blue">14.6k</p>
+                    <p className="text-2xl font-bold text-ploy-gold">14.6k</p>
                     <p className="text-xs text-muted-foreground">Avg. First Year Revenue</p>
                   </div>
                   <div>
@@ -127,7 +127,7 @@ export default function ConsultantsPage() {
                 <div className="space-y-2 py-4">
                   {["Basic Consultant Dashboard", "1 Client", "1 AI Workforce Report"].map((feature) => (
                     <div key={feature} className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-ploy-blue flex-shrink-0" />
+                      <Check className="h-4 w-4 text-ploy-gold flex-shrink-0" />
                       <span className="text-sm">{feature}</span>
                     </div>
                   ))}
@@ -141,7 +141,7 @@ export default function ConsultantsPage() {
               {/* Ploy Consultant Tier */}
               <div className="shadow-glow-card flex flex-col gap-4 rounded-3xl border border-transparent bg-card p-8">
                 <div>
-                  <p className="mb-3 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-ploy-blue">
+                  <p className="mb-3 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-ploy-gold">
                     <Sparkles className="h-3.5 w-3.5" />
                     Ploy Consultant
                   </p>
@@ -155,7 +155,7 @@ export default function ConsultantsPage() {
                 <div className="space-y-2 py-4">
                   {["Unlimited AI Reports", "Unlimited Clients", "Complete CRM + Dashboard"].map((feature) => (
                     <div key={feature} className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-ploy-blue flex-shrink-0" />
+                      <Check className="h-4 w-4 text-ploy-gold flex-shrink-0" />
                       <span className="text-sm">{feature}</span>
                     </div>
                   ))}
@@ -177,7 +177,7 @@ export default function ConsultantsPage() {
                   <ul className="space-y-2">
                     {["Access to Marketplace", "Basic Consultant Dashboard", "1 Client", "1 AI Workforce Report", "Community Preview", "Basic Resources"].map((feature) => (
                       <li key={feature} className="flex items-start gap-2 text-sm">
-                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-ploy-blue" />
+                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-ploy-gold" />
                         <span>{feature}</span>
                       </li>
                     ))}
@@ -186,7 +186,7 @@ export default function ConsultantsPage() {
 
                 {/* Ploy Consultant Features */}
                 <div>
-                  <h4 className="mb-4 font-semibold text-ploy-blue">Ploy Consultant (Everything in Free +)</h4>
+                  <h4 className="mb-4 font-semibold text-ploy-gold">Ploy Consultant (Everything in Free +)</h4>
                   <div className="space-y-6">
                     {/* Software */}
                     <div>
@@ -194,7 +194,7 @@ export default function ConsultantsPage() {
                       <ul className="space-y-2">
                         {["Unlimited AI Reports", "Unlimited Clients", "Complete CRM Dashboard", "Proposal Generator", "Client Pipeline", "Client Notes", "Report History"].map((feature) => (
                           <li key={feature} className="flex items-start gap-2 text-sm">
-                            <Check className="mt-0.5 h-4 w-4 shrink-0 text-ploy-blue" />
+                            <Check className="mt-0.5 h-4 w-4 shrink-0 text-ploy-gold" />
                             <span>{feature}</span>
                           </li>
                         ))}
@@ -207,7 +207,7 @@ export default function ConsultantsPage() {
                       <ul className="space-y-2">
                         {["Complete AI Consulting Course", "Step-by-Step Playbooks", "Sales Training", "Discovery Call Training", "AI Report Walkthroughs"].map((feature) => (
                           <li key={feature} className="flex items-start gap-2 text-sm">
-                            <Check className="mt-0.5 h-4 w-4 shrink-0 text-ploy-blue" />
+                            <Check className="mt-0.5 h-4 w-4 shrink-0 text-ploy-gold" />
                             <span>{feature}</span>
                           </li>
                         ))}
@@ -220,7 +220,7 @@ export default function ConsultantsPage() {
                       <ul className="space-y-2">
                         {["Cold Email Templates", "Proposal Templates", "Private Discord Community", "Weekly Live Q&A", "Priority Support"].map((feature) => (
                           <li key={feature} className="flex items-start gap-2 text-sm">
-                            <Check className="mt-0.5 h-4 w-4 shrink-0 text-ploy-blue" />
+                            <Check className="mt-0.5 h-4 w-4 shrink-0 text-ploy-gold" />
                             <span>{feature}</span>
                           </li>
                         ))}
@@ -242,7 +242,7 @@ export default function ConsultantsPage() {
             {workflow.map((step, i) => (
               <div key={step.label} className="flex items-center gap-2">
                 <div className="flex flex-col items-center gap-2 rounded-2xl border border-border bg-card px-5 py-5 text-center">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary text-ploy-blue">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary text-ploy-gold">
                     <step.icon className="h-4.5 w-4.5" />
                   </span>
                   <p className="w-24 text-xs font-semibold leading-tight">{step.label}</p>
@@ -265,7 +265,7 @@ export default function ConsultantsPage() {
           <div className="mx-auto grid max-w-3xl gap-3">
             {["Freelancers", "Marketing Agencies", "Sales Professionals", "Business Consultants", "College Students", "Entrepreneurs", "Anyone looking to start an AI consulting business"].map((item) => (
               <div key={item} className="flex items-center gap-3 rounded-xl bg-secondary/30 px-4 py-3">
-                <span className="text-ploy-blue">•</span>
+                <span className="text-ploy-gold">•</span>
                 <span className="text-sm font-medium">{item}</span>
               </div>
             ))}

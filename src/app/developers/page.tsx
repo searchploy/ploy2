@@ -18,7 +18,7 @@ export default function DevelopersPage() {
       <div className="mt-14 grid gap-6 sm:grid-cols-3">
         {items.map((item) => (
           <Card key={item.title} className="flex flex-col gap-3 p-6">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-ploy-blue/10 text-ploy-blue">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-ploy-gold/10 text-ploy-gold">
               <item.icon className="h-5 w-5" />
             </div>
             <h3 className="font-medium">{item.title}</h3>

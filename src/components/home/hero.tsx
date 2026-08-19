@@ -17,7 +17,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="animated-gradient-text text-balance max-w-5xl text-5xl font-bold leading-[1.05] tracking-tighter sm:text-6xl lg:text-7xl"
+          className="text-balance max-w-5xl text-5xl font-extrabold leading-[1.02] tracking-[-0.035em] text-foreground sm:text-6xl lg:text-7xl"
         >
           Find the perfect AI employees for your business
         </motion.h1>
@@ -58,7 +58,7 @@ export function Hero() {
       {/* Light beam between the CTA and the dashboard preview, echoing the glow-card look */}
       <div
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-[26rem] -z-10 h-[28rem] w-[36rem] -translate-x-1/2 rounded-full bg-ploy-blue/25 blur-[100px] sm:top-[30rem]"
+        className="pointer-events-none absolute left-1/2 top-[26rem] -z-10 h-[24rem] w-[42rem] -translate-x-1/2 rounded-full bg-ploy-gold/[0.06] blur-[120px] sm:top-[30rem]"
       />
 
       <div className="container relative mt-16 px-4 sm:mt-20">

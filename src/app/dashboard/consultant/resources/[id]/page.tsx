@@ -16,7 +16,7 @@ export default async function ResourcePage({ params }: { params: Promise<{ id: s
     <div className="max-w-4xl mx-auto">
       {/* Header */}
       <div className="mb-8">
-        <Link href="/dashboard/consultant/resources" className="inline-flex items-center gap-2 text-sm text-ploy-blue hover:underline mb-4">
+        <Link href="/dashboard/consultant/resources" className="inline-flex items-center gap-2 text-sm text-ploy-gold hover:underline mb-4">
           <ArrowLeft className="h-4 w-4" />
           Back to Resources
         </Link>
@@ -33,7 +33,7 @@ export default async function ResourcePage({ params }: { params: Promise<{ id: s
               <a
                 key={section.id}
                 href={`#${section.id}`}
-                className="block text-sm text-ploy-blue hover:underline"
+                className="block text-sm text-ploy-gold hover:underline"
               >
                 {section.title}
               </a>

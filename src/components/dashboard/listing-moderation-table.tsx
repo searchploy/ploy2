@@ -64,7 +64,7 @@ export function ListingModerationTable({
           {employees.map((employee) => (
             <TableRow key={employee.id}>
               <TableCell>
-                <Link href={`/marketplace/${employee.slug}`} className="font-medium hover:text-ploy-blue">
+                <Link href={`/marketplace/${employee.slug}`} className="font-medium hover:text-ploy-gold">
                   {employee.name}
                 </Link>
               </TableCell>

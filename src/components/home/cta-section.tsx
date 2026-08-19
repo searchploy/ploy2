@@ -7,7 +7,7 @@ export function CtaSection() {
     <section className="py-24">
       <div className="container">
         <div className="relative overflow-hidden rounded-3xl bg-foreground px-8 py-16 text-center text-background sm:px-16">
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-ploy-blue/30 via-transparent to-transparent" />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-ploy-gold/[0.08] via-transparent to-transparent" />
           <div className="relative flex flex-col items-center gap-6">
             <h2 className="text-balance max-w-2xl text-3xl font-bold tracking-tighter sm:text-5xl">
               Ready to hire your first AI employee?

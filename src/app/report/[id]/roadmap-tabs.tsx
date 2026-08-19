@@ -30,7 +30,7 @@ export function RoadmapTabs({
             onClick={() => setActive(tab.key)}
             className={cn(
               "flex-1 py-2.5 text-sm font-semibold transition-colors",
-              active === tab.key ? "bg-ploy-blue text-white" : "bg-secondary/40 text-muted-foreground hover:text-foreground"
+              active === tab.key ? "bg-ploy-gold text-primary-foreground" : "bg-secondary/40 text-muted-foreground hover:text-foreground"
             )}
           >
             {tab.label}
@@ -40,7 +40,7 @@ export function RoadmapTabs({
       <div className="flex flex-col gap-2.5">
         {activeTab.items.map((item, i) => (
           <div key={i} className="flex gap-3 rounded-xl bg-secondary/30 p-4">
-            <span className="w-16 shrink-0 font-mono text-xs font-semibold text-ploy-blue">{item.period}</span>
+            <span className="w-16 shrink-0 font-mono text-xs font-semibold text-ploy-gold">{item.period}</span>
             <span className="text-sm leading-relaxed">{item.action}</span>
           </div>
         ))}

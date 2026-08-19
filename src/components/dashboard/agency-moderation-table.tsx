@@ -35,7 +35,7 @@ export function AgencyModerationTable({ initialAgencies }: { initialAgencies: Ag
         {agencies.map((agency) => (
           <TableRow key={agency.id}>
             <TableCell>
-              <Link href={`/agencies/${agency.slug}`} className="font-medium hover:text-ploy-blue">
+              <Link href={`/agencies/${agency.slug}`} className="font-medium hover:text-ploy-gold">
                 {agency.name}
               </Link>
               <p className="text-xs text-muted-foreground">{agency.tagline}</p>

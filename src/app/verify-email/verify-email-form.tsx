@@ -118,8 +118,8 @@ export function VerifyEmailForm() {
       <Card className="w-full max-w-md p-8">
         <div className="mb-8 flex flex-col gap-2 text-center">
           <div className="mb-4 flex justify-center">
-            <div className="rounded-full bg-ploy-blue/10 p-3">
-              <Mail className="h-6 w-6 text-ploy-blue" />
+            <div className="rounded-full bg-ploy-gold/10 p-3">
+              <Mail className="h-6 w-6 text-ploy-gold" />
             </div>
           </div>
           <h1 className="text-2xl font-semibold">Verify your email</h1>
@@ -163,7 +163,7 @@ export function VerifyEmailForm() {
         </form>
 
         <div className="mt-6 text-center text-sm text-muted-foreground">
-          <Link href="/sign-in" className="text-ploy-blue hover:underline">
+          <Link href="/sign-in" className="text-ploy-gold hover:underline">
             Back to sign in
           </Link>
         </div>

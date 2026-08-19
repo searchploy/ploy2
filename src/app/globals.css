@@ -4,51 +4,57 @@
 
 @layer base {
   /*
-   * Single always-dark theme — matches the hand-built HTML mockups
-   * (ploy-landing/browse/report/admin.html) pixel-for-pixel in hue.
-   * Source hex: bg #0B0E14, bg-alt/card #10141C, ink #F5F6F8,
-   * ink-soft #9AA1B2, line #1E2330, blue #5B82F7, blue-soft #151E36.
+   * Single always-dark theme: matte black, fully neutral surfaces (hue 0,
+   * saturation 0) so nothing casts a blue or warm tint, with one gold accent
+   * carrying every interactive state. Surfaces step 4% -> 7% -> 10% in
+   * lightness; borders are a 13% hairline rather than a heavy line.
+   * Source hex: bg #0A0A0A, card #121212, line #212121, gold #E1B137.
    */
   :root {
-    --background: 220 29% 6%;
-    --foreground: 220 18% 97%;
+    --background: 0 0% 4%;
+    --foreground: 0 0% 96%;
 
-    --card: 220 27% 9%;
-    --card-foreground: 220 18% 97%;
+    --card: 0 0% 7%;
+    --card-foreground: 0 0% 96%;
 
-    --popover: 220 27% 9%;
-    --popover-foreground: 220 18% 97%;
+    --popover: 0 0% 7%;
+    --popover-foreground: 0 0% 96%;
 
-    --primary: 225 91% 66%;
-    --primary-foreground: 0 0% 100%;
+    /* Gold is light, so anything sitting on it takes near-black text. */
+    --primary: 43 74% 55%;
+    --primary-foreground: 0 0% 6%;
 
-    --secondary: 224 44% 15%;
-    --secondary-foreground: 220 18% 97%;
+    --secondary: 0 0% 10%;
+    --secondary-foreground: 0 0% 96%;
 
-    --muted: 223 23% 15%;
-    --muted-foreground: 222 13% 65%;
+    --muted: 0 0% 10%;
+    --muted-foreground: 0 0% 58%;
 
-    --accent: 224 44% 15%;
-    --accent-foreground: 225 91% 66%;
+    --accent: 0 0% 10%;
+    --accent-foreground: 43 74% 55%;
 
-    --destructive: 0 91% 71%;
-    --destructive-foreground: 0 0% 100%;
-    --destructive-bg: 0 33% 12%;
+    --destructive: 0 72% 62%;
+    --destructive-foreground: 0 0% 98%;
+    --destructive-bg: 0 40% 10%;
 
-    --success: 142 69% 58%;
-    --success-bg: 147 44% 11%;
+    --success: 142 52% 52%;
+    --success-bg: 147 35% 9%;
 
-    --warning: 43 96% 56%;
-    --warning-bg: 37 45% 11%;
+    /* Pushed to orange so alerts stay distinct from the gold brand accent. */
+    --warning: 25 88% 58%;
+    --warning-bg: 28 45% 9%;
 
-    --border: 223 23% 15%;
-    --input: 223 23% 15%;
-    --ring: 225 91% 66%;
+    --border: 0 0% 13%;
+    --input: 0 0% 13%;
+    --ring: 43 74% 55%;
 
-    --ploy-blue: 225 91% 66%;
-    --ploy-blue-light: 213 94% 72%;
+    --ploy-gold: 43 74% 55%;
+    --ploy-gold-light: 45 82% 70%;
 
-    --radius: 1rem;
+    /* 14px outer / ~10px inner, matching the reference's radius scale. */
+    --radius: 0.875rem;
+
+    --font-display: var(--font-sans);
   }
 
   * {
@@ -57,7 +63,16 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-feature-settings: "cv11", "ss01";
+  }
+
+  /*
+   * Headings run tight — the compact, engineered look depends on negative
+   * tracking as much as on the weight.
+   */
+  h1,
+  h2,
+  h3 {
+    letter-spacing: -0.03em;
   }
 }
 
@@ -111,19 +126,23 @@
     background-size: 64px 64px;
   }
   .gradient-text {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-foreground via-foreground to-ploy-blue;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-foreground via-foreground to-ploy-gold;
   }
   .animated-gradient-text {
     @apply bg-clip-text text-transparent;
     background-image: linear-gradient(
       90deg,
       hsl(var(--foreground)),
-      hsl(var(--ploy-blue)),
-      hsl(var(--ploy-blue-light)),
+      hsl(var(--ploy-gold)),
+      hsl(var(--ploy-gold-light)),
       hsl(var(--foreground))
     );
     background-size: 200% auto;
     animation: gradientShift 3s ease-in-out infinite;
+  }
+  /* Uppercase mono micro-label used above sections and on stat readouts. */
+  .label-micro {
+    @apply font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground;
   }
   .scrollbar-none::-webkit-scrollbar {
     display: none;
@@ -132,28 +151,33 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
-  /* Multi-color glow used on the report card / featured pricing card in the mockups */
+  /*
+   * Depth comes from shadow and a hairline rim, not from colored light. These
+   * three used to fire 60-110px neon halos in purple and blue, which is what
+   * made the surface read as noisy.
+   */
   .shadow-glow-card {
     box-shadow:
-      0 0 70px 6px rgba(168, 85, 247, 0.45),
-      0 0 110px 12px rgba(59, 105, 255, 0.35),
-      0 1px 2px rgba(0, 0, 0, 0.3),
-      0 12px 32px rgba(0, 0, 0, 0.4);
+      inset 0 1px 0 hsl(0 0% 100% / 0.04),
+      0 1px 2px hsl(0 0% 0% / 0.5),
+      0 16px 48px hsl(0 0% 0% / 0.55);
   }
-  /* Hover border-glow used on marketplace/employee cards */
+  /* Hover rim on marketplace/employee cards */
   .hover-glow-border {
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
   .hover-glow-border:hover {
-    border-color: #a855f7;
-    box-shadow: 0 0 0 1.5px #a855f7, 0 0 25px rgba(168, 85, 247, 0.5), 0 0 50px rgba(168, 85, 247, 0.25), inset 0 0 15px rgba(168, 85, 247, 0.1);
+    border-color: hsl(var(--ploy-gold) / 0.45);
+    box-shadow:
+      inset 0 1px 0 hsl(0 0% 100% / 0.05),
+      0 0 0 1px hsl(var(--ploy-gold) / 0.18),
+      0 12px 36px hsl(0 0% 0% / 0.5);
   }
-  /* Button border glow on hover */
+  /* Button hover: a tightened rim, no halo */
   .button-glow {
-    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
   }
   .button-glow:hover {
-    border-color: hsl(var(--ploy-blue));
-    box-shadow: 0 0 0 2px hsl(var(--ploy-blue)), 0 0 30px rgba(91, 130, 247, 0.6), 0 0 60px rgba(91, 130, 247, 0.3), inset 0 0 20px rgba(91, 130, 247, 0.15) !important;
+    box-shadow: 0 0 0 1px hsl(var(--ploy-gold) / 0.35);
   }
 }

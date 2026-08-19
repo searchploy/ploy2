@@ -42,7 +42,7 @@ function Section({
     <Card className="flex flex-col gap-5 p-6">
       <div>
         <h2 className="flex items-center gap-2 font-semibold">
-          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-ploy-blue/10 text-xs font-mono text-ploy-blue">
+          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-ploy-gold/10 text-xs font-mono text-ploy-gold">
             {step}
           </span>
           {title}
@@ -73,7 +73,7 @@ function Chip({
       className={cn(
         "rounded-full border px-3 py-1.5 text-sm transition-colors",
         selected
-          ? "border-ploy-blue bg-ploy-blue/10 text-ploy-blue"
+          ? "border-ploy-gold bg-ploy-gold/10 text-ploy-gold"
           : "border-border text-muted-foreground hover:border-muted-foreground hover:text-foreground",
         disabled && !selected && "cursor-not-allowed opacity-40 hover:border-border"
       )}
@@ -318,7 +318,7 @@ export function ListingForm({
                   setSlugTouched(true);
                   set("slug", slugify(e.target.value));
                 }}
-                className="border-b border-dashed border-border bg-transparent text-foreground outline-none focus:border-ploy-blue"
+                className="border-b border-dashed border-border bg-transparent text-foreground outline-none focus:border-ploy-gold"
                 size={Math.max(form.slug.length, 8)}
               />
             </p>

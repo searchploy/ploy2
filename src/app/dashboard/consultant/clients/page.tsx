@@ -8,12 +8,14 @@ import Link from "next/link";
 import { Plus, Edit2, Trash2 } from "lucide-react";
 import { deleteClientAction } from "./actions";
 
+// Neutral early, warming toward gold as the deal advances, green only on win —
+// so the pipeline stage reads from brightness rather than from unrelated hues.
 const statusColors: Record<string, string> = {
-  "Lead": "bg-blue-500/20 text-blue-300",
-  "Discovery Call": "bg-purple-500/20 text-purple-300",
-  "Report Sent": "bg-amber-500/20 text-amber-300",
-  "Proposal Sent": "bg-cyan-500/20 text-cyan-300",
-  "Closed": "bg-green-500/20 text-green-300",
+  "Lead": "bg-white/[0.06] text-muted-foreground",
+  "Discovery Call": "bg-white/[0.10] text-foreground/80",
+  "Report Sent": "bg-ploy-gold/10 text-ploy-gold/90",
+  "Proposal Sent": "bg-ploy-gold/20 text-ploy-gold",
+  "Closed": "bg-success/15 text-success",
 };
 
 function formatDate(dateString: string) {

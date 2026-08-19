@@ -48,7 +48,7 @@ export default async function AdminReportsPage() {
               <p className="text-sm text-muted-foreground">Total Reports</p>
               <p className="mt-2 text-3xl font-semibold">{totalReports}</p>
             </div>
-            <BarChart3 className="h-5 w-5 text-ploy-blue opacity-60" />
+            <BarChart3 className="h-5 w-5 text-ploy-gold opacity-60" />
           </div>
         </Card>
         <Card className="p-6">
@@ -57,7 +57,7 @@ export default async function AdminReportsPage() {
               <p className="text-sm text-muted-foreground">Avg Readiness Score</p>
               <p className="mt-2 text-3xl font-semibold">{avgReadinessScore}</p>
             </div>
-            <BarChart3 className="h-5 w-5 text-ploy-blue opacity-60" />
+            <BarChart3 className="h-5 w-5 text-ploy-gold opacity-60" />
           </div>
         </Card>
         <Card className="p-6">
@@ -66,7 +66,7 @@ export default async function AdminReportsPage() {
               <p className="text-sm text-muted-foreground">Premium Reports</p>
               <p className="mt-2 text-3xl font-semibold">{premiumReports}</p>
             </div>
-            <Eye className="h-5 w-5 text-ploy-blue opacity-60" />
+            <Eye className="h-5 w-5 text-ploy-gold opacity-60" />
           </div>
         </Card>
       </div>
@@ -118,7 +118,7 @@ export default async function AdminReportsPage() {
                         variant="outline"
                         className={
                           report.is_premium
-                            ? "border-ploy-blue text-ploy-blue"
+                            ? "border-ploy-gold text-ploy-gold"
                             : "border-muted-foreground text-muted-foreground"
                         }
                       >

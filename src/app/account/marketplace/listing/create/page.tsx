@@ -38,7 +38,7 @@ export default async function CreateListingPage() {
     return (
       <div className="container max-w-2xl py-12">
         <Card className="flex flex-col items-center gap-4 p-10 text-center">
-          <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-ploy-blue/10 text-ploy-blue">
+          <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-ploy-gold/10 text-ploy-gold">
             <Store className="h-5 w-5" />
           </span>
           <div>

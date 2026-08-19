@@ -98,7 +98,7 @@ export function Navbar() {
                   href={link.href}
                   className={cn(
                     "flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-medium transition-colors",
-                    active ? "bg-ploy-blue text-white shadow-sm" : "text-muted-foreground hover:text-foreground"
+                    active ? "bg-ploy-gold/10 text-ploy-gold ring-1 ring-inset ring-ploy-gold/25" : "text-muted-foreground hover:text-foreground"
                   )}
                 >
                   {Icon && <Icon className="h-3.5 w-3.5" />}
@@ -116,8 +116,8 @@ export function Navbar() {
                 onClick={() => setProfileOpen(!profileOpen)}
                 className="flex items-center gap-2 rounded-full border border-border bg-secondary/50 px-3 py-2 text-sm font-medium transition-colors hover:bg-secondary"
               >
-                <div className="h-5 w-5 rounded-full bg-ploy-blue flex items-center justify-center">
-                  <User className="h-3 w-3 text-white" />
+                <div className="h-5 w-5 rounded-full bg-ploy-gold flex items-center justify-center">
+                  <User className="h-3 w-3 text-primary-foreground" />
                 </div>
                 <span className="text-foreground">{user.email?.split("@")[0]}</span>
               </button>
@@ -171,7 +171,7 @@ export function Navbar() {
                     onClick={() => setOpen(false)}
                     className={cn(
                       "flex items-center gap-2 text-sm font-medium",
-                      active ? "text-ploy-blue" : "text-muted-foreground hover:text-foreground"
+                      active ? "text-ploy-gold" : "text-muted-foreground hover:text-foreground"
                     )}
                   >
                     {Icon && <Icon className="h-4 w-4" />}
@@ -186,7 +186,7 @@ export function Navbar() {
                       <Link
                         href={dashboardPath}
                         onClick={() => setOpen(false)}
-                        className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-ploy-blue"
+                        className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-ploy-gold"
                       >
                         <LayoutDashboard className="h-4 w-4" />
                         Dashboard
@@ -195,7 +195,7 @@ export function Navbar() {
                     <Link
                       href="/account/profile"
                       onClick={() => setOpen(false)}
-                      className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-ploy-blue"
+                      className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-ploy-gold"
                     >
                       <User className="h-4 w-4" />
                       My Account

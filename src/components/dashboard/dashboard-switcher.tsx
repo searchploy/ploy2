@@ -55,7 +55,7 @@ export function DashboardSwitcher({ owned }: { owned: SubscriptionType[] }) {
               className={cn(
                 "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                 isActive
-                  ? "bg-ploy-blue text-white shadow-sm"
+                  ? "bg-ploy-gold/10 text-ploy-gold ring-1 ring-inset ring-ploy-gold/25"
                   : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground"
               )}
             >

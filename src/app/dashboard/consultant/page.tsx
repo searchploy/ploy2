@@ -8,12 +8,13 @@ import { createClient } from "@/lib/supabase/server";
 import { getServerUser } from "@/lib/supabase/server";
 import { WelcomeModal } from "@/components/consultant/welcome-modal";
 
+// Keep in step with the same map in clients/page.tsx.
 const statusColors: Record<string, string> = {
-  "Lead": "bg-blue-500/20 text-blue-300",
-  "Discovery Call": "bg-purple-500/20 text-purple-300",
-  "Report Sent": "bg-amber-500/20 text-amber-300",
-  "Proposal Sent": "bg-cyan-500/20 text-cyan-300",
-  "Closed": "bg-green-500/20 text-green-300",
+  "Lead": "bg-white/[0.06] text-muted-foreground",
+  "Discovery Call": "bg-white/[0.10] text-foreground/80",
+  "Report Sent": "bg-ploy-gold/10 text-ploy-gold/90",
+  "Proposal Sent": "bg-ploy-gold/20 text-ploy-gold",
+  "Closed": "bg-success/15 text-success",
 };
 
 function formatDate(dateString: string) {
@@ -113,7 +114,7 @@ export default async function ConsultantDashboardPage() {
                   <p className="text-sm text-muted-foreground">{stat.label}</p>
                   <p className="mt-2 text-3xl font-semibold">{stat.value}</p>
                 </div>
-                <div className="text-ploy-blue opacity-60">{stat.icon}</div>
+                <div className="text-ploy-gold opacity-60">{stat.icon}</div>
               </div>
             </Card>
           ))}
@@ -163,7 +164,7 @@ export default async function ConsultantDashboardPage() {
                   <TableRow>
                     <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
                       No clients yet.{" "}
-                      <Link href="/dashboard/consultant/clients" className="text-ploy-blue hover:underline">
+                      <Link href="/dashboard/consultant/clients" className="text-ploy-gold hover:underline">
                         Add your first client
                       </Link>
                     </TableCell>
@@ -212,7 +213,7 @@ export default async function ConsultantDashboardPage() {
                   <TableRow>
                     <TableCell colSpan={3} className="text-center py-8 text-muted-foreground">
                       No reports yet.{" "}
-                      <Link href="/report" className="text-ploy-blue hover:underline">
+                      <Link href="/report" className="text-ploy-gold hover:underline">
                         Generate your first report
                       </Link>
                     </TableCell>

@@ -23,7 +23,7 @@ export function EmptyState({
 }) {
   return (
     <Card className="flex flex-col items-center gap-3 p-10 text-center">
-      <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-ploy-blue/10 text-ploy-blue">
+      <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-ploy-gold/10 text-ploy-gold">
         <Icon className="h-5 w-5" />
       </span>
       <div className="flex flex-col gap-1">

@@ -17,7 +17,7 @@ export function StatCard({
     <Card className="flex flex-col gap-3 p-5">
       <div className="flex items-center justify-between">
         <p className="text-sm text-muted-foreground">{label}</p>
-        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-ploy-blue/10 text-ploy-blue">
+        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-ploy-gold/10 text-ploy-gold">
           <Icon className="h-4 w-4" />
         </span>
       </div>

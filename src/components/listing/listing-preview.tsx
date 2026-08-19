@@ -41,7 +41,7 @@ export function ListingPreview({ data }: { data: ListingPreviewData }) {
           </h3>
           <div className="mt-1 flex flex-wrap items-center gap-2">
             {data.categoryName && (
-              <span className="rounded-full bg-ploy-blue/10 px-2.5 py-1 text-xs font-medium text-ploy-blue">
+              <span className="rounded-full bg-ploy-gold/10 px-2.5 py-1 text-xs font-medium text-ploy-gold">
                 {data.categoryName}
               </span>
             )}
@@ -70,7 +70,7 @@ export function ListingPreview({ data }: { data: ListingPreviewData }) {
           <ul className="grid gap-1.5 sm:grid-cols-2">
             {data.primaryTasks.map((task) => (
               <li key={task} className="flex items-center gap-2 text-sm">
-                <Check className="h-4 w-4 shrink-0 text-ploy-blue" />
+                <Check className="h-4 w-4 shrink-0 text-ploy-gold" />
                 {task}
               </li>
             ))}

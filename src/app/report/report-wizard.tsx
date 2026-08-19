@@ -173,7 +173,7 @@ export function ReportWizard() {
   if (isPending) {
     return (
       <div className="mx-auto flex max-w-lg flex-col items-center gap-6 py-24 text-center">
-        <Loader2 className="h-12 w-12 animate-spin text-ploy-blue" />
+        <Loader2 className="h-12 w-12 animate-spin text-ploy-gold" />
         <div>
           <h1 className="font-display text-2xl font-bold">Analyzing your business…</h1>
           <p className="mt-2 text-muted-foreground">{loadingMessage}</p>
@@ -189,7 +189,7 @@ export function ReportWizard() {
       {step === 1 && (
         <div className="flex flex-col gap-6">
           <div>
-            <p className="mb-1 text-xs font-bold uppercase tracking-wide text-ploy-blue">Step 1 of 5</p>
+            <p className="mb-1 text-xs font-bold uppercase tracking-wide text-ploy-gold">Step 1 of 5</p>
             <h1 className="font-display text-3xl font-bold">Tell us about your business</h1>
             <p className="mt-2 text-muted-foreground">
               We&apos;ll use this to personalize your AI Report and match you with the right AI employees.
@@ -240,7 +240,7 @@ export function ReportWizard() {
       {step === 2 && (
         <div className="flex flex-col gap-6">
           <div>
-            <p className="mb-1 text-xs font-bold uppercase tracking-wide text-ploy-blue">Step 2 of 5</p>
+            <p className="mb-1 text-xs font-bold uppercase tracking-wide text-ploy-gold">Step 2 of 5</p>
             <h1 className="font-display text-3xl font-bold">Your team and revenue</h1>
             <p className="mt-2 text-muted-foreground">
               This helps us estimate realistic savings and ROI for your specific size of business.
@@ -302,7 +302,7 @@ export function ReportWizard() {
       {step === 3 && (
         <div className="flex flex-col gap-6">
           <div>
-            <p className="mb-1 text-xs font-bold uppercase tracking-wide text-ploy-blue">Step 3 of 5</p>
+            <p className="mb-1 text-xs font-bold uppercase tracking-wide text-ploy-gold">Step 3 of 5</p>
             <h1 className="font-display text-3xl font-bold">What&apos;s slowing you down?</h1>
             <p className="mt-2 text-muted-foreground">
               Select every pain point that applies. The more you share, the more specific your report will be.
@@ -334,7 +334,7 @@ export function ReportWizard() {
       {step === 4 && (
         <div className="flex flex-col gap-6">
           <div>
-            <p className="mb-1 text-xs font-bold uppercase tracking-wide text-ploy-blue">Step 4 of 5</p>
+            <p className="mb-1 text-xs font-bold uppercase tracking-wide text-ploy-gold">Step 4 of 5</p>
             <h1 className="font-display text-3xl font-bold">What are you trying to achieve?</h1>
             <p className="mt-2 text-muted-foreground">Your goals shape the priority of recommendations in your report.</p>
           </div>
@@ -365,7 +365,7 @@ export function ReportWizard() {
       {step === 5 && (
         <div className="flex flex-col gap-6">
           <div>
-            <p className="mb-1 text-xs font-bold uppercase tracking-wide text-ploy-blue">Step 5 of 5</p>
+            <p className="mb-1 text-xs font-bold uppercase tracking-wide text-ploy-gold">Step 5 of 5</p>
             <h1 className="font-display text-3xl font-bold">Ready to generate your report</h1>
             <p className="mt-2 text-muted-foreground">
               Here&apos;s a summary of what we&apos;ll analyze. Your personalized AI Report will be ready in seconds.
@@ -387,8 +387,8 @@ export function ReportWizard() {
               </div>
             ))}
           </div>
-          <div className="rounded-xl border border-ploy-blue/25 bg-secondary/40 p-5">
-            <p className="mb-2.5 text-xs font-bold text-ploy-blue">Your report will include:</p>
+          <div className="rounded-xl border border-ploy-gold/25 bg-secondary/40 p-5">
+            <p className="mb-2.5 text-xs font-bold text-ploy-gold">Your report will include:</p>
             <div className="grid grid-cols-2 gap-2 text-sm text-muted-foreground">
               <span>✓ AI Readiness Score</span>
               <span>✓ Automation &amp; Growth Scores</span>

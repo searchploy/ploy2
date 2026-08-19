@@ -119,7 +119,7 @@ export function OTPInput({
             "flex items-center justify-center",
             error
               ? "border-destructive bg-destructive/5 focus:border-destructive focus:ring-destructive/20"
-              : "border-border bg-card hover:border-muted-foreground focus:border-ploy-blue focus:ring-ploy-blue/20",
+              : "border-border bg-card hover:border-muted-foreground focus:border-ploy-gold focus:ring-ploy-gold/20",
             disabled && "opacity-50 cursor-not-allowed",
             "focus:outline-none focus:ring-2"
           )}

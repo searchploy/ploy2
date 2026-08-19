@@ -19,12 +19,12 @@ export async function CategoriesSection() {
             <Link
               key={category.id}
               href={`/marketplace?category=${category.slug}`}
-              className="group flex items-center gap-3 rounded-2xl border border-border bg-card p-5 transition-all hover:-translate-y-0.5 hover:border-ploy-blue/40 hover:shadow-md"
+              className="group flex items-center gap-3 rounded-2xl border border-border bg-card p-5 transition-all hover:-translate-y-0.5 hover:border-ploy-gold/40 hover:shadow-md"
             >
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-ploy-blue/10 text-ploy-blue">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-ploy-gold/10 text-ploy-gold">
                 <CategoryIcon name={category.icon} className="h-5 w-5" />
               </span>
-              <span className="font-medium transition-colors group-hover:text-ploy-blue">{category.name}</span>
+              <span className="font-medium transition-colors group-hover:text-ploy-gold">{category.name}</span>
             </Link>
           ))}
         </div>

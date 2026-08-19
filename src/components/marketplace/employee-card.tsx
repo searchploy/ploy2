@@ -26,7 +26,7 @@ export function EmployeeCard({ employee, index = 0 }: { employee: EmployeeCardDa
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.4, delay: Math.min(index * 0.05, 0.3) }}
     >
-      <Card className="group flex h-full flex-col overflow-hidden transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-ploy-blue/5 hover-glow-border">
+      <Card className="group flex h-full flex-col overflow-hidden transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-ploy-gold/5 hover-glow-border">
         <Link href={`/marketplace/${employee.slug}`} className="relative block aspect-[16/10] overflow-hidden bg-secondary">
           {employee.cover_image_url && (
             // eslint-disable-next-line @next/next/no-img-element
@@ -51,7 +51,7 @@ export function EmployeeCard({ employee, index = 0 }: { employee: EmployeeCardDa
           <div className="flex items-start justify-between gap-2">
             <div>
               <Link href={`/marketplace/${employee.slug}`}>
-                <h3 className="font-semibold leading-tight transition-colors group-hover:text-ploy-blue">
+                <h3 className="font-semibold leading-tight transition-colors group-hover:text-ploy-gold">
                   {employee.name}
                 </h3>
               </Link>
@@ -61,9 +61,9 @@ export function EmployeeCard({ employee, index = 0 }: { employee: EmployeeCardDa
 
           <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
             <span>by</span>
-            <Link href={`/agencies/${employee.agency.slug}`} className="inline-flex items-center gap-1 font-medium text-foreground hover:text-ploy-blue">
+            <Link href={`/agencies/${employee.agency.slug}`} className="inline-flex items-center gap-1 font-medium text-foreground hover:text-ploy-gold">
               {employee.agency.name}
-              {employee.agency.is_verified && <BadgeCheck className="h-3.5 w-3.5 text-ploy-blue" />}
+              {employee.agency.is_verified && <BadgeCheck className="h-3.5 w-3.5 text-ploy-gold" />}
             </Link>
           </div>
 

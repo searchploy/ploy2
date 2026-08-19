@@ -77,14 +77,14 @@ export function EmployeeGrid({ employees }: EmployeeGridProps) {
         {filtered.length > 0 ? (
           <div className="flex flex-col gap-3">
             {filtered.map((emp) => (
-              <Card key={emp.id} className="overflow-hidden transition-all hover:shadow-lg hover:shadow-ploy-blue/10 hover-glow-border">
+              <Card key={emp.id} className="overflow-hidden transition-all hover:shadow-lg hover:shadow-ploy-gold/10 hover-glow-border">
                 <div className="flex flex-col gap-3 p-4">
                   {/* Title and Agency */}
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
                         <Link href={`/marketplace/${emp.slug}`}>
-                          <h3 className="text-base font-semibold transition-colors hover:text-ploy-blue">
+                          <h3 className="text-base font-semibold transition-colors hover:text-ploy-gold">
                             {emp.name}
                           </h3>
                         </Link>
@@ -151,7 +151,7 @@ export function EmployeeGrid({ employees }: EmployeeGridProps) {
                     <div className="flex flex-wrap gap-2 flex-1">
                       {(emp.key_features || []).slice(0, 2).map((feature) => (
                         <div key={feature} className="flex items-center gap-1 text-xs">
-                          <Check className="h-3 w-3 text-ploy-blue flex-shrink-0" />
+                          <Check className="h-3 w-3 text-ploy-gold flex-shrink-0" />
                           <span className="truncate">{feature}</span>
                         </div>
                       ))}
@@ -181,7 +181,7 @@ export function EmployeeGrid({ employees }: EmployeeGridProps) {
                 setSearch("");
                 setFilters({ departments: [], industries: [] });
               }}
-              className="text-sm text-ploy-blue hover:underline"
+              className="text-sm text-ploy-gold hover:underline"
             >
               Reset filters
             </button>
