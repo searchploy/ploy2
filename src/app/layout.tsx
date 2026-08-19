@@ -50,6 +50,11 @@ export default function RootLayout({
       <body
         className={`${sans.variable} ${mono.variable} font-sans flex min-h-screen flex-col antialiased`}
       >
+        <div id="starfield">
+          <div id="stars" />
+          <div id="stars2" />
+          <div id="stars3" />
+        </div>
         <SiteChrome>{children}</SiteChrome>
         <Toaster />
       </body>

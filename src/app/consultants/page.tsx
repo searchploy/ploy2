@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { UpgradeButton } from "@/components/pricing/upgrade-button";
 import { CheckoutStatusToast } from "@/components/pricing/checkout-status-toast";
+import { SuccessCarousel } from "@/components/consultants/success-carousel";
 
 export const metadata: Metadata = {
   title: "For Consultants",
@@ -50,6 +51,9 @@ export default function ConsultantsPage() {
           </p>
         </div>
       </header>
+
+      {/* Success Stories Carousel */}
+      <SuccessCarousel />
 
       {/* Pricing */}
       <section className="py-24">
