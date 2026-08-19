@@ -2510,8 +2510,15 @@ export const consultantResources: Record<ResourceId, ResourceContent> = {
   }
 };
 
-export function getResource(id: ResourceId): ResourceContent | null {
-  return consultantResources[id] || null;
+/**
+ * Resolves a resource from a raw route param. Accepts the unvalidated string
+ * straight off the URL so callers never have to cast — anything that isn't a
+ * known resource id comes back null and the route can 404 cleanly.
+ */
+export function getResource(id: string | number): ResourceContent | null {
+  const parsed = typeof id === "number" ? id : Number(id);
+  if (!Number.isInteger(parsed)) return null;
+  return consultantResources[parsed as ResourceId] ?? null;
 }
 
 export function getAllResources() {

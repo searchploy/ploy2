@@ -6,9 +6,9 @@ import { Card } from "@/components/ui/card";
 import { getResource } from "@/lib/consultant-resources";
 import { ResourceContent } from "@/components/consultant/resource-content";
 
-export default function ResourcePage({ params }: { params: { id: string } }) {
-  const resourceId = parseInt(params.id) as any;
-  const resource = getResource(resourceId);
+export default async function ResourcePage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const resource = getResource(id);
 
   if (!resource) notFound();
 

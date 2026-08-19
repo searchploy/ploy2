@@ -2,118 +2,120 @@
 
 import { useState } from "react";
 import { Copy, Check } from "lucide-react";
-import { Card } from "@/components/ui/card";
-import type { ResourceContent as ResourceContentType } from "@/lib/consultant-resources";
+import type { ResourceContent as ResourceContentType, Section } from "@/lib/consultant-resources";
+
+function sectionLines(section: Section): string[] {
+  return Array.isArray(section.content) ? section.content : section.content.split("\n");
+}
 
 export function ResourceContent({ resource }: { resource: ResourceContentType }) {
   return (
-    <div className="space-y-8">
-      {resource.sections.map((section) => (
-        <section key={section.id} id={section.id} className="scroll-mt-20">
-          <h2 className="text-2xl font-bold mb-4">{section.title}</h2>
-
-          {Array.isArray(section.content) ? (
-            <div className="space-y-4">
-              {section.content.map((line, idx) => {
-                if (!line.trim()) return <div key={idx} />;
-
-                // Code block or template (lines that look like they should be copied)
-                if (
-                  line.startsWith("---") ||
-                  line.startsWith("Subject:") ||
-                  line.startsWith("Email:") ||
-                  line.startsWith("Hi ") ||
-                  line.startsWith("Hi[") ||
-                  line.includes("@") ||
-                  line.startsWith("Project fee:") ||
-                  line.startsWith("Includes:") ||
-                  line.startsWith("COVER PAGE") ||
-                  line.startsWith("PAGE")
-                ) {
-                  return (
-                    <div key={idx} className="font-mono text-sm bg-secondary/50 p-3 rounded border border-border text-muted-foreground whitespace-pre-wrap break-words">
-                      {line}
-                    </div>
-                  );
-                }
-
-                // Pro tip or callout
-                if (line.includes("Pro Tip") || line.includes("Note:") || line.includes("IMPORTANT:")) {
-                  return (
-                    <div key={idx} className="bg-ploy-blue/5 border-l-4 border-ploy-blue p-4 rounded">
-                      <p className="text-sm">{line}</p>
-                    </div>
-                  );
-                }
-
-                // Common mistake callout
-                if (line.startsWith("❌") || line.startsWith("✓") || line.startsWith("🚩")) {
-                  return (
-                    <p key={idx} className="text-sm leading-relaxed">
-                      {line}
-                    </p>
-                  );
-                }
-
-                // Checkbox items
-                if (line.startsWith("□")) {
-                  return (
-                    <div key={idx} className="flex gap-3">
-                      <input type="checkbox" className="mt-1" />
-                      <p className="text-sm">{line.replace("□ ", "")}</p>
-                    </div>
-                  );
-                }
-
-                // Regular text
-                return (
-                  <p key={idx} className="text-sm leading-relaxed text-muted-foreground">
-                    {line}
-                  </p>
-                );
-              })}
+    <div className="space-y-10">
+      {resource.sections.map((section) => {
+        const lines = sectionLines(section);
+        return (
+          <section key={section.id} id={section.id} className="scroll-mt-24">
+            <div className="mb-4 flex items-start justify-between gap-4 border-b border-border pb-2">
+              <h2 className="text-2xl font-bold">{section.title}</h2>
+              <CopyButton text={lines.join("\n")} label={`Copy ${section.title}`} />
             </div>
-          ) : (
-            <CopyableContent content={section.content} />
-          )}
-        </section>
-      ))}
+
+            <div className="space-y-3">
+              {lines.map((line, idx) => (
+                <Line key={idx} line={line} />
+              ))}
+            </div>
+          </section>
+        );
+      })}
     </div>
   );
 }
 
-function CopyableContent({ content }: { content: string }) {
-  return (
-    <Card className="p-6 bg-secondary/40">
-      <div className="flex gap-4">
-        <div className="flex-1 font-mono text-sm whitespace-pre-wrap break-words text-muted-foreground">
-          {content}
-        </div>
-        <CopyButton text={content} />
+function Line({ line }: { line: string }) {
+  const trimmed = line.trim();
+
+  if (!trimmed) return <div className="h-2" />;
+
+  // Checklist item — must be tested before the template heuristic below, since
+  // checklist lines can contain email addresses ("□ Create business email...").
+  if (trimmed.startsWith("□")) {
+    return (
+      <label className="flex cursor-pointer items-start gap-3 text-sm">
+        <input
+          type="checkbox"
+          className="mt-0.5 h-4 w-4 shrink-0 accent-ploy-blue cursor-pointer"
+        />
+        <span className="leading-relaxed">{trimmed.replace(/^□\s*/, "")}</span>
+      </label>
+    );
+  }
+
+  // Callouts.
+  if (
+    trimmed.startsWith("Pro Tip") ||
+    trimmed.startsWith("Note:") ||
+    trimmed.startsWith("IMPORTANT:")
+  ) {
+    return (
+      <div className="rounded-r border-l-4 border-ploy-blue bg-ploy-blue/5 p-4">
+        <p className="text-sm leading-relaxed">{trimmed}</p>
       </div>
-    </Card>
-  );
+    );
+  }
+
+  // Verbatim template / script lines, rendered monospaced so the copy-paste
+  // shape (subject lines, placeholders, page breaks) stays readable.
+  if (
+    trimmed.startsWith("---") ||
+    trimmed.startsWith("Subject:") ||
+    trimmed.startsWith("Hi ") ||
+    trimmed.startsWith("Hi [") ||
+    trimmed.startsWith("[") ||
+    trimmed.startsWith("COVER PAGE") ||
+    trimmed.startsWith("PAGE ")
+  ) {
+    return (
+      <div className="whitespace-pre-wrap break-words rounded border border-border bg-secondary/50 p-3 font-mono text-sm text-muted-foreground">
+        {line}
+      </div>
+    );
+  }
+
+  return <p className="text-sm leading-relaxed text-muted-foreground">{trimmed}</p>;
 }
 
-function CopyButton({ text }: { text: string }) {
+function CopyButton({ text, label }: { text: string; label: string }) {
   const [copied, setCopied] = useState(false);
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Clipboard is unavailable (denied permission / insecure origin) — leave
+      // the button in its idle state rather than falsely showing "Copied".
+    }
   };
 
   return (
     <button
+      type="button"
       onClick={handleCopy}
-      className="shrink-0 p-2 hover:bg-secondary rounded transition-colors"
-      title="Copy to clipboard"
+      aria-label={label}
+      className="inline-flex shrink-0 items-center gap-1.5 rounded border border-border px-2.5 py-1.5 text-xs text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
     >
       {copied ? (
-        <Check className="h-5 w-5 text-green-500" />
+        <>
+          <Check className="h-3.5 w-3.5 text-success" />
+          Copied
+        </>
       ) : (
-        <Copy className="h-5 w-5 text-muted-foreground" />
+        <>
+          <Copy className="h-3.5 w-3.5" />
+          Copy
+        </>
       )}
     </button>
   );
