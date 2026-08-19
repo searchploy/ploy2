@@ -171,73 +171,75 @@ export function MarketplaceBrowser({
   const activeFilterCount = selectedProblems.length + selectedEmployeeTypes.length + selectedBusinessTypes.length + selectedPrices.length;
 
   const FiltersPanel = (
-    <div className="flex flex-col gap-8">
-      <div>
-        <h3 className="mb-3 text-sm font-semibold">Business Problem</h3>
-        <div className="flex flex-col gap-2.5">
-          {BUSINESS_PROBLEMS.map((problem) => (
-            <label key={problem} className="flex cursor-pointer items-center gap-2.5 text-sm">
-              <Checkbox
-                checked={selectedProblems.includes(problem)}
-                onCheckedChange={() => toggle(selectedProblems, setSelectedProblems, problem)}
-              />
-              {problem}
-            </label>
-          ))}
+    <div className="rounded-2xl bg-black/40 p-6">
+      <div className="flex max-h-[calc(100vh-200px)] flex-col gap-8 overflow-y-auto">
+        <div>
+          <h3 className="mb-3 text-sm font-semibold">Business Problem</h3>
+          <div className="flex flex-col gap-2.5">
+            {BUSINESS_PROBLEMS.map((problem) => (
+              <label key={problem} className="flex cursor-pointer items-center gap-2.5 text-sm">
+                <Checkbox
+                  checked={selectedProblems.includes(problem)}
+                  onCheckedChange={() => toggle(selectedProblems, setSelectedProblems, problem)}
+                />
+                {problem}
+              </label>
+            ))}
+          </div>
         </div>
-      </div>
 
-      <div>
-        <h3 className="mb-3 text-sm font-semibold">AI Employee</h3>
-        <div className="flex flex-col gap-2.5">
-          {AI_EMPLOYEE_TYPES.map((type) => (
-            <label key={type} className="flex cursor-pointer items-center gap-2.5 text-sm">
-              <Checkbox
-                checked={selectedEmployeeTypes.includes(type)}
-                onCheckedChange={() => toggle(selectedEmployeeTypes, setSelectedEmployeeTypes, type)}
-              />
-              {type}
-            </label>
-          ))}
+        <div>
+          <h3 className="mb-3 text-sm font-semibold">AI Employee</h3>
+          <div className="flex flex-col gap-2.5">
+            {AI_EMPLOYEE_TYPES.map((type) => (
+              <label key={type} className="flex cursor-pointer items-center gap-2.5 text-sm">
+                <Checkbox
+                  checked={selectedEmployeeTypes.includes(type)}
+                  onCheckedChange={() => toggle(selectedEmployeeTypes, setSelectedEmployeeTypes, type)}
+                />
+                {type}
+              </label>
+            ))}
+          </div>
         </div>
-      </div>
 
-      <div>
-        <h3 className="mb-3 text-sm font-semibold">Business Type</h3>
-        <div className="flex flex-col gap-2.5">
-          {BUSINESS_TYPES.map((type) => (
-            <label key={type} className="flex cursor-pointer items-center gap-2.5 text-sm">
-              <Checkbox
-                checked={selectedBusinessTypes.includes(type)}
-                onCheckedChange={() => toggle(selectedBusinessTypes, setSelectedBusinessTypes, type)}
-              />
-              {type}
-            </label>
-          ))}
+        <div>
+          <h3 className="mb-3 text-sm font-semibold">Business Type</h3>
+          <div className="flex flex-col gap-2.5">
+            {BUSINESS_TYPES.map((type) => (
+              <label key={type} className="flex cursor-pointer items-center gap-2.5 text-sm">
+                <Checkbox
+                  checked={selectedBusinessTypes.includes(type)}
+                  onCheckedChange={() => toggle(selectedBusinessTypes, setSelectedBusinessTypes, type)}
+                />
+                {type}
+              </label>
+            ))}
+          </div>
         </div>
-      </div>
 
-      <div>
-        <h3 className="mb-3 text-sm font-semibold">Price</h3>
-        <div className="flex flex-col gap-2.5">
-          {PRICE_RANGES.map((range) => (
-            <label key={range.label} className="flex cursor-pointer items-center gap-2.5 text-sm">
-              <Checkbox
-                checked={selectedPrices.includes(range.label)}
-                onCheckedChange={() => toggle(selectedPrices, setSelectedPrices, range.label)}
-              />
-              {range.label}
-            </label>
-          ))}
+        <div>
+          <h3 className="mb-3 text-sm font-semibold">Price</h3>
+          <div className="flex flex-col gap-2.5">
+            {PRICE_RANGES.map((range) => (
+              <label key={range.label} className="flex cursor-pointer items-center gap-2.5 text-sm">
+                <Checkbox
+                  checked={selectedPrices.includes(range.label)}
+                  onCheckedChange={() => toggle(selectedPrices, setSelectedPrices, range.label)}
+                />
+                {range.label}
+              </label>
+            ))}
+          </div>
         </div>
-      </div>
 
-      {activeFilterCount > 0 && (
-        <Button variant="ghost" size="sm" onClick={clearFilters} className="self-start">
-          <X className="h-3.5 w-3.5" />
-          Clear all
-        </Button>
-      )}
+        {activeFilterCount > 0 && (
+          <Button variant="ghost" size="sm" onClick={clearFilters} className="self-start">
+            <X className="h-3.5 w-3.5" />
+            Clear all
+          </Button>
+        )}
+      </div>
     </div>
   );
 
