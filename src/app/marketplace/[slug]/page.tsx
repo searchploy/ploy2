@@ -14,30 +14,72 @@ import {
   getLiveRelatedEmployees,
   getLiveAgencyById,
 } from "@/lib/data/live-marketplace";
+import { employees as mockEmployees } from "@/lib/data/employees";
+import { agencies as mockAgencies } from "@/lib/data/agencies";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const employee = await getLiveEmployeeBySlugWithCategory(slug);
+  let employee = await getLiveEmployeeBySlugWithCategory(slug);
+
+  // Fallback to mock data for external providers
+  if (!employee) {
+    const mockEmployee = mockEmployees.find((e) => e.slug === slug);
+    if (mockEmployee) {
+      return { title: mockEmployee.name, description: mockEmployee.tagline ?? undefined };
+    }
+  }
+
   if (!employee) return {};
   return { title: employee.name, description: employee.tagline ?? undefined };
 }
 
 export default async function EmployeeDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const employee = await getLiveEmployeeBySlugWithCategory(slug);
+  let employee = await getLiveEmployeeBySlugWithCategory(slug);
+
+  // Fallback to mock data for external providers
+  let isMockEmployee = false;
+  if (!employee) {
+    const mockEmployee = mockEmployees.find((e) => e.slug === slug);
+    if (mockEmployee) {
+      employee = {
+        ...mockEmployee,
+        category: null
+      } as any;
+      isMockEmployee = true;
+    }
+  }
+
   if (!employee) notFound();
 
-  const [related, agency, supabase] = await Promise.all([
-    getLiveRelatedEmployees(employee.id, employee.category_id),
-    employee.agency_id ? getLiveAgencyById(employee.agency_id) : Promise.resolve(null),
-    createClient(),
-  ]);
+  let related: any[] = [];
+  let agency: any = null;
+  let reviews: any[] = [];
 
-  const { data: reviews } = await supabase
-    .from("reviews")
-    .select("*")
-    .eq("employee_id", employee.id)
-    .order("created_at", { ascending: false });
+  if (!isMockEmployee) {
+    const [relatedResult, agencyResult, supabase] = await Promise.all([
+      getLiveRelatedEmployees(employee.id, employee.category_id),
+      employee.agency_id ? getLiveAgencyById(employee.agency_id) : Promise.resolve(null),
+      createClient(),
+    ]);
+
+    related = relatedResult;
+    agency = agencyResult;
+
+    const { data: reviewsResult } = await supabase
+      .from("reviews")
+      .select("*")
+      .eq("employee_id", employee.id)
+      .order("created_at", { ascending: false });
+
+    reviews = reviewsResult || [];
+  } else {
+    // For mock employees, find the agency
+    const mockAgency = mockAgencies.find((a) => a.id === employee.agency_id);
+    if (mockAgency) {
+      agency = mockAgency;
+    }
+  }
 
   return (
     <div className="container flex flex-col gap-14 py-12">
