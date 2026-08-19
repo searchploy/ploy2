@@ -116,7 +116,7 @@ export default function ConsultantsPage() {
 
           {/* Pricing Cards - Primary Focus */}
           <div className="mx-auto w-full max-w-5xl">
-            <div className="mb-16 grid gap-6 sm:grid-cols-2">
+            <div className="grid gap-6 sm:grid-cols-2">
               {/* Free Tier */}
               <div className="flex flex-col gap-4 rounded-3xl border border-border bg-card p-8">
                 <div>
@@ -127,11 +127,11 @@ export default function ConsultantsPage() {
                 </div>
                 <p className="text-sm text-muted-foreground">Get started building your consulting business.</p>
 
-                {/* Key Features */}
+                {/* Features */}
                 <div className="space-y-2 py-4">
-                  {["Basic Consultant Dashboard", "1 Client", "1 AI Workforce Report"].map((feature) => (
-                    <div key={feature} className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-ploy-gold flex-shrink-0" />
+                  {["Access to Marketplace", "Basic Consultant Dashboard", "1 Client", "1 AI Workforce Report", "Community Preview", "Basic Resources"].map((feature) => (
+                    <div key={feature} className="flex items-start gap-2">
+                      <Check className="mt-0.5 h-4 w-4 text-ploy-gold flex-shrink-0" />
                       <span className="text-sm">{feature}</span>
                     </div>
                   ))}
@@ -155,83 +155,48 @@ export default function ConsultantsPage() {
                   <p className="mt-2 text-xs text-muted-foreground"><strong>Lock in forever.</strong> As Ploy grows, new members will pay more.</p>
                 </div>
 
-                {/* Key Features */}
-                <div className="space-y-2 py-4">
-                  {["Unlimited AI Reports", "Unlimited Clients", "Complete CRM + Dashboard"].map((feature) => (
-                    <div key={feature} className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-ploy-gold flex-shrink-0" />
-                      <span className="text-sm">{feature}</span>
-                    </div>
-                  ))}
+                {/* Software Features */}
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-3">Software</p>
+                  <div className="space-y-2 mb-4">
+                    {["Unlimited AI Reports", "Unlimited Clients", "Complete CRM Dashboard", "Proposal Generator", "Client Pipeline", "Client Notes", "Report History"].map((feature) => (
+                      <div key={feature} className="flex items-start gap-2">
+                        <Check className="mt-0.5 h-4 w-4 text-ploy-gold flex-shrink-0" />
+                        <span className="text-sm">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Training Features */}
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-3">Training</p>
+                  <div className="space-y-2 mb-4">
+                    {["Complete AI Consulting Course", "Step-by-Step Playbooks", "Sales Training", "Discovery Call Training", "AI Report Walkthroughs"].map((feature) => (
+                      <div key={feature} className="flex items-start gap-2">
+                        <Check className="mt-0.5 h-4 w-4 text-ploy-gold flex-shrink-0" />
+                        <span className="text-sm">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Templates & Community Features */}
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-3">Templates & Community</p>
+                  <div className="space-y-2 mb-4">
+                    {["Cold Email Templates", "Proposal Templates", "Private Discord Community", "Weekly Live Q&A", "Priority Support"].map((feature) => (
+                      <div key={feature} className="flex items-start gap-2">
+                        <Check className="mt-0.5 h-4 w-4 text-ploy-gold flex-shrink-0" />
+                        <span className="text-sm">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
 
                 <UpgradeButton subscriptionType="consulting" returnTo="/consultants" size="lg" className="mt-auto">
                   Start Your Consulting Business
                 </UpgradeButton>
-              </div>
-            </div>
-
-            {/* Detailed Feature Comparison - Secondary */}
-            <div className="rounded-3xl border border-border bg-card p-8">
-              <h3 className="mb-8 text-center text-xl font-bold">Full Feature Comparison</h3>
-              <div className="grid gap-8 sm:grid-cols-2">
-                {/* Free Tier Features */}
-                <div>
-                  <h4 className="mb-4 font-semibold text-muted-foreground">Free</h4>
-                  <ul className="space-y-2">
-                    {["Access to Marketplace", "Basic Consultant Dashboard", "1 Client", "1 AI Workforce Report", "Community Preview", "Basic Resources"].map((feature) => (
-                      <li key={feature} className="flex items-start gap-2 text-sm">
-                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-ploy-gold" />
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Ploy Consultant Features */}
-                <div>
-                  <h4 className="mb-4 font-semibold text-ploy-gold">Ploy Consultant (Everything in Free +)</h4>
-                  <div className="space-y-6">
-                    {/* Software */}
-                    <div>
-                      <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-3">Software</p>
-                      <ul className="space-y-2">
-                        {["Unlimited AI Reports", "Unlimited Clients", "Complete CRM Dashboard", "Proposal Generator", "Client Pipeline", "Client Notes", "Report History"].map((feature) => (
-                          <li key={feature} className="flex items-start gap-2 text-sm">
-                            <Check className="mt-0.5 h-4 w-4 shrink-0 text-ploy-gold" />
-                            <span>{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    {/* Training */}
-                    <div>
-                      <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-3">Training</p>
-                      <ul className="space-y-2">
-                        {["Complete AI Consulting Course", "Step-by-Step Playbooks", "Sales Training", "Discovery Call Training", "AI Report Walkthroughs"].map((feature) => (
-                          <li key={feature} className="flex items-start gap-2 text-sm">
-                            <Check className="mt-0.5 h-4 w-4 shrink-0 text-ploy-gold" />
-                            <span>{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    {/* Templates */}
-                    <div>
-                      <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-3">Templates & Community</p>
-                      <ul className="space-y-2">
-                        {["Cold Email Templates", "Proposal Templates", "Private Discord Community", "Weekly Live Q&A", "Priority Support"].map((feature) => (
-                          <li key={feature} className="flex items-start gap-2 text-sm">
-                            <Check className="mt-0.5 h-4 w-4 shrink-0 text-ploy-gold" />
-                            <span>{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
