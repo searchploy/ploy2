@@ -1,15 +1,12 @@
+"use client";
+
+import React, { useState } from "react";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Copy, Check } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { getResource } from "@/lib/consultant-resources";
-
-export const metadata = {
-  title: "Resource",
-};
-
-export const dynamic = "force-dynamic";
 
 export default function ResourcePage({ params }: { params: { id: string } }) {
   const resourceId = parseInt(params.id) as any;
@@ -149,7 +146,7 @@ function CopyableContent({ content }: { content: string }) {
 }
 
 function CopyButton({ text }: { text: string }) {
-  const [copied, setCopied] = React.useState(false);
+  const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(text);
@@ -171,5 +168,3 @@ function CopyButton({ text }: { text: string }) {
     </button>
   );
 }
-
-import React from "react";
