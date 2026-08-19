@@ -128,14 +128,16 @@ export default function BusinessPricingPage() {
               </div>
 
               {/* Ploy Pro */}
-              <div className="shadow-glow-card flex flex-col gap-4 rounded-3xl border border-transparent bg-card p-8">
+              {/* The paid tier carries the gold rim + glow so it reads as the premium option. */}
+              <div className="shadow-glow-card gold-hairline gold-glow flex flex-col gap-4 rounded-3xl border bg-card p-8">
                 <div>
                   <p className="mb-3 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-ploy-gold">
                     <Sparkles className="h-3.5 w-3.5" />
-                    Ploy Pro
+                    <span className="metal-text">Ploy Pro</span>
                   </p>
                   <p className="font-mono text-3xl font-bold">
-                    $29.99<span className="text-base font-normal text-muted-foreground">/mo</span>
+                    <span className="metal-text">$29.99</span>
+                    <span className="text-base font-normal text-muted-foreground">/mo</span>
                   </p>
                 </div>
                 <p className="text-sm text-muted-foreground">Unlimited reports + complete implementation strategy.</p>

@@ -52,7 +52,8 @@ export function DashboardSidebar({
 
       <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-4">
         <DashboardSwitcher owned={entitlements.owned} />
-        <p className="px-2 pb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">{roleLabel}</p>
+        {/* Paid-tier label gets metal lettering — a premium indicator per section 10. */}
+        <p className="metal-text px-2 pb-2 text-xs font-semibold uppercase tracking-wide">{roleLabel}</p>
         {navItems.map((item) => {
           const active = pathname === item.href;
           return (
@@ -60,8 +61,12 @@ export function DashboardSidebar({
               key={item.href}
               href={item.href}
               className={cn(
-                "flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-colors",
-                active ? "bg-secondary text-foreground" : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                // Active is a dark gold field with a gold hairline and gold
+                // label/icon — premium but restrained, never a solid gold fill.
+                "flex items-center gap-3 rounded-xl border px-3 py-2 text-sm font-medium transition-colors",
+                active
+                  ? "gold-hairline bg-ploy-gold/[0.07] text-ploy-gold [&_svg]:text-ploy-gold"
+                  : "border-transparent text-muted-foreground hover:border-[color:var(--gold-line)] hover:bg-accent hover:text-foreground"
               )}
             >
               {item.icon}

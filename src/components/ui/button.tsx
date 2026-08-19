@@ -8,14 +8,17 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground shadow-sm hover:opacity-90",
+        // Polished metal for primary actions. Hover brightens via
+        // .metal-surface rather than shifting the ramp.
+        default: "metal-surface shadow-sm font-semibold",
         destructive: "bg-destructive text-destructive-foreground shadow-sm hover:opacity-90",
         outline: "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
         secondary: "bg-secondary text-secondary-foreground shadow-sm hover:opacity-80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        gradient:
-          "bg-gradient-to-r from-ploy-gold to-ploy-gold-light text-primary-foreground shadow-md hover:opacity-95 border border-transparent",
+        // Same metal, plus the travelling highlight. Reserved for the handful
+        // of headline CTAs so the shine stays rare enough to feel deliberate.
+        gradient: "metal-surface metal-shine shadow-md font-semibold",
       },
       size: {
         default: "h-11 px-6 py-2",

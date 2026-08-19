@@ -64,6 +64,17 @@ const config: Config = {
           blue: "hsl(var(--ploy-gold))",
           "blue-light": "hsl(var(--ploy-gold-light))",
         },
+        // The full metal ramp, for picking individual stops (a bronze rule, a
+        // highlight tick). The gradient itself lives in --gradient-metal.
+        gold: {
+          bronze: "var(--gold-bronze)",
+          deep: "var(--gold-deep)",
+          dark: "var(--gold-dark)",
+          rich: "var(--gold-rich)",
+          DEFAULT: "var(--gold-main)",
+          bright: "var(--gold-bright)",
+          highlight: "var(--gold-highlight)",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

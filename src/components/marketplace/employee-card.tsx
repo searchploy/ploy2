@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { RatingStars } from "@/components/shared/rating-stars";
 import { PriceBadge } from "@/components/shared/price-badge";
 import { CategoryIcon } from "@/components/shared/category-icon";
+import { cn } from "@/lib/utils";
 import type { Category, Employee } from "@/lib/types/mock";
 
 export interface EmployeeCardData extends Employee {
@@ -26,7 +27,16 @@ export function EmployeeCard({ employee, index = 0 }: { employee: EmployeeCardDa
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.4, delay: Math.min(index * 0.05, 0.3) }}
     >
-      <Card className="group flex h-full flex-col overflow-hidden transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-ploy-gold/5 hover-glow-border">
+      {/*
+        Section 11: only featured listings carry the gold rim and glow, so gold
+        continues to mean "promoted" rather than decorating every card.
+      */}
+      <Card
+        className={cn(
+          "group flex h-full flex-col overflow-hidden transition-all hover:-translate-y-1 hover-glow-border",
+          employee.is_featured && "gold-hairline gold-glow"
+        )}
+      >
         <Link href={`/marketplace/${employee.slug}`} className="relative block aspect-[16/10] overflow-hidden bg-secondary">
           {employee.cover_image_url && (
             // eslint-disable-next-line @next/next/no-img-element
@@ -43,7 +53,9 @@ export function EmployeeCard({ employee, index = 0 }: { employee: EmployeeCardDa
             </Badge>
           )}
           {employee.is_featured && (
-            <Badge className="absolute right-3 top-3 bg-foreground/90 text-background">Featured</Badge>
+            <Badge variant="premium" className="absolute right-3 top-3">
+              Featured
+            </Badge>
           )}
         </Link>
 

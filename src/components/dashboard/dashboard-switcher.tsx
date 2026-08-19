@@ -53,10 +53,10 @@ export function DashboardSwitcher({ owned }: { owned: SubscriptionType[] }) {
               key={dashboard.href}
               href={dashboard.href}
               className={cn(
-                "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                "flex items-center gap-3 rounded-lg border px-3 py-2 text-sm font-medium transition-colors",
                 isActive
-                  ? "bg-ploy-gold/10 text-ploy-gold ring-1 ring-inset ring-ploy-gold/25"
-                  : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground"
+                  ? "gold-hairline gold-glow bg-ploy-gold/[0.07] text-ploy-gold [&_svg]:text-ploy-gold"
+                  : "border-transparent text-muted-foreground hover:border-[color:var(--gold-line)] hover:bg-secondary/50 hover:text-foreground"
               )}
             >
               <Icon className="h-4 w-4 shrink-0" />

@@ -98,7 +98,9 @@ export function Navbar() {
                   href={link.href}
                   className={cn(
                     "flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-medium transition-colors",
-                    active ? "bg-ploy-gold/10 text-ploy-gold ring-1 ring-inset ring-ploy-gold/25" : "text-muted-foreground hover:text-foreground"
+                    active
+                      ? "gold-hairline border bg-ploy-gold/[0.07] text-ploy-gold"
+                      : "border border-transparent text-muted-foreground hover:text-foreground"
                   )}
                 >
                   {Icon && <Icon className="h-3.5 w-3.5" />}

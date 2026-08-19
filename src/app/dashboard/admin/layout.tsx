@@ -46,7 +46,7 @@ export default async function AdminDashboardLayout({ children }: { children: Rea
         roleLabel="Admin dashboard"
         entitlements={entitlements}
       />
-      <main className="flex-1 overflow-y-auto bg-secondary/20 p-8">{children}</main>
+      <main className="surface-dashboard flex-1 overflow-y-auto p-8">{children}</main>
     </div>
   );
 }

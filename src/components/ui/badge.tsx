@@ -10,6 +10,13 @@ const badgeVariants = cva(
         default: "border-transparent bg-primary text-primary-foreground",
         secondary: "border-transparent bg-secondary text-secondary-foreground",
         outline: "border-border text-foreground",
+        // Restrained: dark gold field with a gold hairline. Use for Featured /
+        // selected states. Gradient text is skipped here on purpose — at 12px
+        // the ramp reads as muddy rather than metallic.
+        gold: "gold-hairline bg-ploy-gold/[0.08] text-ploy-gold",
+        // Solid metal. Reserved for Ploy Pro and paid-tier indicators.
+        premium: "metal-surface metal-shine border-transparent font-semibold",
+        // Deprecated name from the blue era; renders gold.
         blue: "border-transparent bg-secondary text-ploy-gold",
         success: "border-transparent bg-success-bg text-success",
         warning: "border-transparent bg-warning-bg text-warning",

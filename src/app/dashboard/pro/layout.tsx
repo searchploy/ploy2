@@ -38,7 +38,7 @@ export default async function ProDashboardLayout({ children }: { children: React
           roleLabel="Ploy Pro (Admin Access)"
           entitlements={entitlements}
         />
-        <main className="flex-1 overflow-y-auto bg-secondary/20 p-8">{children}</main>
+        <main className="surface-dashboard flex-1 overflow-y-auto p-8">{children}</main>
       </div>
     );
   }
@@ -65,7 +65,7 @@ export default async function ProDashboardLayout({ children }: { children: React
         roleLabel="Ploy Pro"
         entitlements={entitlements}
       />
-      <main className="flex-1 overflow-y-auto bg-secondary/20 p-8">{children}</main>
+      <main className="surface-dashboard flex-1 overflow-y-auto p-8">{children}</main>
     </div>
   );
 }

@@ -50,7 +50,7 @@ export default async function EmployeeDetailPage({ params }: { params: Promise<{
                 {employee.category.name}
               </Badge>
             )}
-            {employee.featured && <Badge className="bg-foreground text-background">Featured</Badge>}
+            {employee.featured && <Badge variant="premium">Featured</Badge>}
           </div>
 
           <div className="flex items-start gap-4">

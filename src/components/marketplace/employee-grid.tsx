@@ -8,6 +8,7 @@ import type { Employee } from "@/lib/types/mock";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { StarIcon } from "lucide-react";
 
@@ -77,7 +78,13 @@ export function EmployeeGrid({ employees }: EmployeeGridProps) {
         {filtered.length > 0 ? (
           <div className="flex flex-col gap-3">
             {filtered.map((emp) => (
-              <Card key={emp.id} className="overflow-hidden transition-all hover:shadow-lg hover:shadow-ploy-gold/10 hover-glow-border">
+              <Card
+                key={emp.id}
+                className={cn(
+                  "overflow-hidden transition-all hover-glow-border",
+                  emp.is_featured && "gold-hairline gold-glow"
+                )}
+              >
                 <div className="flex flex-col gap-3 p-4">
                   {/* Title and Agency */}
                   <div className="flex items-start justify-between gap-4">
@@ -89,7 +96,9 @@ export function EmployeeGrid({ employees }: EmployeeGridProps) {
                           </h3>
                         </Link>
                         {emp.is_featured && (
-                          <Badge className="bg-foreground/90 text-background text-xs">Featured</Badge>
+                          <Badge variant="premium" className="text-xs">
+                            Featured
+                          </Badge>
                         )}
                       </div>
                       <p className="text-xs text-muted-foreground mt-0.5">
