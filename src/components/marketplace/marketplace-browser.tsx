@@ -11,14 +11,67 @@ import { LiveEmployeeCard } from "@/components/marketplace/live-employee-card";
 import type { EmployeeWithCategory } from "@/lib/data/live-marketplace";
 import type { Agency, Category } from "@/lib/types/database";
 
-type SortKey = "relevant" | "rating" | "roi" | "price-asc";
+type SortKey = "recommended" | "highest-rated" | "most-popular" | "price-low" | "price-high" | "newest";
 
 const sortOptions: { value: SortKey; label: string }[] = [
-  { value: "relevant", label: "Most Relevant" },
-  { value: "rating", label: "Highest Rated" },
-  { value: "roi", label: "Highest ROI" },
-  { value: "price-asc", label: "Lowest Price" },
+  { value: "recommended", label: "Recommended" },
+  { value: "highest-rated", label: "Highest Rated" },
+  { value: "most-popular", label: "Most Popular" },
+  { value: "price-low", label: "Price: Low to High" },
+  { value: "price-high", label: "Price: High to Low" },
+  { value: "newest", label: "Newest" },
 ];
+
+const BUSINESS_PROBLEMS = [
+  "Generate More Leads",
+  "Improve Sales",
+  "Improve Customer Support",
+  "Automate Admin Work",
+  "Create Marketing Content",
+  "Improve Recruiting",
+  "Manage Finance",
+  "Automate Operations",
+];
+
+const AI_EMPLOYEE_TYPES = [
+  "Sales Representative",
+  "SDR / Lead Generation",
+  "Customer Support",
+  "Marketing",
+  "Content Creator",
+  "Recruiter",
+  "Finance / Bookkeeping",
+  "Operations",
+  "Administrative Assistant",
+  "Researcher",
+];
+
+const BUSINESS_TYPES = [
+  "Small Business",
+  "Startup",
+  "Agency",
+  "E-commerce",
+  "SaaS",
+  "Local Business",
+  "Real Estate",
+  "Enterprise",
+];
+
+const PRICE_RANGES = [
+  { label: "Free", min: 0, max: 0 },
+  { label: "Under $100/mo", min: 1, max: 100 },
+  { label: "$100–$500/mo", min: 100, max: 500 },
+  { label: "$500+/mo", min: 500, max: Infinity },
+  { label: "Custom Pricing", custom: true },
+];
+
+function mapPriceToRange(price: number | null | undefined): string | null {
+  if (price === null || price === undefined) return "Custom Pricing";
+  if (price === 0) return "Free";
+  if (price < 100) return "Under $100/mo";
+  if (price <= 500) return "$100–$500/mo";
+  return "$500+/mo";
+}
 
 export function MarketplaceBrowser({
   employees,
@@ -34,20 +87,14 @@ export function MarketplaceBrowser({
   matchedIds: Set<string>;
 }) {
   const [search, setSearch] = useState("");
-  const [selectedCategories, setSelectedCategories] = useState<string[]>(
+  const [selectedProblems, setSelectedProblems] = useState<string[]>(
     initialCategory ? [initialCategory] : []
   );
-  const [selectedAgencies, setSelectedAgencies] = useState<string[]>([]);
-  const [selectedIntegrations, setSelectedIntegrations] = useState<string[]>([]);
-  const [setupTime, setSetupTime] = useState<string | null>(null);
-  const [minRating, setMinRating] = useState(0);
-  const [sort, setSort] = useState<SortKey>(matchedIds.size > 0 ? "relevant" : "rating");
+  const [selectedEmployeeTypes, setSelectedEmployeeTypes] = useState<string[]>([]);
+  const [selectedBusinessTypes, setSelectedBusinessTypes] = useState<string[]>([]);
+  const [selectedPrices, setSelectedPrices] = useState<string[]>([]);
+  const [sort, setSort] = useState<SortKey>(matchedIds.size > 0 ? "recommended" : "highest-rated");
   const [filtersOpen, setFiltersOpen] = useState(false);
-
-  const integrations = useMemo(
-    () => Array.from(new Set(employees.flatMap((e) => e.integrations ?? []))).sort(),
-    [employees]
-  );
 
   const filtered = useMemo(() => {
     let result = employees.filter((e) => {
@@ -55,23 +102,49 @@ export function MarketplaceBrowser({
         const haystack = `${e.name} ${e.role} ${(e.business_problems ?? []).join(" ")}`.toLowerCase();
         if (!haystack.includes(search.toLowerCase())) return false;
       }
-      if (selectedCategories.length && !(e.category && selectedCategories.includes(e.category.slug))) return false;
-      if (selectedAgencies.length && !(e.agency_id && selectedAgencies.includes(e.agency_id))) return false;
-      if (selectedIntegrations.length && !selectedIntegrations.some((i) => (e.integrations ?? []).includes(i))) return false;
-      if (setupTime && e.setup_time !== setupTime) return false;
-      if (minRating > 0 && (e.avg_rating ?? 0) < minRating) return false;
+
+      if (selectedProblems.length) {
+        const hasMatch = (e.business_problems ?? []).some((p) => selectedProblems.includes(p));
+        if (!hasMatch) return false;
+      }
+
+      if (selectedEmployeeTypes.length) {
+        // Map role to employee type - flexible matching
+        const roleMatches = selectedEmployeeTypes.some((type) => {
+          const eRole = (e.role || "").toLowerCase();
+          const typeNorm = type.toLowerCase();
+          return eRole.includes(typeNorm.split("/")[0].trim());
+        });
+        if (!roleMatches) return false;
+      }
+
+      if (selectedBusinessTypes.length) {
+        const eBizType = (e.industries?.[0] || "").toLowerCase();
+        const hasMatch = selectedBusinessTypes.some((type) => eBizType.includes(type.toLowerCase()));
+        if (!hasMatch) return false;
+      }
+
+      if (selectedPrices.length) {
+        const priceRange = mapPriceToRange(e.price_monthly);
+        if (!selectedPrices.includes(priceRange ?? "")) return false;
+      }
+
       return true;
     });
 
     result = [...result].sort((a, b) => {
       switch (sort) {
-        case "rating":
+        case "highest-rated":
           return (b.avg_rating ?? 0) - (a.avg_rating ?? 0);
-        case "roi":
-          return (b.avg_roi_percent ?? 0) - (a.avg_roi_percent ?? 0);
-        case "price-asc":
-          return (a.price_monthly ?? 0) - (b.price_monthly ?? 0);
-        case "relevant":
+        case "most-popular":
+          return (b.total_purchases ?? 0) - (a.total_purchases ?? 0);
+        case "price-low":
+          return (a.price_monthly ?? Infinity) - (b.price_monthly ?? Infinity);
+        case "price-high":
+          return (b.price_monthly ?? 0) - (a.price_monthly ?? 0);
+        case "newest":
+          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+        case "recommended":
         default: {
           const aMatch = matchedIds.has(a.id) ? 1 : 0;
           const bMatch = matchedIds.has(b.id) ? 1 : 0;
@@ -81,7 +154,7 @@ export function MarketplaceBrowser({
     });
 
     return result;
-  }, [employees, search, selectedCategories, selectedAgencies, selectedIntegrations, setupTime, minRating, sort, matchedIds]);
+  }, [employees, search, selectedProblems, selectedEmployeeTypes, selectedBusinessTypes, selectedPrices, sort, matchedIds]);
 
   function toggle(list: string[], setList: (v: string[]) => void, value: string) {
     setList(list.includes(value) ? list.filter((v) => v !== value) : [...list, value]);
@@ -89,92 +162,72 @@ export function MarketplaceBrowser({
 
   function clearFilters() {
     setSearch("");
-    setSelectedCategories([]);
-    setSelectedAgencies([]);
-    setSelectedIntegrations([]);
-    setSetupTime(null);
-    setMinRating(0);
+    setSelectedProblems([]);
+    setSelectedEmployeeTypes([]);
+    setSelectedBusinessTypes([]);
+    setSelectedPrices([]);
   }
 
-  const activeFilterCount =
-    selectedCategories.length + selectedAgencies.length + selectedIntegrations.length + (setupTime ? 1 : 0) + (minRating > 0 ? 1 : 0);
+  const activeFilterCount = selectedProblems.length + selectedEmployeeTypes.length + selectedBusinessTypes.length + selectedPrices.length;
 
   const FiltersPanel = (
     <div className="flex flex-col gap-8">
       <div>
-        <h3 className="mb-3 text-sm font-semibold">Business problem</h3>
+        <h3 className="mb-3 text-sm font-semibold">Business Problem</h3>
         <div className="flex flex-col gap-2.5">
-          {categories.map((c) => (
-            <label key={c.id} className="flex cursor-pointer items-center justify-between gap-2.5 text-sm">
-              <span className="flex items-center gap-2.5">
-                <Checkbox
-                  checked={selectedCategories.includes(c.slug)}
-                  onCheckedChange={() => toggle(selectedCategories, setSelectedCategories, c.slug)}
-                />
-                {c.name}
-              </span>
-            </label>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <h3 className="mb-3 text-sm font-semibold">Setup time</h3>
-        <div className="flex flex-col gap-2.5">
-          {["Same day", "Under 1 week", "Under 1 month"].map((t) => (
-            <label key={t} className="flex cursor-pointer items-center gap-2.5 text-sm">
-              <Checkbox checked={setupTime === t} onCheckedChange={() => setSetupTime(setupTime === t ? null : t)} />
-              {t}
-            </label>
-          ))}
-        </div>
-      </div>
-
-      {integrations.length > 0 && (
-        <div>
-          <h3 className="mb-3 text-sm font-semibold">Integrations</h3>
-          <div className="flex flex-col gap-2.5">
-            {integrations.map((i) => (
-              <label key={i} className="flex cursor-pointer items-center gap-2.5 text-sm">
-                <Checkbox
-                  checked={selectedIntegrations.includes(i)}
-                  onCheckedChange={() => toggle(selectedIntegrations, setSelectedIntegrations, i)}
-                />
-                {i}
-              </label>
-            ))}
-          </div>
-        </div>
-      )}
-
-      <div>
-        <h3 className="mb-3 text-sm font-semibold">Agency</h3>
-        <div className="flex flex-col gap-2.5">
-          {agencies.map((agency) => (
-            <label key={agency.id} className="flex cursor-pointer items-center gap-2.5 text-sm">
+          {BUSINESS_PROBLEMS.map((problem) => (
+            <label key={problem} className="flex cursor-pointer items-center gap-2.5 text-sm">
               <Checkbox
-                checked={selectedAgencies.includes(agency.id)}
-                onCheckedChange={() => toggle(selectedAgencies, setSelectedAgencies, agency.id)}
+                checked={selectedProblems.includes(problem)}
+                onCheckedChange={() => toggle(selectedProblems, setSelectedProblems, problem)}
               />
-              {agency.name}
+              {problem}
             </label>
           ))}
         </div>
       </div>
 
       <div>
-        <h3 className="mb-3 text-sm font-semibold">Minimum rating</h3>
-        <div className="flex gap-2">
-          {[0, 4, 4.5].map((r) => (
-            <button
-              key={r}
-              onClick={() => setMinRating(r)}
-              className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
-                minRating === r ? "border-primary bg-primary text-primary-foreground" : "border-border hover:bg-accent"
-              }`}
-            >
-              {r === 0 ? "Any" : `${r}+`}
-            </button>
+        <h3 className="mb-3 text-sm font-semibold">AI Employee</h3>
+        <div className="flex flex-col gap-2.5">
+          {AI_EMPLOYEE_TYPES.map((type) => (
+            <label key={type} className="flex cursor-pointer items-center gap-2.5 text-sm">
+              <Checkbox
+                checked={selectedEmployeeTypes.includes(type)}
+                onCheckedChange={() => toggle(selectedEmployeeTypes, setSelectedEmployeeTypes, type)}
+              />
+              {type}
+            </label>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <h3 className="mb-3 text-sm font-semibold">Business Type</h3>
+        <div className="flex flex-col gap-2.5">
+          {BUSINESS_TYPES.map((type) => (
+            <label key={type} className="flex cursor-pointer items-center gap-2.5 text-sm">
+              <Checkbox
+                checked={selectedBusinessTypes.includes(type)}
+                onCheckedChange={() => toggle(selectedBusinessTypes, setSelectedBusinessTypes, type)}
+              />
+              {type}
+            </label>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <h3 className="mb-3 text-sm font-semibold">Price</h3>
+        <div className="flex flex-col gap-2.5">
+          {PRICE_RANGES.map((range) => (
+            <label key={range.label} className="flex cursor-pointer items-center gap-2.5 text-sm">
+              <Checkbox
+                checked={selectedPrices.includes(range.label)}
+                onCheckedChange={() => toggle(selectedPrices, setSelectedPrices, range.label)}
+              />
+              {range.label}
+            </label>
           ))}
         </div>
       </div>
@@ -182,7 +235,7 @@ export function MarketplaceBrowser({
       {activeFilterCount > 0 && (
         <Button variant="ghost" size="sm" onClick={clearFilters} className="self-start">
           <X className="h-3.5 w-3.5" />
-          Clear all filters
+          Clear all
         </Button>
       )}
     </div>
@@ -211,16 +264,18 @@ export function MarketplaceBrowser({
               <SheetTrigger asChild>
                 <Button variant="outline" size="sm" className="lg:hidden">
                   <SlidersHorizontal className="h-3.5 w-3.5" />
-                  Filters {activeFilterCount > 0 && `(${activeFilterCount})`}
+                  Filters
+                  {activeFilterCount > 0 && <span className="ml-1.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-ploy-gold text-xs font-medium text-black">{activeFilterCount}</span>}
                 </Button>
               </SheetTrigger>
-              <SheetContent>
-                <div className="mt-8">{FiltersPanel}</div>
+              <SheetContent side="left">
+                <h2 className="mb-6 text-lg font-semibold">Filters</h2>
+                <div className="mt-2">{FiltersPanel}</div>
               </SheetContent>
             </Sheet>
 
             <Select value={sort} onValueChange={(v) => setSort(v as SortKey)}>
-              <SelectTrigger className="w-[170px]">
+              <SelectTrigger className="w-fit">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
