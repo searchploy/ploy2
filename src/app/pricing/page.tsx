@@ -100,7 +100,7 @@ export default function BusinessPricingPage() {
             {/* Pricing Cards - Primary Focus */}
             <div className="mb-16 grid gap-6 sm:grid-cols-2">
               {/* Free */}
-              <div className="flex flex-col gap-4 rounded-3xl border border-border bg-card p-8">
+              <div className="rounded-full border border-border bg-card p-8 aspect-square flex flex-col gap-4 justify-center items-center text-center">
                 <div>
                   <p className="mb-2 text-xs font-bold uppercase tracking-wide text-muted-foreground">Free</p>
                   <p className="font-mono text-3xl font-bold">
@@ -129,7 +129,7 @@ export default function BusinessPricingPage() {
 
               {/* Ploy Pro */}
               {/* The paid tier carries the gold rim + glow so it reads as the premium option. */}
-              <div className="shadow-glow-card gold-hairline gold-glow flex flex-col gap-4 rounded-3xl border bg-card p-8">
+              <div className="shadow-glow-card gold-hairline gold-glow flex flex-col gap-4 rounded-full border bg-card p-8 aspect-square justify-center items-center text-center">
                 <div>
                   <p className="mb-3 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-ploy-gold">
                     <Sparkles className="h-3.5 w-3.5" />

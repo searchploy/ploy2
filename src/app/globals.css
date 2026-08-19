@@ -138,17 +138,14 @@
    */
   body {
     @apply text-foreground antialiased;
-    background-color: #08090d;
-    background-image:
-      linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-      radial-gradient(circle at 50% -10%, rgba(80, 85, 100, 0.18), transparent 55%),
-      linear-gradient(135deg, #08090d 0%, #11131a 50%, #08090d 100%);
-    background-size:
-      40px 40px,
-      40px 40px,
-      100% 100%,
-      100% 100%;
+    background: #181c21;
+    background-image: repeating-linear-gradient(
+      135deg,
+      #232526 0px,
+      #232526 60px,
+      rgba(35, 37, 38, 0.6) 70px,
+      #414345 130px
+    );
     background-attachment: fixed;
   }
 
@@ -172,6 +169,15 @@
   h2,
   h3 {
     letter-spacing: -0.03em;
+  }
+}
+
+@keyframes cubeMove {
+  from {
+    transform: translateY(0) scale(1);
+  }
+  to {
+    transform: translateY(-20%) scale(1.02) rotate(1deg);
   }
 }
 

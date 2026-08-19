@@ -32,65 +32,49 @@ export function EmployeeCard({ employee, index = 0 }: { employee: EmployeeCardDa
         continues to mean "promoted" rather than decorating every card.
       */}
       <Card
+        circular
         className={cn(
-          "group flex h-full flex-col overflow-hidden transition-all hover:-translate-y-1 hover-glow-border",
+          "group relative flex h-full w-full flex-col items-center justify-center overflow-hidden transition-all hover:-translate-y-1 hover-glow-border p-6",
           employee.is_featured && "gold-hairline gold-glow"
         )}
       >
-        <Link href={`/marketplace/${employee.slug}`} className="relative block aspect-[16/10] overflow-hidden bg-secondary">
+        <Link href={`/marketplace/${employee.slug}`} className="absolute inset-0 flex flex-col items-center justify-center">
           {employee.cover_image_url && (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={employee.cover_image_url}
               alt={employee.name}
-              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              className="absolute inset-0 h-full w-full rounded-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
           )}
+          <div className="absolute inset-0 rounded-full bg-gradient-to-t from-background via-background/50 to-transparent" />
+          <div className="relative z-10 flex flex-col items-center justify-center gap-2 text-center">
+            <h3 className="font-semibold leading-tight transition-colors group-hover:text-ploy-gold line-clamp-1">
+              {employee.name}
+            </h3>
+            <p className="line-clamp-1 text-xs text-muted-foreground">{employee.tagline}</p>
+            <div className="flex items-center gap-1">
+              <Link href={`/agencies/${employee.agency.slug}`} className="inline-flex items-center gap-1 text-xs font-medium text-foreground hover:text-ploy-gold">
+                {employee.agency.name}
+                {employee.agency.is_verified && <BadgeCheck className="h-3 w-3 text-ploy-gold" />}
+              </Link>
+            </div>
+            <div className="pt-2">
+              <RatingStars rating={employee.avg_rating} reviewCount={employee.review_count} />
+            </div>
+          </div>
           {primaryCategory && (
-            <Badge variant="blue" className="absolute left-3 top-3 bg-background/90 backdrop-blur">
+            <Badge variant="blue" className="absolute left-3 top-3 z-20 bg-background/90 backdrop-blur">
               <CategoryIcon name={primaryCategory.icon} className="h-3 w-3" />
               {primaryCategory.name}
             </Badge>
           )}
           {employee.is_featured && (
-            <Badge variant="premium" className="absolute right-3 top-3">
+            <Badge variant="premium" className="absolute right-3 top-3 z-20">
               Featured
             </Badge>
           )}
         </Link>
-
-        <div className="flex flex-1 flex-col gap-3 p-5">
-          <div className="flex items-start justify-between gap-2">
-            <div>
-              <Link href={`/marketplace/${employee.slug}`}>
-                <h3 className="font-semibold leading-tight transition-colors group-hover:text-ploy-gold">
-                  {employee.name}
-                </h3>
-              </Link>
-              <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{employee.tagline}</p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-            <span>by</span>
-            <Link href={`/agencies/${employee.agency.slug}`} className="inline-flex items-center gap-1 font-medium text-foreground hover:text-ploy-gold">
-              {employee.agency.name}
-              {employee.agency.is_verified && <BadgeCheck className="h-3.5 w-3.5 text-ploy-gold" />}
-            </Link>
-          </div>
-
-          <RatingStars rating={employee.avg_rating} reviewCount={employee.review_count} />
-
-          <div className="mt-auto flex items-center justify-between pt-3">
-            <div>
-              <p className="text-xs text-muted-foreground">Starting at</p>
-              <PriceBadge cents={employee.starting_price_cents} model={employee.pricing_model} />
-            </div>
-            <Button asChild size="sm">
-              <Link href={`/marketplace/${employee.slug}`}>View Details</Link>
-            </Button>
-          </div>
-        </div>
       </Card>
     </motion.div>
   );

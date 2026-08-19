@@ -1,12 +1,17 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
-const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
+interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+  circular?: boolean;
+}
+
+const Card = React.forwardRef<HTMLDivElement, CardProps>(
+  ({ className, circular, ...props }, ref) => (
     <div
       ref={ref}
       className={cn(
-        "rounded-2xl border border-border bg-card text-card-foreground shadow-sm",
+        "border border-border bg-card text-card-foreground shadow-sm",
+        circular ? "rounded-full aspect-square" : "rounded-2xl",
         className
       )}
       {...props}
