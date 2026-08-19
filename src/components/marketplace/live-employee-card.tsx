@@ -15,7 +15,14 @@ export function LiveEmployeeCard({
   index?: number;
   isReportMatch?: boolean;
 }) {
-  const problem = employee.business_problems?.[0];
+  // Seeded listings lead with a problem quote + outcomes. Listings created via
+  // the create-listing form supply a tagline + primary tasks instead, so fall
+  // back to those rather than rendering an near-empty card.
+  const problem = employee.business_problems?.[0] ?? employee.tagline ?? undefined;
+  const highlights =
+    employee.outcomes && employee.outcomes.length > 0
+      ? employee.outcomes
+      : (employee.primary_tasks ?? []);
 
   return (
     <motion.div
@@ -52,9 +59,9 @@ export function LiveEmployeeCard({
 
           {problem && <p className="mt-3 text-sm italic leading-relaxed text-muted-foreground">&ldquo;{problem}&rdquo;</p>}
 
-          {employee.outcomes && employee.outcomes.length > 0 && (
+          {highlights.length > 0 && (
             <div className="mt-3 flex flex-col gap-1">
-              {employee.outcomes.slice(0, 2).map((o) => (
+              {highlights.slice(0, 2).map((o: string) => (
                 <p key={o} className="flex gap-2 text-sm text-muted-foreground">
                   <span className="text-ploy-blue">↳</span>
                   {o}
