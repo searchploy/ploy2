@@ -35,8 +35,18 @@ export function LiveEmployeeCard({
         href={`/marketplace/${employee.slug}`}
         className="hover-glow-border flex flex-col gap-4 rounded-2xl border border-border bg-card p-6 transition-colors sm:flex-row sm:items-start"
       >
-        <span className="flex h-13 w-13 shrink-0 items-center justify-center rounded-2xl bg-secondary text-2xl">
-          🤖
+        <span className="flex h-13 w-13 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-secondary text-2xl">
+          {employee.thumbnail_url ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={employee.thumbnail_url}
+              alt=""
+              className="h-full w-full object-cover"
+              loading="lazy"
+            />
+          ) : (
+            "🤖"
+          )}
         </span>
 
         <div className="min-w-0 flex-1">

@@ -53,10 +53,20 @@ export default async function EmployeeDetailPage({ params }: { params: Promise<{
             {employee.featured && <Badge className="bg-foreground text-background">Featured</Badge>}
           </div>
 
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-wide text-ploy-blue">{employee.role}</p>
-            <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{employee.name}</h1>
-            {employee.tagline && <p className="mt-2 text-lg text-muted-foreground">{employee.tagline}</p>}
+          <div className="flex items-start gap-4">
+            {employee.thumbnail_url && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={employee.thumbnail_url}
+                alt=""
+                className="h-16 w-16 shrink-0 rounded-2xl border border-border object-cover"
+              />
+            )}
+            <div className="min-w-0">
+              <p className="text-sm font-semibold uppercase tracking-wide text-ploy-blue">{employee.role}</p>
+              <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{employee.name}</h1>
+              {employee.tagline && <p className="mt-2 text-lg text-muted-foreground">{employee.tagline}</p>}
+            </div>
           </div>
 
           <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">

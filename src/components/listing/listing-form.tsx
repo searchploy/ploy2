@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { ListingPreview } from "@/components/listing/listing-preview";
+import { LogoUpload } from "@/components/listing/logo-upload";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 import {
@@ -482,16 +483,11 @@ export function ListingForm({
           </p>
         </div>
 
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="logoUrl">Company Logo URL</Label>
-          <Input
-            id="logoUrl"
-            value={form.logoUrl}
-            placeholder="https://…/logo.png"
-            onChange={(e) => set("logoUrl", e.target.value)}
-          />
+        <div className="flex flex-col gap-2">
+          <Label>Company Logo</Label>
+          <LogoUpload value={form.logoUrl} onChange={(url) => set("logoUrl", url)} />
           <p className="text-xs text-muted-foreground">
-            Optional. Paste a link to your logo — file uploads aren&apos;t supported yet.
+            Optional. Shown on your marketplace card and listing page.
           </p>
         </div>
       </Section>
