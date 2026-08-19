@@ -6,7 +6,6 @@ import { AiReportPreview } from "@/components/home/ai-report-preview";
 import { MarketplacePreview } from "@/components/home/marketplace-preview";
 import { CategoriesSection } from "@/components/home/categories-section";
 import { ConsultantSection } from "@/components/home/consultant-section";
-import { AgencySection } from "@/components/home/agency-section";
 import { TestimonialsSection } from "@/components/home/testimonials-section";
 import { CtaSection } from "@/components/home/cta-section";
 
@@ -21,7 +20,6 @@ export default function HomePage() {
       <MarketplacePreview />
       <CategoriesSection />
       <ConsultantSection />
-      <AgencySection />
       <TestimonialsSection />
       <CtaSection />
     </>
