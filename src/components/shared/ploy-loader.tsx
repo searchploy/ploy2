@@ -28,7 +28,7 @@ export function PloyLoader({ size = 250, className }: { size?: number; className
       <div className="box" />
       <div className="box" />
       <div className="logo" aria-hidden>
-        <Image src="/6.png" alt="" width={250} height={250} priority />
+        <Image src="/ploy-mark.png" alt="" width={1261} height={1247} priority />
       </div>
       <span className="sr-only">Loading</span>
     </div>

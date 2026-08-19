@@ -261,13 +261,6 @@
   animation-delay: 0.8s;
 }
 
-/*
- * `screen` sits on the container, not the <img>. Because .logo is positioned
- * with a z-index it forms its own stacking context, and an image blending
- * inside that context has nothing behind it to blend with — the mark's black
- * field stays black. Blending the container instead composites it against the
- * rings below, which is what drops the black.
- */
 .loader .logo {
   position: absolute;
   inset: 0;
@@ -275,12 +268,13 @@
   display: grid;
   place-content: center;
   padding: 30%;
-  mix-blend-mode: screen;
 }
 
 /*
  * The original animates `fill` on an inline SVG. The Ploy mark is a raster
  * PNG, so the equivalent dim -> bright pulse runs on brightness instead.
+ * The mark has a real alpha channel, so it needs no blend mode to sit on the
+ * rings.
  */
 .loader .logo img {
   width: 100%;

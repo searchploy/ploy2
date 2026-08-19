@@ -52,10 +52,10 @@ export function HeroDashboardPreview() {
       <div className="flex items-center justify-between border-b border-border bg-secondary/30 px-5 py-3.5 sm:px-7">
         <div className="flex items-center gap-2.5">
           <Image
-            src="/6.png"
+            src="/ploy-mark.png"
             alt="Ploy"
-            width={28}
-            height={28}
+            width={1261}
+            height={1247}
             className="h-7 w-7 shrink-0"
           />
           <span className="text-sm font-semibold">Northwind Supply Co.</span>
