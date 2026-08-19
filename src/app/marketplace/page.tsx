@@ -6,8 +6,6 @@ import {
   getLiveAgencies,
   getReportRecommendedEmployeeIds,
 } from "@/lib/data/live-marketplace";
-import { employees as mockExternalProviders } from "@/lib/data/employees";
-import { agencies as mockAgencies } from "@/lib/data/agencies";
 
 export const metadata: Metadata = {
   title: "AI Employee Marketplace",
@@ -26,7 +24,7 @@ export default async function MarketplacePage({
 }) {
   const { category, from_report: fromReport } = await searchParams;
 
-  const [liveEmployees, categories, liveAgencies, matchedIds] = await Promise.all([
+  const [employees, categories, agencies, matchedIds] = await Promise.all([
     getLivePublishedEmployees(),
     getLiveCategories(),
     getLiveAgencies(),
@@ -34,16 +32,6 @@ export default async function MarketplacePage({
       ? getReportRecommendedEmployeeIds(fromReport)
       : Promise.resolve(new Set<string>()),
   ]);
-
-  // Merge live Supabase employees with mock external provider employees
-  // External providers are the last 30 employees in the mock data
-  const externalProviderEmployees = mockExternalProviders.slice(-30);
-  const employees = [...liveEmployees, ...externalProviderEmployees];
-
-  // Merge live agencies with mock external provider agencies
-  // External provider agencies are the last 14 agencies in the mock data
-  const externalProviderAgencies = mockAgencies.slice(-14);
-  const agencies = [...liveAgencies, ...externalProviderAgencies];
 
   return (
     <div className="container py-12">
