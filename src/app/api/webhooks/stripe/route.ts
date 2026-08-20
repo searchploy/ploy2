@@ -49,6 +49,15 @@ export async function POST(request: NextRequest) {
         .update({ subscription_type: subscriptionType, subscription_plan: "pro" })
         .eq("id", profileId);
 
+      // Cancel any previous subscriptions of the same type for this user
+      await supabase
+        .from("subscriptions")
+        .update({ status: "cancelled" })
+        .eq("profile_id", profileId)
+        .eq("type", subscriptionType)
+        .neq("stripe_subscription_id", stripeSub.id);
+
+      // Upsert the new subscription (update if exists with this stripe_subscription_id, insert if not)
       await supabase.from("subscriptions").upsert(
         {
           profile_id: profileId,
