@@ -126,16 +126,30 @@ export function BillingPageContent({
                       </div>
                     </div>
 
-                    {isActive && subscription.current_period_end && (
+                    {subscription.current_period_end && (
                       <div className="border-t border-border pt-4">
                         <p className="text-sm text-muted-foreground">
-                          Your subscription renews on{" "}
-                          <strong>
-                            {format(
-                              new Date(subscription.current_period_end),
-                              "MMMM d, yyyy"
-                            )}
-                          </strong>
+                          {subscription.cancel_at_period_end ? (
+                            <>
+                              Your subscription will cancel on{" "}
+                              <strong>
+                                {format(
+                                  new Date(subscription.current_period_end),
+                                  "MMMM d, yyyy"
+                                )}
+                              </strong>
+                            </>
+                          ) : (
+                            <>
+                              Your subscription renews on{" "}
+                              <strong>
+                                {format(
+                                  new Date(subscription.current_period_end),
+                                  "MMMM d, yyyy"
+                                )}
+                              </strong>
+                            </>
+                          )}
                         </p>
                       </div>
                     )}
