@@ -5,6 +5,7 @@ import { ArrowRight, Check, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { UpgradeButton } from "@/components/pricing/upgrade-button";
 import { CheckoutStatusToast } from "@/components/pricing/checkout-status-toast";
+import { getPrice } from "@/lib/stripe/server";
 
 export const metadata: Metadata = {
   title: "For Agencies",
@@ -72,7 +73,8 @@ const testimonials = [
 ];
 
 
-export default function ForAgenciesPage() {
+export default async function ForAgenciesPage() {
+  const proPrice = await getPrice("pro");
   return (
     <div className="flex flex-col">
       <Suspense fallback={null}>
@@ -135,7 +137,7 @@ export default function ForAgenciesPage() {
                     Ploy Pro
                   </p>
                   <p className="font-mono text-3xl font-bold">
-                    $29.99<span className="text-base font-normal text-muted-foreground">/mo</span>
+                    ${proPrice?.amount.toFixed(2) ?? "29.99"}<span className="text-base font-normal text-muted-foreground">/mo</span>
                   </p>
                 </div>
                 <p className="text-sm text-muted-foreground">Get premium visibility, unlimited reports, and grow faster.</p>

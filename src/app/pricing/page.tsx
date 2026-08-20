@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Check, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { UpgradeButton } from "@/components/pricing/upgrade-button";
+import { getPrice } from "@/lib/stripe/server";
 
 const CheckoutStatusToast = dynamic(() => import("@/components/pricing/checkout-status-toast").then(mod => ({ default: mod.CheckoutStatusToast })));
 
@@ -74,7 +75,9 @@ const testimonials = [
 ];
 
 
-export default function BusinessPricingPage() {
+export default async function BusinessPricingPage() {
+  const proPrice = await getPrice("pro");
+
   return (
     <div className="flex flex-col">
       <Suspense fallback={null}>
@@ -136,7 +139,7 @@ export default function BusinessPricingPage() {
                     <span className="metal-text">Ploy Pro</span>
                   </p>
                   <p className="font-mono text-3xl font-bold">
-                    <span className="metal-text">$29.99</span>
+                    <span className="metal-text">${proPrice?.amount.toFixed(2) ?? "29.99"}</span>
                     <span className="text-base font-normal text-muted-foreground">/mo</span>
                   </p>
                 </div>
