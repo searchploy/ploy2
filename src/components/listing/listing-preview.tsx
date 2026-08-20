@@ -13,6 +13,8 @@ export interface ListingPreviewData {
   agencyName: string;
   websiteUrl: string;
   logoUrl: string;
+  /** null means the listing is shown as "Custom Pricing". */
+  priceMonthly: number | null;
 }
 
 /**
@@ -100,6 +102,22 @@ export function ListingPreview({ data }: { data: ListingPreviewData }) {
           )}
         </div>
       )}
+
+      <div className="border-t border-border pt-4">
+        <p className="text-sm text-muted-foreground">
+          {data.priceMonthly != null ? "Starting at" : "Pricing"}
+        </p>
+        <p className="text-2xl font-semibold">
+          {data.priceMonthly != null ? (
+            <>
+              ${data.priceMonthly}
+              <span className="text-base font-normal text-muted-foreground">/mo</span>
+            </>
+          ) : (
+            "Custom Pricing"
+          )}
+        </p>
+      </div>
 
       <Button disabled className="w-full sm:w-auto">
         Visit Agency Website

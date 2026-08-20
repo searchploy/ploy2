@@ -119,6 +119,10 @@ export function ListingForm({
     agencyName: existing?.agency_name ?? "",
     websiteUrl: existing?.website_url ?? "",
     logoUrl: existing?.thumbnail_url ?? "",
+    // A listing with no price is shown as "Custom Pricing" on the marketplace,
+    // which is a legitimate choice — plenty of agencies quote per engagement.
+    pricingType: existing && existing.price_monthly == null ? "custom" : "monthly",
+    priceMonthly: existing?.price_monthly != null ? String(existing.price_monthly) : "",
   });
 
   const set = <K extends keyof typeof form>(key: K, value: (typeof form)[K]) =>
@@ -158,6 +162,11 @@ export function ListingForm({
     if (!form.description.trim()) return "Add a description.";
     if (form.description.length > MAX_DESCRIPTION) return "Your description is too long.";
     if (form.primaryTasks.length === 0) return "Select at least one primary task.";
+    if (form.pricingType === "monthly") {
+      if (!form.priceMonthly.trim()) return "Add a monthly price, or choose custom pricing.";
+      const price = Number(form.priceMonthly);
+      if (!Number.isFinite(price) || price < 0) return "That monthly price doesn't look valid.";
+    }
     if (!form.agencyName.trim()) return "Add your agency or company name.";
     if (!form.websiteUrl.trim()) return "Add your website URL.";
     if (!normaliseUrl(form.websiteUrl)) return "That website URL doesn't look valid.";
@@ -206,6 +215,10 @@ export function ListingForm({
       agency_name: form.agencyName.trim(),
       website_url: normaliseUrl(form.websiteUrl),
       thumbnail_url: form.logoUrl.trim() || null,
+      // null renders as "Custom Pricing" on the marketplace card and hides the
+      // price block on the detail page.
+      price_monthly: form.pricingType === "monthly" ? Number(form.priceMonthly) : null,
+      price_type: form.pricingType === "monthly" ? "monthly" : "custom",
       // Ploy refers buyers to the agency — it never sells the AI employee.
       role: form.primaryTasks[0] ?? "AI Employee",
       // Everything a user saves — new listing, edit of an approved one, or a
@@ -266,6 +279,10 @@ export function ListingForm({
             agencyName: form.agencyName,
             websiteUrl: form.websiteUrl,
             logoUrl: form.logoUrl,
+            priceMonthly:
+              form.pricingType === "monthly" && form.priceMonthly.trim()
+                ? Number(form.priceMonthly)
+                : null,
           }}
         />
 
@@ -468,6 +485,57 @@ export function ListingForm({
 
       <Section
         step={4}
+        title="Pricing"
+        hint="Shown on your marketplace card so businesses can compare at a glance."
+      >
+        <div className="flex flex-col gap-3">
+          <Label>How do you price this? *</Label>
+          <div className="flex flex-wrap gap-2">
+            <Chip
+              label="Monthly price"
+              selected={form.pricingType === "monthly"}
+              onClick={() => set("pricingType", "monthly")}
+            />
+            <Chip
+              label="Custom pricing"
+              selected={form.pricingType === "custom"}
+              onClick={() => set("pricingType", "custom")}
+            />
+          </div>
+        </div>
+
+        {form.pricingType === "monthly" ? (
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="priceMonthly">Starting price *</Label>
+            <div className="flex items-center gap-2">
+              <span className="text-muted-foreground">$</span>
+              <Input
+                id="priceMonthly"
+                type="number"
+                min={0}
+                step={1}
+                inputMode="numeric"
+                value={form.priceMonthly}
+                placeholder="149"
+                className="max-w-40"
+                onChange={(e) => set("priceMonthly", e.target.value)}
+              />
+              <span className="text-sm text-muted-foreground">/month</span>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              If you have tiers, use the lowest — it shows as &ldquo;Starting at&rdquo;.
+            </p>
+          </div>
+        ) : (
+          <p className="text-sm text-muted-foreground">
+            Your listing will show <strong className="text-foreground">Custom Pricing</strong>, and
+            businesses will get a quote from you directly.
+          </p>
+        )}
+      </Section>
+
+      <Section
+        step={5}
         title="Company / agency"
         hint="Interested businesses are sent to your website — Ploy doesn't handle the sale."
       >
