@@ -2,6 +2,8 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/button";
+import { getEntitlements } from "@/lib/auth/entitlements";
+import { ProVisibilityPanel } from "@/components/listing/pro-visibility-panel";
 import { ListingManagementContent } from "./listing-management-content";
 
 export const metadata = {
@@ -20,11 +22,12 @@ export default async function MarketplaceListingPage() {
     redirect("/sign-in");
   }
 
-  const { data: listing } = await supabase
-    .from("employees")
-    .select("*")
-    .eq("profile_id", user.id)
-    .single();
+  const [{ data: listing }, entitlements] = await Promise.all([
+    supabase.from("employees").select("*").eq("profile_id", user.id).maybeSingle(),
+    // Server-resolved from the subscriptions table — the client never gets to
+    // assert Ploy Pro membership.
+    getEntitlements(),
+  ]);
 
   return (
     <div className="container max-w-4xl py-8">
@@ -37,7 +40,10 @@ export default async function MarketplaceListingPage() {
         </div>
 
         {listing ? (
-          <ListingManagementContent listing={listing} />
+          <>
+            <ProVisibilityPanel isPro={entitlements.pro} status={listing.status} />
+            <ListingManagementContent listing={listing} />
+          </>
         ) : (
           <div className="rounded-lg border border-border bg-card p-8 text-center">
             <h2 className="text-xl font-semibold mb-2">

@@ -221,8 +221,18 @@ function matchEmployees(input: ReportInput, catalog: EmployeeWithCategory[], lim
       const matchScore = categorySlug ? categoryScores.get(categorySlug) ?? 0 : 0;
       return { emp, matchScore };
     })
+    // Relevance is a gate, not a weight: an employee that doesn't match the
+    // business's stated signals is never recommended, Ploy Pro or not.
     .filter((e) => e.matchScore > 0)
-    .sort((a, b) => b.matchScore - a.matchScore || (b.emp.avg_rating ?? 0) - (a.emp.avg_rating ?? 0));
+    .sort((a, b) => {
+      // Ranking within the relevant set: how well it matches, then Ploy Pro
+      // visibility, then rating. Pro moves a listing up among employees that
+      // already fit — it can't manufacture a fit that isn't there.
+      if (b.matchScore !== a.matchScore) return b.matchScore - a.matchScore;
+      const proDiff = Number(b.emp.is_pro_boosted ?? false) - Number(a.emp.is_pro_boosted ?? false);
+      if (proDiff !== 0) return proDiff;
+      return (b.emp.avg_rating ?? 0) - (a.emp.avg_rating ?? 0);
+    });
 
   const picked = (scored.length > 0 ? scored.map((s) => s.emp) : catalog).slice(0, limit);
 

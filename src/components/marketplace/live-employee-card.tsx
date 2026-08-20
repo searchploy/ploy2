@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Star, Sparkles, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { PloyProBadge } from "@/components/marketplace/ploy-pro-badge";
 import { toggleEmployeeFavorite } from "@/app/marketplace/actions";
 import type { EmployeeWithCategory } from "@/lib/data/live-marketplace";
 
@@ -87,7 +88,10 @@ export function LiveEmployeeCard({
           <div className="flex flex-wrap items-start justify-between gap-2">
             <div>
               <p className="text-xs font-bold uppercase tracking-wide text-ploy-gold">{employee.role}</p>
-              <h3 className="text-lg font-bold">{employee.name}</h3>
+              <h3 className="flex items-center gap-2 text-lg font-bold">
+                {employee.name}
+                {employee.is_pro_boosted && <PloyProBadge />}
+              </h3>
               <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
                 {employee.avg_rating != null && employee.avg_rating > 0 && (
                   <span className="flex items-center gap-1 font-medium text-amber-400">
@@ -192,7 +196,10 @@ export function LiveEmployeeCard({
           <div className="flex flex-wrap items-start justify-between gap-2">
             <div>
               <p className="text-xs font-bold uppercase tracking-wide text-ploy-gold">{employee.role}</p>
-              <h3 className="text-lg font-bold">{employee.name}</h3>
+              <h3 className="flex items-center gap-2 text-lg font-bold">
+                {employee.name}
+                {employee.is_pro_boosted && <PloyProBadge />}
+              </h3>
               <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
                 {employee.avg_rating != null && employee.avg_rating > 0 && (
                   <span className="flex items-center gap-1 font-medium text-amber-400">

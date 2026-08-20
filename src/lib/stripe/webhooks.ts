@@ -8,6 +8,31 @@
 import Stripe from 'stripe'
 import { createClient } from '@/lib/supabase/server'
 import { syncInvoiceToDatabase } from './invoices'
+import type { Database } from '@/lib/types/database'
+
+type SubscriptionStatus = Database['public']['Enums']['subscription_status']
+
+/**
+ * Stripe's status vocabulary is wider than ours and spells cancellation with
+ * one L; subscription_status only accepts active | cancelled | past_due |
+ * trialing. Writing a value outside that set makes the whole update fail, so
+ * previously a cancellation left the row sitting at 'active' — the user kept
+ * every paid benefit indefinitely. Anything that isn't a live subscription
+ * maps to 'cancelled' so entitlements switch off.
+ */
+function toSubscriptionStatus(status: Stripe.Subscription.Status): SubscriptionStatus {
+  switch (status) {
+    case 'active':
+      return 'active'
+    case 'trialing':
+      return 'trialing'
+    case 'past_due':
+      return 'past_due'
+    default:
+      // canceled, unpaid, incomplete, incomplete_expired, paused
+      return 'cancelled'
+  }
+}
 
 /**
  * Handle subscription created event
@@ -31,7 +56,7 @@ export async function handleSubscriptionCreated(
     stripe_subscription_id: subscription.id,
     stripe_price_id: item.price.id,
     type: subscriptionType,
-    status: subscription.status as 'active' | 'trialing' | 'past_due' | 'canceled' | 'unpaid',
+    status: toSubscriptionStatus(subscription.status),
     current_period_start: new Date(
       ((subscription as unknown as Record<string, unknown>).current_period_start as number) * 1000
     ).toISOString(),
@@ -61,12 +86,12 @@ export async function handleSubscriptionUpdated(
   const item = subscription.items.data[0]
 
   const updates: {
-    status: string
+    status: SubscriptionStatus
     current_period_end: string
     cancel_at_period_end: boolean
     stripe_price_id?: string
   } = {
-    status: subscription.status,
+    status: toSubscriptionStatus(subscription.status),
     current_period_end: new Date(
       ((subscription as unknown as Record<string, unknown>).current_period_end as number) * 1000
     ).toISOString(),
@@ -97,7 +122,7 @@ export async function handleSubscriptionDeleted(
   // Update subscription status
   await supabase
     .from('subscriptions')
-    .update({ status: 'canceled' })
+    .update({ status: 'cancelled' })
     .eq('stripe_subscription_id', subscription.id)
 
   // Reset profile to free plan

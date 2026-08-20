@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { CategoryIcon } from "@/components/shared/category-icon";
 import { LiveEmployeeCard } from "@/components/marketplace/live-employee-card";
+import { PloyProBadge } from "@/components/marketplace/ploy-pro-badge";
 import { DemoRequestDialog } from "@/components/marketplace/demo-request-dialog";
 import { createClient } from "@/lib/supabase/server";
 import {
@@ -71,7 +72,10 @@ export default async function EmployeeDetailPage({ params }: { params: Promise<{
             )}
             <div className="min-w-0">
               <p className="text-sm font-semibold uppercase tracking-wide text-ploy-gold">{employee.role}</p>
-              <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{employee.name}</h1>
+              <h1 className="flex flex-wrap items-center gap-2.5 text-3xl font-semibold tracking-tight sm:text-4xl">
+                {employee.name}
+                {employee.is_pro_boosted && <PloyProBadge size="md" />}
+              </h1>
               {employee.tagline && <p className="mt-2 text-lg text-muted-foreground">{employee.tagline}</p>}
             </div>
           </div>

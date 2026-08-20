@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { AlertDialog } from "@/components/dashboard/alert-dialog";
 import { ListingReviewDialog, StatusPill } from "@/components/dashboard/listing-review-dialog";
+import { PloyProBadge } from "@/components/marketplace/ploy-pro-badge";
 import {
   approveListing,
   rejectListing,
@@ -85,7 +86,11 @@ export function ListingsModerationTabs({ listings }: { listings: EmployeeWithCat
           }}
           className="min-w-0 flex-1 text-left"
         >
-          <p className="truncate font-medium hover:text-ploy-gold">{listing.name}</p>
+          <p className="flex items-center gap-2 truncate font-medium hover:text-ploy-gold">
+            {listing.name}
+            {/* Derived from the owner's live subscription — not an admin-set flag. */}
+            {listing.is_pro_boosted && <PloyProBadge />}
+          </p>
           <p className="truncate text-sm text-muted-foreground">
             {listing.agency_name ?? "—"}
             {listing.category ? ` · ${listing.category.name}` : ""}

@@ -65,6 +65,52 @@ const PRICE_RANGES = [
   { label: "Custom Pricing", custom: true },
 ];
 
+/**
+ * "Recommended" ordering. Ploy Pro is one weighted factor among several, not
+ * an override: the boost is worth less than a relevance tier or a report
+ * match, so a Ploy Pro listing rises among comparably relevant results but
+ * never jumps ahead of a listing that fits the query better.
+ */
+const WEIGHT = {
+  /** Query term appears in the name — the strongest relevance signal we have. */
+  nameHit: 400,
+  /** Query term appears in role or stated business problems. */
+  contextHit: 200,
+  /** This employee was recommended by the report the visitor arrived from. */
+  reportMatch: 120,
+  /**
+   * Ploy Pro visibility advantage — deliberately smaller than the rating
+   * range below (0-25). Ploy Pro has to be able to lift a listing past
+   * comparable ones, without letting an unrated new listing outrank a
+   * 4.9-star one purely for being subscribed. At 12 it is worth ~2.4 stars:
+   * decisive among similar listings, not enough to buy the top spot.
+   */
+  pro: 12,
+  /** Rating contributes up to 25 (5 stars x 5). */
+  ratingMultiplier: 5,
+} as const;
+
+function recommendedScore(
+  employee: EmployeeWithCategory,
+  search: string,
+  matchedIds: Set<string>
+): number {
+  let score = 0;
+
+  const term = search.trim().toLowerCase();
+  if (term) {
+    if ((employee.name ?? "").toLowerCase().includes(term)) score += WEIGHT.nameHit;
+    const context = `${employee.role ?? ""} ${(employee.business_problems ?? []).join(" ")}`.toLowerCase();
+    if (context.includes(term)) score += WEIGHT.contextHit;
+  }
+
+  if (matchedIds.has(employee.id)) score += WEIGHT.reportMatch;
+  if (employee.is_pro_boosted) score += WEIGHT.pro;
+  score += (employee.avg_rating ?? 0) * WEIGHT.ratingMultiplier;
+
+  return score;
+}
+
 function mapPriceToRange(price: number | null | undefined): string | null {
   if (price === null || price === undefined) return "Custom Pricing";
   if (price === 0) return "Free";
@@ -133,6 +179,8 @@ export function MarketplaceBrowser({
     });
 
     result = [...result].sort((a, b) => {
+      // Only "Recommended" weighs Ploy Pro. The explicit sorts below are the
+      // visitor's stated intent, so they stay exactly what they say they are.
       switch (sort) {
         case "highest-rated":
           return (b.avg_rating ?? 0) - (a.avg_rating ?? 0);
@@ -146,9 +194,9 @@ export function MarketplaceBrowser({
           return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
         case "recommended":
         default: {
-          const aMatch = matchedIds.has(a.id) ? 1 : 0;
-          const bMatch = matchedIds.has(b.id) ? 1 : 0;
-          return bMatch - aMatch || (b.avg_rating ?? 0) - (a.avg_rating ?? 0);
+          const diff = recommendedScore(b, search, matchedIds) - recommendedScore(a, search, matchedIds);
+          // Stable tiebreak so equal scores don't shuffle between renders.
+          return diff || a.name.localeCompare(b.name);
         }
       }
     });

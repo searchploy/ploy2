@@ -31,15 +31,41 @@ export async function getLiveFeaturedEmployees(limit = 3): Promise<EmployeeWithC
   return (data as EmployeeWithCategory[] | null) ?? [];
 }
 
-export type EmployeeWithCategory = Employee & { category: { slug: string; name: string; icon: string | null } | null };
+export type EmployeeWithCategory = Employee & {
+  category: { slug: string; name: string; icon: string | null } | null;
+  /**
+   * Approved listing whose owner has an active Ploy Pro subscription. Always
+   * resolved server-side from the subscriptions table — never accepted from
+   * the client, and never stored on the listing row, so it switches off by
+   * itself the moment a subscription lapses.
+   */
+  is_pro_boosted?: boolean;
+};
+
+/**
+ * Ids of approved listings owned by an active Ploy Pro subscriber. One round
+ * trip for the whole page — see pro_boosted_employee_ids() in migration 0016.
+ */
+export async function getProBoostedEmployeeIds(): Promise<Set<string>> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("pro_boosted_employee_ids");
+  // A boost is a bonus, not a correctness requirement: if this fails the
+  // marketplace still renders, just without anyone boosted.
+  if (error || !data) return new Set();
+  return new Set((data as unknown as string[]) ?? []);
+}
+
+function withProBoost<T extends { id: string }>(rows: T[], boosted: Set<string>) {
+  return rows.map((row) => ({ ...row, is_pro_boosted: boosted.has(row.id) }));
+}
 
 export async function getLivePublishedEmployees(): Promise<EmployeeWithCategory[]> {
   const supabase = await createClient();
-  const { data } = await supabase
-    .from("employees")
-    .select("*, category:categories(slug, name, icon)")
-    .eq("status", "published");
-  return (data as EmployeeWithCategory[] | null) ?? [];
+  const [{ data }, boosted] = await Promise.all([
+    supabase.from("employees").select("*, category:categories(slug, name, icon)").eq("status", "published"),
+    getProBoostedEmployeeIds(),
+  ]);
+  return withProBoost((data as EmployeeWithCategory[] | null) ?? [], boosted);
 }
 
 /**
@@ -49,11 +75,14 @@ export async function getLivePublishedEmployees(): Promise<EmployeeWithCategory[
  */
 export async function getAllListingsForAdmin(): Promise<EmployeeWithCategory[]> {
   const supabase = await createClient();
-  const { data } = await supabase
-    .from("employees")
-    .select("*, category:categories(slug, name, icon)")
-    .order("created_at", { ascending: false });
-  return (data as EmployeeWithCategory[] | null) ?? [];
+  const [{ data }, boosted] = await Promise.all([
+    supabase
+      .from("employees")
+      .select("*, category:categories(slug, name, icon)")
+      .order("created_at", { ascending: false }),
+    getProBoostedEmployeeIds(),
+  ]);
+  return withProBoost((data as EmployeeWithCategory[] | null) ?? [], boosted);
 }
 
 /**
@@ -90,13 +119,18 @@ export async function getLiveEmployeesByIds(ids: string[]): Promise<Employee[]> 
 
 export async function getLiveEmployeeBySlugWithCategory(slug: string): Promise<EmployeeWithCategory | null> {
   const supabase = await createClient();
-  const { data } = await supabase
-    .from("employees")
-    .select("*, category:categories(slug, name, icon)")
-    .eq("slug", slug)
-    .eq("status", "published")
-    .maybeSingle();
-  return (data as EmployeeWithCategory | null) ?? null;
+  const [{ data }, boosted] = await Promise.all([
+    supabase
+      .from("employees")
+      .select("*, category:categories(slug, name, icon)")
+      .eq("slug", slug)
+      .eq("status", "published")
+      .maybeSingle(),
+    getProBoostedEmployeeIds(),
+  ]);
+  const employee = data as EmployeeWithCategory | null;
+  if (!employee) return null;
+  return { ...employee, is_pro_boosted: boosted.has(employee.id) };
 }
 
 export async function getLiveRelatedEmployees(employeeId: string, categoryId: string | null, limit = 3): Promise<Employee[]> {
