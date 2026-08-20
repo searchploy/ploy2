@@ -180,9 +180,11 @@ export default async function EmployeeDetailPage({ params }: { params: Promise<{
             </section>
           )}
 
-          <section>
-            <h2 className="mb-3 text-lg font-bold">Reviews</h2>
-            {reviews && reviews.length > 0 ? (
+          {/* No reviews yet is not worth a section — an empty heading reads as
+              a gap in the listing rather than as information. */}
+          {reviews.length > 0 && (
+            <section>
+              <h2 className="mb-3 text-lg font-bold">Reviews</h2>
               <div className="flex flex-col divide-y divide-border">
                 {reviews.map((r) => (
                   <div key={r.id} className="flex flex-col gap-2 py-5 first:pt-0">
@@ -202,10 +204,8 @@ export default async function EmployeeDetailPage({ params }: { params: Promise<{
                   </div>
                 ))}
               </div>
-            ) : (
-              <p className="text-sm text-muted-foreground">No reviews yet — be the first to leave one after purchase.</p>
-            )}
-          </section>
+            </section>
+          )}
         </div>
 
         <div className="lg:sticky lg:top-24 lg:h-fit">

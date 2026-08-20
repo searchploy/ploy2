@@ -4,7 +4,6 @@ import {
   FileText,
   Store,
   Sparkles,
-  Settings,
 } from "lucide-react";
 import { DashboardSidebar, type DashboardNavItem } from "@/components/dashboard/sidebar";
 import { getDemoUser, DEMO_BUSINESS_USER_ID } from "@/lib/data/users";
@@ -20,7 +19,6 @@ const navItems: DashboardNavItem[] = [
   { label: "Marketplace", href: "/marketplace", icon: <Store className="h-4 w-4" /> },
   { label: "Saved AI Employees", href: "/dashboard/pro/saved", icon: <Heart className="h-4 w-4" /> },
   { label: "My AI Employee", href: "/account/marketplace/listing", icon: <Sparkles className="h-4 w-4" /> },
-  { label: "Settings", href: "/dashboard/pro/settings", icon: <Settings className="h-4 w-4" /> },
 ];
 
 export default async function ProDashboardLayout({ children }: { children: React.ReactNode }) {
