@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { getPrice } from "@/lib/stripe/server";
+import { getPrice, getStripe } from "@/lib/stripe/server";
 import { BillingPageContent } from "./billing-content";
 
 export const metadata = {
@@ -39,5 +39,25 @@ export default async function BillingPage() {
     consulting: consultingPrice || { amount: 29.99 },
   };
 
-  return <BillingPageContent profile={profile} subscriptions={subscriptions || []} prices={prices} />;
+  // Fetch real-time cancel_at_period_end status from Stripe for each subscription
+  let enrichedSubscriptions = subscriptions || [];
+  try {
+    const stripe = getStripe();
+    enrichedSubscriptions = await Promise.all(
+      enrichedSubscriptions.map(async (sub) => {
+        if (sub.stripe_subscription_id) {
+          const stripeSub = await stripe.subscriptions.retrieve(sub.stripe_subscription_id);
+          return {
+            ...sub,
+            cancel_at_period_end: stripeSub.cancel_at_period_end,
+          };
+        }
+        return sub;
+      })
+    );
+  } catch (error) {
+    console.error("Failed to fetch subscription status from Stripe:", error);
+  }
+
+  return <BillingPageContent profile={profile} subscriptions={enrichedSubscriptions} prices={prices} />;
 }
