@@ -111,7 +111,15 @@ export function LiveEmployeeCard({
                 <span className="font-mono text-xs font-semibold text-success">Avg. ROI {employee.avg_roi_percent}%</span>
               )}
             </div>
-            <Button size="sm">View Details</Button>
+            {employee.website_url ? (
+              <Button size="sm" asChild>
+                <a href={employee.website_url} target="_blank" rel="noopener noreferrer">
+                  Go to website
+                </a>
+              </Button>
+            ) : (
+              <Button size="sm">View Details</Button>
+            )}
           </div>
         </div>
       </Link>
