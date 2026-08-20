@@ -100,7 +100,7 @@ export function SignUpForm() {
       toast.success("Email confirmed!", { description: "Signing you in..." });
 
       setTimeout(() => {
-        const destination = redirectTo || (role === "consultant" ? "/consultants" : "/pricing");
+        const destination = redirectTo || "/";
         router.push(destination);
       }, 500);
     } catch {
