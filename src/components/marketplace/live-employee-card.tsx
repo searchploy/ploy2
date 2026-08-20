@@ -1,20 +1,42 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Star, Sparkles } from "lucide-react";
+import { Star, Sparkles, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { toggleEmployeeFavorite } from "@/app/marketplace/actions";
 import type { EmployeeWithCategory } from "@/lib/data/live-marketplace";
 
 export function LiveEmployeeCard({
   employee,
   index = 0,
   isReportMatch = false,
+  initialFavorited = false,
 }: {
   employee: EmployeeWithCategory;
   index?: number;
   isReportMatch?: boolean;
+  initialFavorited?: boolean;
 }) {
+  const [isFavorited, setIsFavorited] = useState(initialFavorited);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleToggleFavorite = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    setIsLoading(true);
+    try {
+      const result = await toggleEmployeeFavorite(employee.id);
+      setIsFavorited(result.favorited);
+    } catch (error) {
+      console.error("Error toggling favorite:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   // Seeded listings lead with a problem quote + outcomes. Listings created via
   // the create-listing form supply a tagline + primary tasks instead, so fall
   // back to those rather than rendering an near-empty card.
@@ -24,7 +46,7 @@ export function LiveEmployeeCard({
       ? employee.outcomes
       : (employee.primary_tasks ?? []);
 
-  const cardClassName = "hover-glow-border flex flex-col gap-4 rounded-2xl border border-border bg-card p-6 transition-colors sm:flex-row sm:items-start";
+  const cardClassName = "hover-glow-border relative flex flex-col gap-4 rounded-2xl border border-border bg-card p-6 transition-colors sm:flex-row sm:items-start";
 
   return (
     <motion.div
@@ -35,6 +57,18 @@ export function LiveEmployeeCard({
     >
       {employee.website_url ? (
         <div className={cardClassName}>
+        <button
+          onClick={handleToggleFavorite}
+          disabled={isLoading}
+          className="absolute right-4 top-4 rounded-lg bg-card/80 p-2 backdrop-blur-sm transition-colors hover:bg-card disabled:opacity-50"
+          title={isFavorited ? "Remove from saved" : "Save for later"}
+        >
+          <Heart
+            className="h-5 w-5"
+            fill={isFavorited ? "currentColor" : "none"}
+            color={isFavorited ? "#E8A855" : "currentColor"}
+          />
+        </button>
         <span className="flex h-13 w-13 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-secondary text-2xl">
           {employee.thumbnail_url ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -128,6 +162,18 @@ export function LiveEmployeeCard({
           href={`/marketplace/${employee.slug}`}
           className={cardClassName}
         >
+        <button
+          onClick={handleToggleFavorite}
+          disabled={isLoading}
+          className="absolute right-4 top-4 rounded-lg bg-card/80 p-2 backdrop-blur-sm transition-colors hover:bg-card disabled:opacity-50"
+          title={isFavorited ? "Remove from saved" : "Save for later"}
+        >
+          <Heart
+            className="h-5 w-5"
+            fill={isFavorited ? "currentColor" : "none"}
+            color={isFavorited ? "#E8A855" : "currentColor"}
+          />
+        </button>
         <span className="flex h-13 w-13 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-secondary text-2xl">
           {employee.thumbnail_url ? (
             // eslint-disable-next-line @next/next/no-img-element
