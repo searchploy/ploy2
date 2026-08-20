@@ -89,18 +89,9 @@ export default async function EmployeeDetailPage({ params }: { params: Promise<{
           {employee.agency_name && (
             <div className="flex w-fit items-center gap-3 rounded-2xl border border-border p-3 pr-5">
               <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary text-lg">🏢</span>
-              <div>
-                <div className="flex items-center gap-1.5 text-sm font-medium">
-                  {employee.agency_name}
-                  {agency?.verified && <BadgeCheck className="h-3.5 w-3.5 text-ploy-gold" />}
-                </div>
-                {agency ? (
-                  <Link href={`/agencies/${agency.slug}`} className="text-xs text-ploy-gold hover:underline">
-                    View agency profile
-                  </Link>
-                ) : (
-                  <p className="text-xs text-muted-foreground">Built by {employee.agency_name}</p>
-                )}
+              <div className="flex items-center gap-1.5 text-sm font-medium">
+                {employee.agency_name}
+                {agency?.verified && <BadgeCheck className="h-3.5 w-3.5 text-ploy-gold" />}
               </div>
             </div>
           )}
