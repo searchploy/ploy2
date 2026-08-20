@@ -14,6 +14,10 @@ export const metadata: Metadata = {
   description: "Generate personalized AI Workforce Reports, discover high-impact AI opportunities, and build a roadmap for implementing AI in your business.",
 };
 
+// Same reason as /consultants: the Pro price comes from Stripe, so the page
+// must not be frozen at build time or a price change needs a redeploy.
+export const revalidate = 3600;
+
 const freeKeyFeatures = [
   "Browse AI employees",
   "AI Readiness Score",

@@ -22,6 +22,11 @@ export const metadata: Metadata = {
   description: "Build an AI consulting business with Ploy. Find clients, generate AI Workforce Reports, present recommendations, and get paid—all in one platform.",
 };
 
+// The price is read from Stripe at render time. Without this the page is
+// prerendered once at build and the amount is frozen into the HTML, so
+// changing the price in Stripe would need a redeploy to take effect.
+export const revalidate = 3600;
+
 const CONSULTANT_FEATURES = [
   {
     title: "Software",
