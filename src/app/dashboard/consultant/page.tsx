@@ -60,10 +60,13 @@ export default async function ConsultantDashboardPage() {
   }
 
   try {
+    // Same source as the Pro dashboard and /dashboard/consultant/reports.
+    // consultant_reports only links a report to a client and is never written,
+    // so reading it here reported zero reports however many you had generated.
     const { data: reportsData } = await supabase
-      .from("consultant_reports")
-      .select("*")
-      .eq("user_id", user.id)
+      .from("reports")
+      .select("id, business_name, ai_readiness_score, created_at")
+      .eq("profile_id", user.id)
       .order("created_at", { ascending: false })
       .limit(5);
     reports = reportsData || [];
@@ -197,14 +200,14 @@ export default async function ConsultantDashboardPage() {
                   reports.map((report) => (
                     <TableRow key={report.id as string}>
                       <TableCell className="font-medium">
-                        {String(clients.find((c) => String(c.id) === String(report.client_id))?.business_name || "Unknown")}
+                        {String(report.business_name || "Untitled report")}
                       </TableCell>
                       <TableCell className="text-sm text-muted-foreground">
                         {formatDate(String(report.created_at))}
                       </TableCell>
                       <TableCell className="text-right">
                         <Button asChild variant="ghost" size="sm">
-                          <Link href={`/report/${String(report.report_id)}`}>View</Link>
+                          <Link href={`/report/${String(report.id)}`}>View</Link>
                         </Button>
                       </TableCell>
                     </TableRow>

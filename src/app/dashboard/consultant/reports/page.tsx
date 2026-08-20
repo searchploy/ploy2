@@ -20,12 +20,37 @@ export default async function ReportsPage() {
 
   if (!user) return <div>Not authenticated</div>;
 
-  const result = await supabase
-    .from("consultant_reports")
-    .select("*, client:consultant_clients(business_name)")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: false });
-  const reports = (result.data as unknown[]) || [];
+  // Reports live in `reports` — that's what /report writes and what the Pro
+  // dashboard reads. `consultant_reports` only links a report to a client, and
+  // nothing populates it yet, so reading it as the source made this page
+  // permanently empty even after generating a report.
+  const [{ data: reportRows }, { data: links }] = await Promise.all([
+    supabase
+      .from("reports")
+      .select("id, business_name, created_at")
+      .eq("profile_id", user.id)
+      .order("created_at", { ascending: false }),
+    supabase
+      .from("consultant_reports")
+      .select("report_id, client:consultant_clients(business_name)")
+      .eq("user_id", user.id),
+  ]);
+
+  const clientByReportId = new Map<string, string>();
+  for (const link of links ?? []) {
+    const client = link.client as { business_name?: string } | null;
+    if (link.report_id && client?.business_name) {
+      clientByReportId.set(link.report_id, client.business_name);
+    }
+  }
+
+  const reports = (reportRows ?? []).map((report) => ({
+    id: report.id,
+    // Prefer the linked client's name, then the name given when the report was
+    // generated. "Unknown" was showing for every row.
+    name: clientByReportId.get(report.id) ?? report.business_name ?? "Untitled report",
+    created_at: report.created_at,
+  }));
 
   return (
     <div className="flex flex-col gap-8">
@@ -54,25 +79,19 @@ export default async function ReportsPage() {
             </TableHeader>
             <TableBody>
               {reports.length > 0 ? (
-                reports.map((report) => {
-                  const r = report as Record<string, unknown>;
-                  return (
-                  <TableRow key={r.id as string}>
-                    <TableCell className="font-medium">
-                      {/* @ts-expect-error Supabase join type */}
-                      {(r.client as Record<string, unknown>)?.business_name || "Unknown"}
-                    </TableCell>
+                reports.map((report) => (
+                  <TableRow key={report.id}>
+                    <TableCell className="font-medium">{report.name}</TableCell>
                     <TableCell className="text-sm text-muted-foreground">
-                      {formatDate(String(r.created_at))}
+                      {formatDate(report.created_at)}
                     </TableCell>
                     <TableCell className="text-right">
                       <Button asChild variant="ghost" size="sm">
-                        <Link href={`/report/${String(r.report_id)}`}>View Report</Link>
+                        <Link href={`/report/${report.id}`}>View Report</Link>
                       </Button>
                     </TableCell>
                   </TableRow>
-                );
-                })
+                ))
               ) : (
                 <TableRow>
                   <TableCell colSpan={3} className="text-center py-12 text-muted-foreground">
