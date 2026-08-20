@@ -87,11 +87,11 @@ export default function ConsultantsPage() {
                 <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-4">By The Numbers</p>
                 <div className="space-y-3">
                   <div>
-                    <p className="text-2xl font-bold text-ploy-gold">847+</p>
+                    <p className="text-2xl font-bold text-ploy-gold">42+</p>
                     <p className="text-xs text-muted-foreground">Consultants Earning</p>
                   </div>
                   <div>
-                    <p className="text-xl font-bold">$12.4M</p>
+                    <p className="text-xl font-bold">$285k</p>
                     <p className="text-xs text-muted-foreground">Client Revenue Generated</p>
                   </div>
                 </div>
@@ -102,11 +102,11 @@ export default function ConsultantsPage() {
                 <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-4">Average Results</p>
                 <div className="space-y-3">
                   <div>
-                    <p className="text-2xl font-bold text-ploy-gold">14.6k</p>
+                    <p className="text-2xl font-bold text-ploy-gold">$8.2k</p>
                     <p className="text-xs text-muted-foreground">Avg. First Year Revenue</p>
                   </div>
                   <div>
-                    <p className="text-xl font-bold">3.2</p>
+                    <p className="text-xl font-bold">2.1</p>
                     <p className="text-xs text-muted-foreground">Avg. Clients Per Consultant</p>
                   </div>
                 </div>
