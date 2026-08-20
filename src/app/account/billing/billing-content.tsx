@@ -17,10 +17,9 @@ interface BillingPageContentProps {
   prices: Record<string, { amount: number }>;
 }
 
-const PLANS = {
+const PLANS: Record<string, { name: string; description: string; features: string[] }> = {
   free: {
     name: "Free",
-    price: "$0",
     description: "Perfect for getting started",
     features: [
       "Browse AI employees",
@@ -31,7 +30,6 @@ const PLANS = {
   },
   pro: {
     name: "Ploy Pro",
-    interval: "/month",
     description: "For growing businesses",
     features: [
       "Unlimited AI reports",
@@ -45,9 +43,8 @@ const PLANS = {
       "Priority support",
     ],
   },
-  consultant: {
+  consulting: {
     name: "Ploy Consulting",
-    interval: "/month",
     description: "For AI consultants",
     features: [
       "Everything in Ploy Pro",
@@ -77,7 +74,7 @@ export function BillingPageContent({
   }
 
   const hasProSubscription = subscriptions.some(s => s.type === "pro" && s.status === "active");
-  const hasConsultantSubscription = subscriptions.some(s => s.type === "consultant" && s.status === "active");
+  const hasConsultingSubscription = subscriptions.some(s => s.type === "consulting" && s.status === "active");
   const hasAnySubscription = subscriptions.length > 0;
 
   const handleManageBilling = (stripeSubscriptionId: string) => {
@@ -105,7 +102,7 @@ export function BillingPageContent({
             <h2 className="text-lg font-semibold mb-4">Active Subscriptions</h2>
             <div className="space-y-4">
               {subscriptions.map((subscription) => {
-                const planType = subscription.type as keyof typeof PLANS;
+                const planType = subscription.type;
                 const plan = PLANS[planType];
                 const price = prices[subscription.type];
                 const isActive = subscription.status === "active";
@@ -124,7 +121,7 @@ export function BillingPageContent({
                           ${price?.amount.toFixed(2) ?? "29.99"}
                         </p>
                         <p className="text-sm text-muted-foreground">
-                          {plan?.interval}
+                          /month
                         </p>
                       </div>
                     </div>
@@ -243,7 +240,7 @@ export function BillingPageContent({
           </section>
         )}
 
-        {!hasConsultantSubscription && (
+        {!hasConsultingSubscription && (
           <section>
             <h2 className="text-lg font-semibold mb-4">Become an AI Consultant</h2>
             <div className="rounded-lg border border-border bg-card p-6">

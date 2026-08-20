@@ -32,11 +32,11 @@ export default async function BillingPage() {
 
   // Fetch prices for each subscription type
   const proPrice = await getPrice("pro");
-  const consultantPrice = await getPrice("consultant");
+  const consultingPrice = await getPrice("consulting");
 
   const prices: Record<string, { amount: number }> = {
     pro: proPrice || { amount: 29.99 },
-    consultant: consultantPrice || { amount: 29.99 },
+    consulting: consultingPrice || { amount: 29.99 },
   };
 
   return <BillingPageContent profile={profile} subscriptions={subscriptions || []} prices={prices} />;
