@@ -220,7 +220,30 @@ export function MarketplaceBrowser({
 
   const FiltersPanel = (
     <div className="rounded-2xl bg-black/40 p-6">
-      <div className="flex max-h-[calc(100vh-200px)] flex-col gap-8 overflow-y-auto">
+      {/* Pinned above the scroll area so it stays reachable however far down
+          the visitor is when they decide to start over. */}
+      <div className="mb-5 flex items-center justify-between gap-3 border-b border-border pb-4">
+        <h3 className="text-sm font-semibold">
+          Filters
+          {activeFilterCount > 0 && (
+            <span className="ml-2 rounded-full bg-ploy-gold/15 px-2 py-0.5 text-xs font-semibold text-ploy-gold">
+              {activeFilterCount}
+            </span>
+          )}
+        </h3>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={clearFilters}
+          disabled={activeFilterCount === 0}
+          className="h-auto px-2 py-1 text-xs disabled:opacity-40"
+        >
+          <X className="h-3.5 w-3.5" />
+          Clear filters
+        </Button>
+      </div>
+
+      <div className="flex max-h-[calc(100vh-260px)] flex-col gap-8 overflow-y-auto">
         <div>
           <h3 className="mb-3 text-sm font-semibold">Business Problem</h3>
           <div className="flex flex-col gap-2.5">
@@ -281,12 +304,6 @@ export function MarketplaceBrowser({
           </div>
         </div>
 
-        {activeFilterCount > 0 && (
-          <Button variant="ghost" size="sm" onClick={clearFilters} className="self-start">
-            <X className="h-3.5 w-3.5" />
-            Clear all
-          </Button>
-        )}
       </div>
     </div>
   );
@@ -319,8 +336,8 @@ export function MarketplaceBrowser({
                 </Button>
               </SheetTrigger>
               <SheetContent side="left">
-                <h2 className="mb-6 text-lg font-semibold">Filters</h2>
-                <div className="mt-2">{FiltersPanel}</div>
+                {/* FiltersPanel carries its own "Filters" header now. */}
+                <div className="mt-8">{FiltersPanel}</div>
               </SheetContent>
             </Sheet>
 
