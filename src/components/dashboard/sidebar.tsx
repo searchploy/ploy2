@@ -34,11 +34,13 @@ export function DashboardSidebar({
   user,
   roleLabel,
   entitlements,
+  hideDashboardSwitcher = false,
 }: {
   navItems: DashboardNavItem[];
   user: DashboardSidebarUser;
   roleLabel: string;
   entitlements: Entitlements;
+  hideDashboardSwitcher?: boolean;
 }) {
   const pathname = usePathname();
 
@@ -51,7 +53,7 @@ export function DashboardSidebar({
       </div>
 
       <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-4">
-        <DashboardSwitcher owned={entitlements.owned} />
+        {!hideDashboardSwitcher && <DashboardSwitcher owned={entitlements.owned} />}
         {/* Paid-tier label gets metal lettering — a premium indicator per section 10. */}
         <p className="metal-text px-2 pb-2 text-xs font-semibold uppercase tracking-wide">{roleLabel}</p>
         {navItems.map((item) => {

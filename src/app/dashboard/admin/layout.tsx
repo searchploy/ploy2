@@ -43,8 +43,9 @@ export default async function AdminDashboardLayout({ children }: { children: Rea
       <DashboardSidebar
         navItems={navItems}
         user={user}
-        roleLabel="Admin dashboard"
+        roleLabel="Admin Dashboard"
         entitlements={entitlements}
+        hideDashboardSwitcher={true}
       />
       <main className="surface-dashboard flex-1 overflow-y-auto p-8">{children}</main>
     </div>
