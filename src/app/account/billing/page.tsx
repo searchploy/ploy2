@@ -21,11 +21,15 @@ export default async function BillingPage() {
     .eq("id", user.id)
     .single();
 
-  const { data: subscription } = await supabase
+  // Get the most recent active subscription
+  const { data: subscriptions } = await supabase
     .from("subscriptions")
     .select("*")
     .eq("profile_id", user.id)
-    .single();
+    .eq("status", "active")
+    .order("created_at", { ascending: false });
+
+  const subscription = subscriptions?.[0] || null;
 
   return <BillingPageContent profile={profile} subscription={subscription} />;
 }
