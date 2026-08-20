@@ -24,6 +24,12 @@ export function LiveEmployeeCard({
       ? employee.outcomes
       : (employee.primary_tasks ?? []);
 
+  // If employee has website_url, render as div (not clickable card), otherwise as Link
+  const CardComponent = employee.website_url ? "div" : Link;
+  const cardProps = employee.website_url
+    ? { className: "hover-glow-border flex flex-col gap-4 rounded-2xl border border-border bg-card p-6 transition-colors sm:flex-row sm:items-start" }
+    : { href: `/marketplace/${employee.slug}`, className: "hover-glow-border flex flex-col gap-4 rounded-2xl border border-border bg-card p-6 transition-colors sm:flex-row sm:items-start" };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 14 }}
@@ -31,10 +37,7 @@ export function LiveEmployeeCard({
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.4, delay: Math.min(index * 0.04, 0.3) }}
     >
-      <Link
-        href={`/marketplace/${employee.slug}`}
-        className="hover-glow-border flex flex-col gap-4 rounded-2xl border border-border bg-card p-6 transition-colors sm:flex-row sm:items-start"
-      >
+      <CardComponent {...cardProps}>
         <span className="flex h-13 w-13 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-secondary text-2xl">
           {employee.thumbnail_url ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -122,7 +125,7 @@ export function LiveEmployeeCard({
             )}
           </div>
         </div>
-      </Link>
+      </CardComponent>
     </motion.div>
   );
 }
