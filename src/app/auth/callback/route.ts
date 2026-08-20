@@ -27,13 +27,8 @@ export async function GET(request: Request) {
 
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
-      // Get the user's role to redirect appropriately
-      const { data } = await supabase.auth.getUser();
-      const userRole = data.user?.user_metadata?.role || "business";
-
-      // Redirect based on role
-      const roleBasedRedirect = userRole === "agency" ? "/for-agencies" : userRole === "consultant" ? "/consultants" : "/pricing";
-      return NextResponse.redirect(new URL(roleBasedRedirect, request.url));
+      // Redirect to homepage after login
+      return NextResponse.redirect(new URL("/", request.url));
     }
   }
 
