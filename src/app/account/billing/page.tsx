@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { getPrice } from "@/lib/stripe/server";
 import { BillingPageContent } from "./billing-content";
 
 export const metadata = {
@@ -21,7 +22,7 @@ export default async function BillingPage() {
     .eq("id", user.id)
     .single();
 
-  // Get the most recent active subscription
+  // Get all active subscriptions
   const { data: subscriptions } = await supabase
     .from("subscriptions")
     .select("*")
@@ -29,7 +30,14 @@ export default async function BillingPage() {
     .eq("status", "active")
     .order("created_at", { ascending: false });
 
-  const subscription = subscriptions?.[0] || null;
+  // Fetch prices for each subscription type
+  const proPrice = await getPrice("pro");
+  const consultantPrice = await getPrice("consultant");
 
-  return <BillingPageContent profile={profile} subscription={subscription} />;
+  const prices: Record<string, { amount: number }> = {
+    pro: proPrice || { amount: 29.99 },
+    consultant: consultantPrice || { amount: 29.99 },
+  };
+
+  return <BillingPageContent profile={profile} subscriptions={subscriptions || []} prices={prices} />;
 }

@@ -4,6 +4,8 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import { format } from "date-fns";
+import { useTransition } from "react";
+import { manageBillingAction } from "./actions";
 import type { Database } from "@/lib/types/database";
 
 type Profile = Database["public"]["Tables"]["profiles"]["Row"];
@@ -11,7 +13,8 @@ type Subscription = Database["public"]["Tables"]["subscriptions"]["Row"];
 
 interface BillingPageContentProps {
   profile: Profile | null;
-  subscription: Subscription | null;
+  subscriptions: Subscription[];
+  prices: Record<string, { amount: number }>;
 }
 
 const PLANS = {
@@ -28,7 +31,6 @@ const PLANS = {
   },
   pro: {
     name: "Ploy Pro",
-    price: "$29.99",
     interval: "/month",
     description: "For growing businesses",
     features: [
@@ -43,12 +45,29 @@ const PLANS = {
       "Priority support",
     ],
   },
+  consultant: {
+    name: "Ploy Consulting",
+    interval: "/month",
+    description: "For AI consultants",
+    features: [
+      "Everything in Ploy Pro",
+      "CRM dashboard",
+      "Lead management",
+      "Pipeline tracking",
+      "Deal tracking",
+      "Unlimited client contacts",
+      "Consultation tools",
+    ],
+  },
 };
 
 export function BillingPageContent({
   profile,
-  subscription,
+  subscriptions,
+  prices,
 }: BillingPageContentProps) {
+  const [isPending, startTransition] = useTransition();
+
   if (!profile) {
     return (
       <div className="container flex items-center justify-center min-h-[400px]">
@@ -57,8 +76,15 @@ export function BillingPageContent({
     );
   }
 
-  const currentPlan = subscription?.plan || "free";
-  const isActive = subscription?.status === "active";
+  const hasProSubscription = subscriptions.some(s => s.type === "pro" && s.status === "active");
+  const hasConsultantSubscription = subscriptions.some(s => s.type === "consultant" && s.status === "active");
+  const hasAnySubscription = subscriptions.length > 0;
+
+  const handleManageBilling = (stripeSubscriptionId: string) => {
+    startTransition(async () => {
+      await manageBillingAction(stripeSubscriptionId);
+    });
+  };
 
   return (
     <div className="container max-w-4xl py-8">
@@ -73,153 +99,160 @@ export function BillingPageContent({
           </p>
         </div>
 
-        {/* Current Plan */}
-        <section>
-          <h2 className="text-lg font-semibold mb-4">Current Plan</h2>
-          <div className="rounded-lg border border-border bg-card p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <h3 className="text-2xl font-bold">
-                  {PLANS[currentPlan as keyof typeof PLANS]?.name || "Unknown"}
-                </h3>
-                <p className="text-sm text-muted-foreground mt-1">
-                  {PLANS[currentPlan as keyof typeof PLANS]?.description}
-                </p>
-              </div>
-              <div className="text-right">
-                <p className="text-3xl font-bold">
-                  {PLANS[currentPlan as keyof typeof PLANS]?.price}
-                </p>
-                {(PLANS[currentPlan as keyof typeof PLANS] as any)?.interval && (
-                  <p className="text-sm text-muted-foreground">
-                    {(PLANS[currentPlan as keyof typeof PLANS] as any)?.interval}
-                  </p>
-                )}
-              </div>
-            </div>
+        {/* Active Subscriptions */}
+        {hasAnySubscription ? (
+          <section>
+            <h2 className="text-lg font-semibold mb-4">Active Subscriptions</h2>
+            <div className="space-y-4">
+              {subscriptions.map((subscription) => {
+                const planType = subscription.type as keyof typeof PLANS;
+                const plan = PLANS[planType];
+                const price = prices[subscription.type];
+                const isActive = subscription.status === "active";
 
-            {isActive && subscription?.current_period_end && (
-              <div className="border-t border-border pt-4">
-                <p className="text-sm text-muted-foreground">
-                  Your subscription renews on{" "}
-                  <strong>
-                    {format(
-                      new Date(subscription.current_period_end),
-                      "MMMM d, yyyy"
+                return (
+                  <div key={subscription.id} className="rounded-lg border border-border bg-card p-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <div>
+                        <h3 className="text-2xl font-bold">{plan?.name || "Unknown"}</h3>
+                        <p className="text-sm text-muted-foreground mt-1">
+                          {plan?.description}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-3xl font-bold">
+                          ${price?.amount.toFixed(2) ?? "29.99"}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          {plan?.interval}
+                        </p>
+                      </div>
+                    </div>
+
+                    {isActive && subscription.current_period_end && (
+                      <div className="border-t border-border pt-4">
+                        <p className="text-sm text-muted-foreground">
+                          Your subscription renews on{" "}
+                          <strong>
+                            {format(
+                              new Date(subscription.current_period_end),
+                              "MMMM d, yyyy"
+                            )}
+                          </strong>
+                        </p>
+                      </div>
                     )}
-                  </strong>
-                </p>
-              </div>
-            )}
 
-            <div className="border-t border-border pt-4 mt-4">
-              <p className="text-sm font-medium mb-3">Included Features:</p>
-              <div className="space-y-2">
-                {PLANS[currentPlan as keyof typeof PLANS]?.features.map(
-                  (feature) => (
+                    <div className="border-t border-border pt-4 mt-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <p className="text-sm font-medium">Included Features:</p>
+                        <span
+                          className={`inline-block px-2 py-1 rounded text-xs font-medium ${
+                            isActive
+                              ? "bg-green-500/20 text-green-400"
+                              : "bg-yellow-500/20 text-yellow-400"
+                          }`}
+                        >
+                          {subscription.status
+                            ? subscription.status.charAt(0).toUpperCase() +
+                              subscription.status.slice(1)
+                            : "Unknown"}
+                        </span>
+                      </div>
+                      <div className="space-y-2">
+                        {plan?.features.map((feature) => (
+                          <div key={feature} className="flex items-center gap-2">
+                            <Check className="h-4 w-4 text-green-500" />
+                            <span className="text-sm">{feature}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {isActive && subscription.stripe_subscription_id && (
+                      <div className="border-t border-border pt-4 mt-4">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleManageBilling(subscription.stripe_subscription_id!)}
+                          disabled={isPending}
+                        >
+                          {isPending ? "Loading..." : "Manage Subscription"}
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        ) : (
+          <section>
+            <h2 className="text-lg font-semibold mb-4">Current Plan</h2>
+            <div className="rounded-lg border border-border bg-card p-6">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h3 className="text-2xl font-bold">Free</h3>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Perfect for getting started
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="text-3xl font-bold">$0</p>
+                </div>
+              </div>
+
+              <div className="border-t border-border pt-4 mt-4">
+                <p className="text-sm font-medium mb-3">Included Features:</p>
+                <div className="space-y-2">
+                  {PLANS.free.features.map((feature) => (
                     <div key={feature} className="flex items-center gap-2">
                       <Check className="h-4 w-4 text-green-500" />
                       <span className="text-sm">{feature}</span>
                     </div>
-                  )
-                )}
+                  ))}
+                </div>
               </div>
-            </div>
 
-            {currentPlan === "free" && (
-              <div className="border-t border-border pt-4 mt-4">
+              <div className="border-t border-border pt-4 mt-4 space-y-2">
                 <Button asChild className="w-full">
                   <Link href="/pricing">Upgrade to Ploy Pro</Link>
                 </Button>
+                <Button asChild variant="outline" className="w-full">
+                  <Link href="/consultants">Try Consulting Plan</Link>
+                </Button>
               </div>
-            )}
-          </div>
-        </section>
-
-        {/* Subscription Status */}
-        {subscription && (
-          <section>
-            <h2 className="text-lg font-semibold mb-4">Subscription Status</h2>
-            <div className="rounded-lg border border-border bg-card p-6 space-y-4">
-              <div className="flex items-center justify-between">
-                <p className="text-sm font-medium text-muted-foreground">
-                  Status
-                </p>
-                <span
-                  className={`inline-block px-2 py-1 rounded text-xs font-medium ${
-                    isActive
-                      ? "bg-green-500/20 text-green-400"
-                      : "bg-yellow-500/20 text-yellow-400"
-                  }`}
-                >
-                  {subscription.status
-                    ? subscription.status.charAt(0).toUpperCase() +
-                      subscription.status.slice(1)
-                    : "Unknown"}
-                </span>
-              </div>
-
-              {subscription.current_period_start && (
-                <div className="border-t border-border pt-4 flex items-center justify-between">
-                  <p className="text-sm font-medium text-muted-foreground">
-                    Billing Period Start
-                  </p>
-                  <p className="text-sm font-medium">
-                    {format(
-                      new Date(subscription.current_period_start),
-                      "MMMM d, yyyy"
-                    )}
-                  </p>
-                </div>
-              )}
-
-              {subscription.current_period_end && (
-                <div className="border-t border-border pt-4 flex items-center justify-between">
-                  <p className="text-sm font-medium text-muted-foreground">
-                    Billing Period End
-                  </p>
-                  <p className="text-sm font-medium">
-                    {format(
-                      new Date(subscription.current_period_end),
-                      "MMMM d, yyyy"
-                    )}
-                  </p>
-                </div>
-              )}
-
-              {isActive && (
-                <div className="border-t border-border pt-4">
-                  <Button variant="outline" size="sm">
-                    Manage Subscription
-                  </Button>
-                </div>
-              )}
             </div>
           </section>
         )}
 
-        {/* Billing History */}
-        <section>
-          <h2 className="text-lg font-semibold mb-4">Billing History</h2>
-          <div className="rounded-lg border border-border bg-card p-6">
-            <p className="text-sm text-muted-foreground">
-              No billing history available
-            </p>
-          </div>
-        </section>
-
-        {/* Other Plans */}
-        {currentPlan === "free" && (
+        {/* Upgrade Options */}
+        {!hasProSubscription && (
           <section>
-            <h2 className="text-lg font-semibold mb-4">Upgrade Options</h2>
+            <h2 className="text-lg font-semibold mb-4">Upgrade to Ploy Pro</h2>
             <div className="rounded-lg border border-border bg-card p-6">
               <div className="space-y-4">
                 <p className="text-sm text-muted-foreground">
-                  Upgrade to Ploy Pro to unlock advanced features and
-                  capabilities.
+                  Get unlimited AI reports, department analysis, implementation roadmaps, and more.
                 </p>
                 <Button asChild>
                   <Link href="/pricing">View Plans</Link>
+                </Button>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {!hasConsultantSubscription && (
+          <section>
+            <h2 className="text-lg font-semibold mb-4">Become an AI Consultant</h2>
+            <div className="rounded-lg border border-border bg-card p-6">
+              <div className="space-y-4">
+                <p className="text-sm text-muted-foreground">
+                  Help businesses implement AI and grow your consulting business with access to our CRM dashboard.
+                </p>
+                <Button asChild>
+                  <Link href="/consultants">Learn More</Link>
                 </Button>
               </div>
             </div>
