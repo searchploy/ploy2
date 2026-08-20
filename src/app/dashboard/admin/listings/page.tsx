@@ -1,9 +1,8 @@
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { DashboardPageHeader } from "@/components/dashboard/page-header";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ListingModerationTable } from "@/components/dashboard/listing-moderation-table";
+import { ListingsModerationTabs } from "@/components/dashboard/listings-moderation-tabs";
 import { getAllEmployeesForAdmin } from "@/lib/data/employees";
 import { getAllAgenciesForAdmin } from "@/lib/data/agencies";
 
@@ -15,7 +14,7 @@ export default async function AdminListingsPage() {
     <div className="flex flex-col gap-8">
       <DashboardPageHeader
         title="Listings"
-        description="Add, edit, remove, approve, reject, or feature AI employee listings."
+        description="Manage AI employee submissions. Approve to publish on marketplace, reject to remove."
         action={
           <Button asChild variant="gradient">
             <Link href="/dashboard/admin/listings/new">
@@ -25,9 +24,7 @@ export default async function AdminListingsPage() {
           </Button>
         }
       />
-      <Card className="p-2">
-        <ListingModerationTable initialEmployees={employees} agencyNameById={agencyNameById} />
-      </Card>
+      <ListingsModerationTabs initialEmployees={employees} agencyNameById={agencyNameById} />
     </div>
   );
 }
