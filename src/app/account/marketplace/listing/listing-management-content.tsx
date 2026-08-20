@@ -32,20 +32,36 @@ export function ListingManagementContent({
               <p className="text-sm text-muted-foreground mt-1">
                 {listing.tagline}
               </p>
-              <div className="flex items-center gap-2 mt-3">
+              <div className="flex flex-col gap-2 mt-3">
                 <span
-                  className={`inline-block px-2 py-1 rounded text-xs font-medium ${
+                  className={`inline-block px-3 py-1 rounded-full text-xs font-semibold w-fit ${
                     listing.status === "published"
                       ? "bg-green-500/20 text-green-400"
-                      : listing.status === "draft"
-                      ? "bg-yellow-500/20 text-yellow-400"
+                      : listing.status === "pending_review"
+                      ? "bg-amber-500/20 text-amber-400"
+                      : listing.status === "rejected"
+                      ? "bg-red-500/20 text-red-400"
                       : "bg-gray-500/20 text-gray-400"
                   }`}
                 >
-                  {listing.status
-                    .charAt(0)
-                    .toUpperCase() + listing.status.slice(1)}
+                  {listing.status === "published"
+                    ? "✓ Approved"
+                    : listing.status === "pending_review"
+                    ? "⏳ Pending Review"
+                    : listing.status === "rejected"
+                    ? "✗ Rejected"
+                    : listing.status.charAt(0).toUpperCase() + listing.status.slice(1)}
                 </span>
+                {listing.status === "pending_review" && (
+                  <p className="text-xs text-amber-400">
+                    Your listing is under review. We'll notify you when it's approved.
+                  </p>
+                )}
+                {listing.status === "rejected" && (
+                  <p className="text-xs text-red-400">
+                    Your listing was rejected. Please update and try again.
+                  </p>
+                )}
               </div>
             </div>
           </div>
@@ -109,17 +125,30 @@ export function ListingManagementContent({
             </Button>
           )}
 
-          <Button asChild variant="outline" className="w-full">
-            <Link href={`/account/marketplace/listing/edit`}>
-              <Edit className="h-4 w-4 mr-2" />
-              Edit
-            </Link>
-          </Button>
+          {listing.status === "rejected" && (
+            <Button asChild variant="outline" className="w-full bg-amber-500/10 border-amber-500/30 hover:bg-amber-500/20">
+              <Link href={`/account/marketplace/listing/edit`}>
+                <Edit className="h-4 w-4 mr-2" />
+                Try Again
+              </Link>
+            </Button>
+          )}
 
-          <Button variant="outline" size="sm" className="w-full">
-            <Share2 className="h-4 w-4 mr-2" />
-            Share
-          </Button>
+          {listing.status !== "rejected" && (
+            <Button asChild variant="outline" className="w-full">
+              <Link href={`/account/marketplace/listing/edit`}>
+                <Edit className="h-4 w-4 mr-2" />
+                Edit
+              </Link>
+            </Button>
+          )}
+
+          {listing.status === "published" && (
+            <Button variant="outline" size="sm" className="w-full">
+              <Share2 className="h-4 w-4 mr-2" />
+              Share
+            </Button>
+          )}
 
           <Button
             variant="destructive"

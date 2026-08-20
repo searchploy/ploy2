@@ -208,8 +208,9 @@ export function ListingForm({
       thumbnail_url: form.logoUrl.trim() || null,
       // Ploy refers buyers to the agency — it never sells the AI employee.
       role: form.primaryTasks[0] ?? "AI Employee",
-      status: "published" as const,
-      is_published: true,
+      // New submissions go to pending_review for admin approval. Edits keep existing status.
+      status: isEditing ? undefined : ("pending_review" as const),
+      is_published: isEditing ? undefined : false,
     };
 
     const { error: dbError } = isEditing
