@@ -1581,7 +1581,12 @@ export async function getEmployeeBySlug(slug: string) {
 }
 
 export async function getAllEmployeesForAdmin() {
-  return employees;
+  const supabase = await import("@/lib/supabase/server").then((m) => m.createClient());
+  const { data } = await supabase
+    .from("employees")
+    .select("*")
+    .order("created_at", { ascending: false });
+  return data ?? [];
 }
 
 export async function getEmployeesByDepartment(department: string) {
