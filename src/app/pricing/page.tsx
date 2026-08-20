@@ -102,8 +102,7 @@ export default async function BusinessPricingPage() {
           <div className="mx-auto max-w-4xl">
             {/* Pricing Cards - Primary Focus */}
             <div className="mb-16 grid gap-6 sm:grid-cols-2">
-              {/* Free */}
-              <div className="rounded-full border border-border bg-card p-8 aspect-square flex flex-col gap-4 justify-center items-center text-center">
+              <div className="flex flex-col gap-4 rounded-3xl border border-border bg-card p-8">
                 <div>
                   <p className="mb-2 text-xs font-bold uppercase tracking-wide text-muted-foreground">Free</p>
                   <p className="font-mono text-3xl font-bold">
@@ -120,30 +119,27 @@ export default async function BusinessPricingPage() {
                       <span className="text-sm">{feature}</span>
                     </div>
                   ))}
+                  <div className="pt-2 border-t border-border">
+                    <p className="text-xs text-muted-foreground">Ploy takes 20% commission on sales</p>
+                  </div>
                 </div>
 
-                <div className="mt-auto space-y-4">
-                  <p className="text-xs text-muted-foreground">Ploy takes 20% commission on sales</p>
-                  <Button asChild variant="outline" size="lg" className="w-full">
-                    <Link href="/report">Start free</Link>
-                  </Button>
-                </div>
+                <Button asChild variant="outline" size="lg" className="mt-auto">
+                  <Link href="/report">Start free</Link>
+                </Button>
               </div>
 
-              {/* Ploy Pro */}
-              {/* The paid tier carries the gold rim + glow so it reads as the premium option. */}
-              <div className="shadow-glow-card gold-hairline gold-glow flex flex-col gap-4 rounded-full border bg-card p-8 aspect-square justify-center items-center text-center">
+              <div className="shadow-glow-card flex flex-col gap-4 rounded-3xl border border-transparent bg-card p-8">
                 <div>
                   <p className="mb-3 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-ploy-gold">
                     <Sparkles className="h-3.5 w-3.5" />
-                    <span className="metal-text">Ploy Pro</span>
+                    Ploy Pro
                   </p>
                   <p className="font-mono text-3xl font-bold">
-                    <span className="metal-text">${proPrice?.amount.toFixed(2) ?? "29.99"}</span>
-                    <span className="text-base font-normal text-muted-foreground">/mo</span>
+                    ${proPrice?.amount.toFixed(2) ?? "29.99"}<span className="text-base font-normal text-muted-foreground">/mo</span>
                   </p>
                 </div>
-                <p className="text-sm text-muted-foreground">Unlimited reports + complete implementation strategy.</p>
+                <p className="text-sm text-muted-foreground">Get premium visibility, unlimited reports, and grow faster.</p>
 
                 {/* Key Features */}
                 <div className="space-y-2 py-4">
@@ -153,14 +149,14 @@ export default async function BusinessPricingPage() {
                       <span className="text-sm">{feature}</span>
                     </div>
                   ))}
+                  <div className="pt-2 border-t border-border">
+                    <p className="text-xs text-muted-foreground">Ploy takes 10% commission on sales</p>
+                  </div>
                 </div>
 
-                <div className="mt-auto space-y-4">
-                  <p className="text-xs text-muted-foreground">Ploy takes 10% commission on sales</p>
-                  <UpgradeButton subscriptionType="pro" returnTo="/pricing" size="lg" className="w-full">
-                    Upgrade to Ploy Pro
-                  </UpgradeButton>
-                </div>
+                <UpgradeButton subscriptionType="pro" returnTo="/pricing" size="lg" className="mt-auto">
+                  Upgrade to Ploy Pro
+                </UpgradeButton>
               </div>
             </div>
 
