@@ -70,19 +70,25 @@ const PRICE_RANGES = [
  */
 const WEIGHT = {
   /** Query term appears in the name — the strongest relevance signal we have. */
-  nameHit: 400,
+  nameHit: 4000,
   /** Query term appears in role or stated business problems. */
-  contextHit: 200,
+  contextHit: 2000,
   /** This employee was recommended by the report the visitor arrived from. */
-  reportMatch: 120,
+  reportMatch: 1000,
   /**
-   * Ploy Pro visibility advantage — deliberately smaller than the rating
-   * range below (0-25). Ploy Pro has to be able to lift a listing past
-   * comparable ones, without letting an unrated new listing outrank a
-   * 4.9-star one purely for being subscribed. At 12 it is worth ~2.4 stars:
-   * decisive among similar listings, not enough to buy the top spot.
+   * Ploy Pro while browsing — no search term, so there is no relevance signal
+   * for Ploy Pro to displace. It outranks rating alone, putting Ploy Pro
+   * listings at the top of the default view. It stays below reportMatch: a
+   * visitor arriving from their own report should still see their matches
+   * first.
    */
-  pro: 12,
+  proBrowse: 500,
+  /**
+   * Ploy Pro while searching — only a tiebreak. Once someone types a query,
+   * how well a listing fits it has to lead, so this can lift a listing past
+   * comparable ones but never past a better match.
+   */
+  proSearch: 12,
   /** Rating contributes up to 25 (5 stars x 5). */
   ratingMultiplier: 5,
 } as const;
@@ -102,7 +108,7 @@ function recommendedScore(
   }
 
   if (matchedIds.has(employee.id)) score += WEIGHT.reportMatch;
-  if (employee.is_pro_boosted) score += WEIGHT.pro;
+  if (employee.is_pro_boosted) score += term ? WEIGHT.proSearch : WEIGHT.proBrowse;
   score += (employee.avg_rating ?? 0) * WEIGHT.ratingMultiplier;
 
   return score;
@@ -178,7 +184,11 @@ export function MarketplaceBrowser({
   const [selectedEmployeeTypes, setSelectedEmployeeTypes] = useState<string[]>([]);
   const [selectedBusinessTypes, setSelectedBusinessTypes] = useState<string[]>([]);
   const [selectedPrices, setSelectedPrices] = useState<string[]>([]);
-  const [sort, setSort] = useState<SortKey>(matchedIds.size > 0 ? "recommended" : "highest-rated");
+  // Recommended is the default: it's the only ordering that weighs Ploy Pro,
+  // and the previous default (Highest Rated) is an explicit sort that
+  // deliberately ignores it — so the boost never applied on the page anyone
+  // actually lands on.
+  const [sort, setSort] = useState<SortKey>("recommended");
   const [filtersOpen, setFiltersOpen] = useState(false);
 
   const filtered = useMemo(() => {
