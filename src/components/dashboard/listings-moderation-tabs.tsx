@@ -104,6 +104,14 @@ export function ListingsModerationTabs({
                   <Pencil className="h-3.5 w-3.5" /> Edit
                 </Link>
               </DropdownMenuItem>
+              {!showActions && (
+                <DropdownMenuItem
+                  onClick={() => updateStatus(employee.id, "rejected")}
+                  className="text-amber-600 focus:text-amber-600"
+                >
+                  <X className="h-3.5 w-3.5" /> Reject
+                </DropdownMenuItem>
+              )}
               <DropdownMenuItem
                 onClick={() => setPendingDelete(employee)}
                 className="text-destructive focus:text-destructive"
