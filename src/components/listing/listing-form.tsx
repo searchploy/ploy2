@@ -208,9 +208,14 @@ export function ListingForm({
       thumbnail_url: form.logoUrl.trim() || null,
       // Ploy refers buyers to the agency — it never sells the AI employee.
       role: form.primaryTasks[0] ?? "AI Employee",
-      // New submissions go to pending_review for admin approval. Edits keep existing status.
-      status: isEditing ? undefined : ("pending_review" as const),
-      is_published: isEditing ? undefined : false,
+      // Everything a user saves — new listing, edit of an approved one, or a
+      // resubmitted rejection — enters review. An approved listing must not
+      // stay live carrying changes nobody has looked at, and this is the only
+      // status an owner is allowed to write (see the employees_update_own RLS
+      // policy), so it can't be worked around from the client either.
+      status: "pending_review" as const,
+      is_published: false,
+      rejection_reason: null,
     };
 
     const { error: dbError } = isEditing
@@ -230,7 +235,11 @@ export function ListingForm({
       return;
     }
 
-    toast.success(isEditing ? "Listing updated" : "Your AI employee is now live.");
+    toast.success(isEditing ? "Changes submitted for review" : "Submitted for review", {
+      description: isEditing
+        ? "Your listing is off the marketplace until the update is approved."
+        : "We'll let you know once your AI employee is approved.",
+    });
     router.push("/account/marketplace/listing");
     router.refresh();
   };
@@ -262,10 +271,11 @@ export function ListingForm({
 
         <Card className="flex flex-col gap-4 p-6">
           <div>
-            <h2 className="font-semibold">Ready to publish?</h2>
+            <h2 className="font-semibold">Ready to submit?</h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Your AI employee will appear on the Ploy marketplace. Ploy Pro includes enhanced
-              marketplace placement to help your listing get discovered.
+              {isEditing
+                ? "Your changes go to our team for review. Your listing is temporarily removed from the marketplace until the update is approved."
+                : "Our team reviews every AI employee before it goes on the marketplace. You'll see the status on your listing page."}
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
@@ -273,12 +283,12 @@ export function ListingForm({
               {saving ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" />
-                  Publishing...
+                  Submitting...
                 </>
               ) : (
                 <>
                   <Sparkles className="h-4 w-4" />
-                  {isEditing ? "Save Changes" : "Publish Listing"}
+                  {isEditing ? "Submit Changes for Review" : "Submit for Review"}
                 </>
               )}
             </Button>

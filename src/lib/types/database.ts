@@ -683,6 +683,9 @@ export type Database = {
           best_for_description: string | null
           primary_tasks: string[] | null
           website_url: string | null
+          rejection_reason: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
           name: string
           outcomes: string[] | null
           price_annual: number | null
@@ -720,6 +723,9 @@ export type Database = {
           best_for_description?: string | null
           primary_tasks?: string[] | null
           website_url?: string | null
+          rejection_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           name: string
           outcomes?: string[] | null
           price_annual?: number | null
@@ -757,6 +763,9 @@ export type Database = {
           best_for_description?: string | null
           primary_tasks?: string[] | null
           website_url?: string | null
+          rejection_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           name?: string
           outcomes?: string[] | null
           price_annual?: number | null

@@ -9,6 +9,9 @@ export const metadata = {
   description: "Manage your marketplace listing",
 };
 
+// Moderation status changes out of band, so this must not be cached.
+export const dynamic = "force-dynamic";
+
 export default async function MarketplaceListingPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -41,11 +44,12 @@ export default async function MarketplaceListingPage() {
               No listing yet
             </h2>
             <p className="text-muted-foreground mb-6">
-              Create your first marketplace listing to start reaching businesses on Ploy.
+              List your AI employee to start reaching businesses on Ploy. Every listing is reviewed
+              before it goes on the marketplace.
             </p>
             <Button asChild>
               <Link href="/account/marketplace/listing/create">
-                Create Listing
+                List Your AI Employee
               </Link>
             </Button>
           </div>

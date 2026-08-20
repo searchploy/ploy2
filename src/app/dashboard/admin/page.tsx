@@ -5,15 +5,18 @@ import { Card } from "@/components/ui/card";
 import { RevenueChart } from "@/components/dashboard/revenue-chart";
 import { formatCurrency } from "@/lib/utils";
 import { getAllAgenciesForAdmin } from "@/lib/data/agencies";
-import { getAllEmployeesForAdmin } from "@/lib/data/employees";
+import { getAllListingsForAdmin } from "@/lib/data/live-marketplace";
 import { getAllOrdersForAdmin } from "@/lib/data/orders";
 import { demoUsers } from "@/lib/data/users";
 import { getMonthlySeries } from "@/lib/data/analytics";
 
+// Listing counts come from the database, so the tile has to stay dynamic.
+export const dynamic = "force-dynamic";
+
 export default async function AdminOverviewPage() {
   const [agencies, employees, orders] = await Promise.all([
     getAllAgenciesForAdmin(),
-    getAllEmployeesForAdmin(),
+    getAllListingsForAdmin(),
     getAllOrdersForAdmin(),
   ]);
 

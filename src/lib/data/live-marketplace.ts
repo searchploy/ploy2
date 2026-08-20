@@ -42,6 +42,34 @@ export async function getLivePublishedEmployees(): Promise<EmployeeWithCategory[
   return (data as EmployeeWithCategory[] | null) ?? [];
 }
 
+/**
+ * Every listing regardless of moderation state — admin surfaces only. RLS
+ * (employees_select) still gates this: it returns everything only when
+ * is_admin() is true, so a non-admin calling it sees just public + own rows.
+ */
+export async function getAllListingsForAdmin(): Promise<EmployeeWithCategory[]> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("employees")
+    .select("*, category:categories(slug, name, icon)")
+    .order("created_at", { ascending: false });
+  return (data as EmployeeWithCategory[] | null) ?? [];
+}
+
+/**
+ * A single listing for admin review — no status filter, unlike the public
+ * getLiveEmployeeBySlug.
+ */
+export async function getListingByIdForAdmin(id: string): Promise<EmployeeWithCategory | null> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("employees")
+    .select("*, category:categories(slug, name, icon)")
+    .eq("id", id)
+    .maybeSingle();
+  return (data as EmployeeWithCategory | null) ?? null;
+}
+
 export async function getLiveEmployeeBySlug(slug: string): Promise<Employee | null> {
   const supabase = await createClient();
   const { data } = await supabase

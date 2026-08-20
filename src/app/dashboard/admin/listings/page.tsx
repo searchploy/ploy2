@@ -3,18 +3,20 @@ import { Plus } from "lucide-react";
 import { DashboardPageHeader } from "@/components/dashboard/page-header";
 import { Button } from "@/components/ui/button";
 import { ListingsModerationTabs } from "@/components/dashboard/listings-moderation-tabs";
-import { getAllEmployeesForAdmin } from "@/lib/data/employees";
-import { getAllAgenciesForAdmin } from "@/lib/data/agencies";
+import { getAllListingsForAdmin } from "@/lib/data/live-marketplace";
+
+// Approvals have to show up the moment they happen, so never serve this from
+// the build-time cache.
+export const dynamic = "force-dynamic";
 
 export default async function AdminListingsPage() {
-  const [employees, agencies] = await Promise.all([getAllEmployeesForAdmin(), getAllAgenciesForAdmin()]);
-  const agencyNameById = Object.fromEntries(agencies.map((a) => [a.id, a.name]));
+  const listings = await getAllListingsForAdmin();
 
   return (
     <div className="flex flex-col gap-8">
       <DashboardPageHeader
         title="Listings"
-        description="Manage AI employee submissions. Approve to publish on marketplace, reject to remove."
+        description="Review AI employee submissions. Only approved listings appear on the marketplace."
         action={
           <Button asChild variant="gradient">
             <Link href="/dashboard/admin/listings/new">
@@ -24,7 +26,7 @@ export default async function AdminListingsPage() {
           </Button>
         }
       />
-      <ListingsModerationTabs initialEmployees={employees} agencyNameById={agencyNameById} />
+      <ListingsModerationTabs listings={listings} />
     </div>
   );
 }

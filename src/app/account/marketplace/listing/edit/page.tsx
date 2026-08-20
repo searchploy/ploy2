@@ -39,7 +39,8 @@ export default async function EditListingPage() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight">Edit your AI Employee</h1>
         <p className="mt-1 text-muted-foreground">
-          Changes go live on the marketplace as soon as you save.
+          Changes are reviewed before they go live. Your listing is temporarily removed from the
+          marketplace until the update is approved.
         </p>
       </div>
 
