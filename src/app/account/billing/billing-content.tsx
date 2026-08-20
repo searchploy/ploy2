@@ -126,33 +126,6 @@ export function BillingPageContent({
                       </div>
                     </div>
 
-                    {subscription.current_period_end && (
-                      <div className="border-t border-border pt-4">
-                        <p className="text-sm text-muted-foreground">
-                          {subscription.cancel_at_period_end ? (
-                            <>
-                              Your subscription will cancel on{" "}
-                              <strong>
-                                {format(
-                                  new Date(subscription.current_period_end),
-                                  "MMMM d, yyyy"
-                                )}
-                              </strong>
-                            </>
-                          ) : (
-                            <>
-                              Your subscription renews on{" "}
-                              <strong>
-                                {format(
-                                  new Date(subscription.current_period_end),
-                                  "MMMM d, yyyy"
-                                )}
-                              </strong>
-                            </>
-                          )}
-                        </p>
-                      </div>
-                    )}
 
                     <div className="border-t border-border pt-4 mt-4">
                       <div className="flex items-center justify-between mb-3">
