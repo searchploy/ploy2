@@ -22,40 +22,37 @@ const sortOptions: { value: SortKey; label: string }[] = [
   { value: "newest", label: "Newest" },
 ];
 
-const BUSINESS_PROBLEMS = [
-  "Generate More Leads",
-  "Improve Sales",
-  "Improve Customer Support",
-  "Automate Admin Work",
-  "Create Marketing Content",
-  "Improve Recruiting",
-  "Manage Finance",
-  "Automate Operations",
+/**
+ * Role groupings. Listing roles are supplier-entered free text ("Bookkeeper",
+ * "Customer Support Specialist", "Lead generation"), so each bucket matches on
+ * substrings rather than equality. Buckets that match nothing in the current
+ * catalog are hidden, so the panel never offers a filter that returns nothing.
+ */
+const ROLE_BUCKETS: { label: string; match: string[] }[] = [
+  { label: "Sales Representative", match: ["sales", "account executive", "closer"] },
+  { label: "SDR / Lead Generation", match: ["sdr", "lead gen", "lead generation", "prospect", "outbound"] },
+  { label: "Customer Support", match: ["support", "customer service", "receptionist", "help desk"] },
+  { label: "Marketing", match: ["marketing", "seo", "social media", "growth"] },
+  { label: "Content Creator", match: ["content", "writer", "copywriter", "blog"] },
+  { label: "Recruiter", match: ["recruit", "talent", "hiring", "sourcing"] },
+  { label: "Finance / Bookkeeping", match: ["finance", "bookkeep", "account", "invoic", "payroll"] },
+  { label: "Operations", match: ["operations", "ops", "project manager", "logistics"] },
+  { label: "Administrative Assistant", match: ["assistant", "admin", "scheduling", "executive"] },
+  { label: "Researcher", match: ["research", "analyst", "data"] },
 ];
 
-const AI_EMPLOYEE_TYPES = [
-  "Sales Representative",
-  "SDR / Lead Generation",
-  "Customer Support",
-  "Marketing",
-  "Content Creator",
-  "Recruiter",
-  "Finance / Bookkeeping",
-  "Operations",
-  "Administrative Assistant",
-  "Researcher",
-];
+function matchesRoleBucket(role: string | null | undefined, label: string): boolean {
+  const bucket = ROLE_BUCKETS.find((b) => b.label === label);
+  if (!bucket) return false;
+  const value = (role ?? "").toLowerCase();
+  return bucket.match.some((token) => value.includes(token));
+}
 
-const BUSINESS_TYPES = [
-  "Small Business",
-  "Startup",
-  "Agency",
-  "E-commerce",
-  "SaaS",
-  "Local Business",
-  "Real Estate",
-  "Enterprise",
-];
+function matchesIndustry(industries: string[] | null | undefined, label: string): boolean {
+  // Compare across the whole array, case-insensitively — the previous version
+  // only looked at industries[0], which is null on most listings.
+  return (industries ?? []).some((value) => value.toLowerCase() === label.toLowerCase());
+}
 
 const PRICE_RANGES = [
   { label: "Free", min: 0, max: 0 },
@@ -119,6 +116,48 @@ function mapPriceToRange(price: number | null | undefined): string | null {
   return "$500+/mo";
 }
 
+type FilterOption = { value: string; label: string; count: number };
+
+/**
+ * One filter section. The count next to each option comes from the catalog, so
+ * a visitor can see what a choice will do before making it — the panel used to
+ * offer options that matched nothing and led straight to an empty result set.
+ */
+function FilterGroup({
+  title,
+  options,
+  selected,
+  onToggle,
+}: {
+  title: string;
+  options: FilterOption[];
+  selected: string[];
+  onToggle: (value: string) => void;
+}) {
+  if (options.length === 0) return null;
+
+  return (
+    <div>
+      <h3 className="mb-3 text-sm font-semibold">{title}</h3>
+      <div className="flex flex-col gap-2.5">
+        {options.map((option) => (
+          <label
+            key={option.value}
+            className="flex cursor-pointer items-center gap-2.5 text-sm hover:text-foreground"
+          >
+            <Checkbox
+              checked={selected.includes(option.value)}
+              onCheckedChange={() => onToggle(option.value)}
+            />
+            <span className="flex-1">{option.label}</span>
+            <span className="font-mono text-xs text-muted-foreground">{option.count}</span>
+          </label>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export function MarketplaceBrowser({
   employees,
   categories,
@@ -150,24 +189,19 @@ export function MarketplaceBrowser({
       }
 
       if (selectedProblems.length) {
-        const hasMatch = (e.business_problems ?? []).some((p) => selectedProblems.includes(p));
-        if (!hasMatch) return false;
+        // The problem taxonomy is the categories table. The previous version
+        // compared these labels against business_problems, which holds
+        // free-text sentences ("I need to automate sales conversations..."),
+        // so it could never match and every selection returned nothing.
+        if (!e.category || !selectedProblems.includes(e.category.slug)) return false;
       }
 
       if (selectedEmployeeTypes.length) {
-        // Map role to employee type - flexible matching
-        const roleMatches = selectedEmployeeTypes.some((type) => {
-          const eRole = (e.role || "").toLowerCase();
-          const typeNorm = type.toLowerCase();
-          return eRole.includes(typeNorm.split("/")[0].trim());
-        });
-        if (!roleMatches) return false;
+        if (!selectedEmployeeTypes.some((label) => matchesRoleBucket(e.role, label))) return false;
       }
 
       if (selectedBusinessTypes.length) {
-        const eBizType = (e.industries?.[0] || "").toLowerCase();
-        const hasMatch = selectedBusinessTypes.some((type) => eBizType.includes(type.toLowerCase()));
-        if (!hasMatch) return false;
+        if (!selectedBusinessTypes.some((label) => matchesIndustry(e.industries, label))) return false;
       }
 
       if (selectedPrices.length) {
@@ -203,6 +237,47 @@ export function MarketplaceBrowser({
 
     return result;
   }, [employees, search, selectedProblems, selectedEmployeeTypes, selectedBusinessTypes, selectedPrices, sort, matchedIds]);
+
+  /**
+   * Filter options are derived from the catalog rather than hardcoded, with a
+   * count beside each one. Anything matching zero listings is dropped, so the
+   * panel can't offer a filter that leads to an empty result set.
+   */
+  const options = useMemo(() => {
+    const countBy = <T,>(items: T[], predicate: (e: EmployeeWithCategory, item: T) => boolean) =>
+      items
+        .map((item) => ({ item, count: employees.filter((e) => predicate(e, item)).length }))
+        .filter((entry) => entry.count > 0);
+
+    const problems = countBy(categories, (e, c) => e.category?.slug === c.slug).map(
+      ({ item, count }) => ({ value: item.slug, label: item.name, count })
+    );
+
+    const roles = countBy(ROLE_BUCKETS, (e, b) => matchesRoleBucket(e.role, b.label)).map(
+      ({ item, count }) => ({ value: item.label, label: item.label, count })
+    );
+
+    // Industries are supplier-entered free text, so collapse case variants
+    // ("Agencies" / "agencies") onto the first spelling seen.
+    const industryLabels = new Map<string, string>();
+    for (const employee of employees) {
+      for (const industry of employee.industries ?? []) {
+        const key = industry.trim().toLowerCase();
+        if (key && !industryLabels.has(key)) industryLabels.set(key, industry.trim());
+      }
+    }
+    const businessTypes = countBy([...industryLabels.values()], (e, label) =>
+      matchesIndustry(e.industries, label)
+    )
+      .sort((a, b) => b.count - a.count || a.item.localeCompare(b.item))
+      .map(({ item, count }) => ({ value: item, label: item, count }));
+
+    const prices = countBy(PRICE_RANGES, (e, r) => mapPriceToRange(e.price_monthly) === r.label).map(
+      ({ item, count }) => ({ value: item.label, label: item.label, count })
+    );
+
+    return { problems, roles, businessTypes, prices };
+  }, [employees, categories]);
 
   function toggle(list: string[], setList: (v: string[]) => void, value: string) {
     setList(list.includes(value) ? list.filter((v) => v !== value) : [...list, value]);
@@ -244,66 +319,30 @@ export function MarketplaceBrowser({
       </div>
 
       <div className="flex max-h-[calc(100vh-260px)] flex-col gap-8 overflow-y-auto">
-        <div>
-          <h3 className="mb-3 text-sm font-semibold">Business Problem</h3>
-          <div className="flex flex-col gap-2.5">
-            {BUSINESS_PROBLEMS.map((problem) => (
-              <label key={problem} className="flex cursor-pointer items-center gap-2.5 text-sm">
-                <Checkbox
-                  checked={selectedProblems.includes(problem)}
-                  onCheckedChange={() => toggle(selectedProblems, setSelectedProblems, problem)}
-                />
-                {problem}
-              </label>
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <h3 className="mb-3 text-sm font-semibold">AI Employee</h3>
-          <div className="flex flex-col gap-2.5">
-            {AI_EMPLOYEE_TYPES.map((type) => (
-              <label key={type} className="flex cursor-pointer items-center gap-2.5 text-sm">
-                <Checkbox
-                  checked={selectedEmployeeTypes.includes(type)}
-                  onCheckedChange={() => toggle(selectedEmployeeTypes, setSelectedEmployeeTypes, type)}
-                />
-                {type}
-              </label>
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <h3 className="mb-3 text-sm font-semibold">Business Type</h3>
-          <div className="flex flex-col gap-2.5">
-            {BUSINESS_TYPES.map((type) => (
-              <label key={type} className="flex cursor-pointer items-center gap-2.5 text-sm">
-                <Checkbox
-                  checked={selectedBusinessTypes.includes(type)}
-                  onCheckedChange={() => toggle(selectedBusinessTypes, setSelectedBusinessTypes, type)}
-                />
-                {type}
-              </label>
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <h3 className="mb-3 text-sm font-semibold">Price</h3>
-          <div className="flex flex-col gap-2.5">
-            {PRICE_RANGES.map((range) => (
-              <label key={range.label} className="flex cursor-pointer items-center gap-2.5 text-sm">
-                <Checkbox
-                  checked={selectedPrices.includes(range.label)}
-                  onCheckedChange={() => toggle(selectedPrices, setSelectedPrices, range.label)}
-                />
-                {range.label}
-              </label>
-            ))}
-          </div>
-        </div>
-
+        <FilterGroup
+          title="Business Problem"
+          options={options.problems}
+          selected={selectedProblems}
+          onToggle={(value) => toggle(selectedProblems, setSelectedProblems, value)}
+        />
+        <FilterGroup
+          title="AI Employee"
+          options={options.roles}
+          selected={selectedEmployeeTypes}
+          onToggle={(value) => toggle(selectedEmployeeTypes, setSelectedEmployeeTypes, value)}
+        />
+        <FilterGroup
+          title="Business Type"
+          options={options.businessTypes}
+          selected={selectedBusinessTypes}
+          onToggle={(value) => toggle(selectedBusinessTypes, setSelectedBusinessTypes, value)}
+        />
+        <FilterGroup
+          title="Price"
+          options={options.prices}
+          selected={selectedPrices}
+          onToggle={(value) => toggle(selectedPrices, setSelectedPrices, value)}
+        />
       </div>
     </div>
   );
