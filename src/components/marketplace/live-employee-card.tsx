@@ -70,7 +70,10 @@ export function LiveEmployeeCard({
             color={isFavorited ? "#E8A855" : "currentColor"}
           />
         </button>
-        <span className="flex h-13 w-13 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-secondary text-2xl">
+        {/* h-13/w-13 are not real Tailwind classes — 13 is not in the spacing
+            scale — so this had no size and every uploaded logo rendered at its
+            natural dimensions. Small thumbnails hid it. */}
+        <span className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-secondary text-2xl">
           {employee.thumbnail_url ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -178,7 +181,10 @@ export function LiveEmployeeCard({
             color={isFavorited ? "#E8A855" : "currentColor"}
           />
         </button>
-        <span className="flex h-13 w-13 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-secondary text-2xl">
+        {/* h-13/w-13 are not real Tailwind classes — 13 is not in the spacing
+            scale — so this had no size and every uploaded logo rendered at its
+            natural dimensions. Small thumbnails hid it. */}
+        <span className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-secondary text-2xl">
           {employee.thumbnail_url ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
