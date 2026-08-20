@@ -2,10 +2,7 @@ import {
   LayoutDashboard,
   Building2,
   Package,
-  Users,
   Receipt,
-  Percent,
-  BarChart3,
   BookOpen,
   FileText,
 } from "lucide-react";
@@ -19,10 +16,7 @@ const navItems: DashboardNavItem[] = [
   { label: "Agencies", href: "/dashboard/admin/agencies", icon: <Building2 className="h-4 w-4" /> },
   { label: "Listings", href: "/dashboard/admin/listings", icon: <Package className="h-4 w-4" /> },
   { label: "Reports", href: "/dashboard/admin/reports", icon: <FileText className="h-4 w-4" /> },
-  { label: "Users", href: "/dashboard/admin/users", icon: <Users className="h-4 w-4" /> },
   { label: "Sales", href: "/dashboard/admin/sales", icon: <Receipt className="h-4 w-4" /> },
-  { label: "Commissions", href: "/dashboard/admin/commissions", icon: <Percent className="h-4 w-4" /> },
-  { label: "Analytics", href: "/dashboard/admin/analytics", icon: <BarChart3 className="h-4 w-4" /> },
   { label: "Classroom", href: "/dashboard/admin/classroom", icon: <BookOpen className="h-4 w-4" /> },
 ];
 
