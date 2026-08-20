@@ -29,8 +29,18 @@ export async function saveClientAction(
   const phone = formData.get("phone") as string;
   const status = formData.get("status") as string;
   const notes = formData.get("notes") as string;
+  const dealValue = formData.get("dealValue") as string | null;
 
   if (!businessName) throw new Error("Business name is required");
+
+  // Only a closed deal carries a value. Reopening a client clears it so it
+  // stops counting toward Est. Revenue.
+  let dealValueCents: number | null = null;
+  if (status === "Closed" && dealValue?.trim()) {
+    const dollars = Number(dealValue);
+    if (!Number.isFinite(dollars) || dollars < 0) throw new Error("That deal value isn't valid");
+    dealValueCents = Math.round(dollars * 100);
+  }
 
   if (clientId) {
     await supabase
@@ -43,6 +53,7 @@ export async function saveClientAction(
         phone,
         status,
         notes,
+        deal_value_cents: dealValueCents,
         updated_at: new Date().toISOString(),
       })
       .eq("id", clientId);
@@ -56,6 +67,7 @@ export async function saveClientAction(
       phone,
       status,
       notes,
+      deal_value_cents: dealValueCents,
     });
   }
 

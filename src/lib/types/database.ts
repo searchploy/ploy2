@@ -335,6 +335,7 @@ export type Database = {
           business_name: string
           contact_name: string | null
           created_at: string | null
+          deal_value_cents: number | null
           email: string | null
           id: string
           industry: string | null
@@ -348,6 +349,7 @@ export type Database = {
           business_name: string
           contact_name?: string | null
           created_at?: string | null
+          deal_value_cents?: number | null
           email?: string | null
           id?: string
           industry?: string | null
@@ -361,6 +363,7 @@ export type Database = {
           business_name?: string
           contact_name?: string | null
           created_at?: string | null
+          deal_value_cents?: number | null
           email?: string | null
           id?: string
           industry?: string | null

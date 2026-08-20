@@ -92,7 +92,12 @@ export default async function ConsultantDashboardPage() {
     },
     {
       label: "Est. Revenue",
-      value: "$0",
+      // Sum of what closed deals were worth. Was hardcoded "$0".
+      value: `$${(
+        clients
+          .filter((c) => c.status === "Closed")
+          .reduce((total, c) => total + (Number(c.deal_value_cents) || 0), 0) / 100
+      ).toLocaleString()}`,
       icon: <DollarSign className="h-5 w-5" />,
     },
   ];
