@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import Link from "next/link";
-import { Check, X, Star, MoreHorizontal, Trash2, Eye } from "lucide-react";
+import { Check, X, Star, MoreHorizontal, Trash2, Eye, Search } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -37,10 +38,25 @@ export function ListingsModerationTabs({ listings }: { listings: EmployeeWithCat
   const [reviewing, setReviewing] = useState<EmployeeWithCategory | null>(null);
   const [rejectionReason, setRejectionReason] = useState("");
   const [pendingDelete, setPendingDelete] = useState<EmployeeWithCategory | null>(null);
+  const [search, setSearch] = useState("");
 
-  const pendingReview = listings.filter((l) => l.status === "pending_review");
-  const approved = listings.filter((l) => l.status === "published");
-  const rejected = listings.filter((l) => l.status === "rejected");
+  // One search box across all three tabs. The counts below reflect it too, so a
+  // search shows which tab the listing you're looking for is sitting in —
+  // otherwise you'd have to click through all three to find out.
+  const matching = useMemo(() => {
+    const term = search.trim().toLowerCase();
+    if (!term) return listings;
+    return listings.filter((listing) =>
+      [listing.name, listing.agency_name, listing.category?.name, listing.slug, listing.role]
+        .filter(Boolean)
+        .some((field) => String(field).toLowerCase().includes(term))
+    );
+  }, [listings, search]);
+
+  const pendingReview = matching.filter((l) => l.status === "pending_review");
+  const approved = matching.filter((l) => l.status === "published");
+  const rejected = matching.filter((l) => l.status === "rejected");
+  const isSearching = search.trim().length > 0;
 
   function run(action: () => Promise<{ ok: true } | { ok: false; error: string }>, success: string) {
     startTransition(async () => {
@@ -214,30 +230,59 @@ export function ListingsModerationTabs({ listings }: { listings: EmployeeWithCat
 
   return (
     <>
+      <div className="relative mb-4 max-w-md">
+        <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        <Input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search by name, agency, category or role"
+          className="pl-10 pr-10"
+        />
+        {isSearching && (
+          <button
+            onClick={() => setSearch("")}
+            aria-label="Clear search"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        )}
+      </div>
+
       <Tabs defaultValue="pending" className="w-full">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="pending">
             Pending Review
-            <Count value={pendingReview.length} className="bg-ploy-gold/15 text-ploy-gold" />
+            <Count showZero={isSearching} value={pendingReview.length} className="bg-ploy-gold/15 text-ploy-gold" />
           </TabsTrigger>
           <TabsTrigger value="approved">
             Approved
-            <Count value={approved.length} className="bg-green-500/15 text-green-400" />
+            <Count showZero={isSearching} value={approved.length} className="bg-green-500/15 text-green-400" />
           </TabsTrigger>
           <TabsTrigger value="rejected">
             Rejected
-            <Count value={rejected.length} className="bg-red-500/15 text-red-400" />
+            <Count showZero={isSearching} value={rejected.length} className="bg-red-500/15 text-red-400" />
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="pending" className="mt-4">
-          <Panel items={pendingReview} empty="No listings awaiting review." showReviewActions />
+          <Panel
+            items={pendingReview}
+            empty={isSearching ? `No pending listings match "${search.trim()}".` : "No listings awaiting review."}
+            showReviewActions
+          />
         </TabsContent>
         <TabsContent value="approved" className="mt-4">
-          <Panel items={approved} empty="No approved listings." />
+          <Panel
+            items={approved}
+            empty={isSearching ? `No approved listings match "${search.trim()}".` : "No approved listings."}
+          />
         </TabsContent>
         <TabsContent value="rejected" className="mt-4">
-          <Panel items={rejected} empty="No rejected listings." />
+          <Panel
+            items={rejected}
+            empty={isSearching ? `No rejected listings match "${search.trim()}".` : "No rejected listings."}
+          />
         </TabsContent>
       </Tabs>
 
@@ -264,8 +309,18 @@ export function ListingsModerationTabs({ listings }: { listings: EmployeeWithCat
   );
 }
 
-function Count({ value, className }: { value: number; className: string }) {
-  if (value === 0) return null;
+function Count({
+  value,
+  className,
+  showZero = false,
+}: {
+  value: number;
+  className: string;
+  showZero?: boolean;
+}) {
+  // A zero is noise on an idle tab, but during a search it's the answer to
+  // "is the listing I'm looking for in here?" — so it stays visible then.
+  if (value === 0 && !showZero) return null;
   return <span className={`ml-2 rounded-full px-2 py-0.5 text-xs font-semibold ${className}`}>{value}</span>;
 }
 
