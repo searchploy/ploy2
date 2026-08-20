@@ -26,12 +26,25 @@ export async function createCheckoutAction(subscriptionType: SubscriptionType, r
     redirect(`/sign-up?role=${subscriptionType}&redirect=${encodeURIComponent(returnTo)}`);
   }
 
+  const supabase = await createClient();
+
+  // Check if user already has an active subscription for this type
+  const { data: existingSubscription } = await supabase
+    .from("subscriptions")
+    .select("*")
+    .eq("profile_id", user.id)
+    .eq("type", subscriptionType)
+    .eq("status", "active")
+    .single();
+
+  if (existingSubscription) {
+    redirect(DASHBOARD_BY_TYPE[subscriptionType]);
+  }
+
   const priceId = getPriceId(subscriptionType);
   if (!isStripeConfigured() || !priceId) {
     redirect(`${returnTo}?checkout=unavailable`);
   }
-
-  const supabase = await createClient();
   const stripe = getStripe();
 
   let customerId = user.stripe_customer_id;
