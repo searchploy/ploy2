@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { createClient } from "@/lib/supabase/client";
+import { Turnstile, type TurnstileHandle } from "@/components/auth/turnstile";
 import { ADMIN_EMAIL } from "@/lib/constants";
 
 /**
@@ -20,6 +21,8 @@ export function SignInForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState<string | undefined>();
+  const captcha = useRef<TurnstileHandle | null>(null);
   const redirectTo = searchParams.get("redirect");
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -31,10 +34,16 @@ export function SignInForm() {
     const password = String(formData.get("password"));
 
     const supabase = createClient();
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+      options: { captchaToken },
+    });
 
     if (error || !data.user) {
       setLoading(false);
+      // Tokens are single-use, so a failed attempt needs a fresh challenge.
+      captcha.current?.reset();
       toast.error("Invalid email or password", {
         description: "Check your details and try again.",
       });
@@ -114,6 +123,8 @@ export function SignInForm() {
               disabled={loading}
             />
           </div>
+          <Turnstile onToken={setCaptchaToken} handleRef={captcha} />
+
           <Button type="submit" disabled={loading} className="mt-2" size="lg">
             {loading ? "Signing in..." : "Sign in"}
           </Button>

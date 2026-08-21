@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { MailCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { createClient } from "@/lib/supabase/client";
+import { Turnstile, type TurnstileHandle } from "@/components/auth/turnstile";
 
 /**
  * Sends a password reset link. The response is deliberately identical whether
@@ -17,6 +18,8 @@ import { createClient } from "@/lib/supabase/client";
 export function ForgotPasswordForm() {
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState<string | undefined>();
+  const captcha = useRef<TurnstileHandle | null>(null);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -26,6 +29,7 @@ export function ForgotPasswordForm() {
     const supabase = createClient();
 
     await supabase.auth.resetPasswordForEmail(email, {
+      captchaToken,
       // Where Supabase sends them after they click the link. The recovery
       // token arrives in the URL fragment and is exchanged for a session by
       // the Supabase client on that page.
@@ -34,6 +38,7 @@ export function ForgotPasswordForm() {
 
     // Errors are swallowed on purpose: surfacing "no such user" here would
     // turn this into an account-enumeration endpoint.
+    captcha.current?.reset();
     setLoading(false);
     setSent(true);
   }
@@ -79,6 +84,8 @@ export function ForgotPasswordForm() {
             placeholder="jane@company.com"
           />
         </div>
+        <Turnstile onToken={setCaptchaToken} handleRef={captcha} />
+
         <Button type="submit" disabled={loading}>
           {loading ? "Sending..." : "Send reset link"}
         </Button>

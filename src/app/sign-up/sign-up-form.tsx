@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
+import { Turnstile, type TurnstileHandle } from "@/components/auth/turnstile";
 import { MIN_PASSWORD_LENGTH, validatePassword } from "@/lib/auth/password";
 import { OTPInput } from "@/components/auth/otp-input";
 import type { UserRole } from "@/lib/types/database";
@@ -37,6 +38,8 @@ export function SignUpForm() {
   const [verificationCode, setVerificationCode] = useState("");
   const [verifyingCode, setVerifyingCode] = useState(false);
   const [signUpEmail, setSignUpEmail] = useState("");
+  const [captchaToken, setCaptchaToken] = useState<string | undefined>();
+  const captcha = useRef<TurnstileHandle | null>(null);
   const redirectTo = searchParams.get("redirect");
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -65,12 +68,15 @@ export function SignUpForm() {
       options: {
         data: { full_name: fullName, role, company_name: companyName },
         emailRedirectTo: undefined,
+        captchaToken,
       },
     });
 
     setLoading(false);
 
     if (error) {
+      // Tokens are single-use, so a failed attempt needs a fresh challenge.
+      captcha.current?.reset();
       toast.error("Couldn't create your account", { description: error.message });
       return;
     }
@@ -182,6 +188,8 @@ export function SignUpForm() {
                 placeholder={`At least ${MIN_PASSWORD_LENGTH} characters`}
               />
             </div>
+            <Turnstile onToken={setCaptchaToken} handleRef={captcha} />
+
             <Button type="submit" disabled={loading} className="mt-2" size="lg">
               {loading ? "Creating account..." : "Create account"}
             </Button>
