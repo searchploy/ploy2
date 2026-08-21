@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { CheckCircle2, TriangleAlert, Lock } from "lucide-react";
+import { CheckCircle2, TriangleAlert } from "lucide-react";
 import { createClient, getServerUser } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/button";
 import { Paywall } from "@/components/shared/paywall";
@@ -70,6 +70,11 @@ export default async function ReportResultsPage({ params }: { params: Promise<{ 
 
   const allRecs = (recommendations ?? []) as unknown as RecommendationRow[];
   const visibleRecs = isPro ? allRecs : allRecs.slice(0, 3);
+  // A real fourth recommendation, rendered fading out under the paywall so the
+  // report visibly continues rather than just stopping — the gate reads as
+  // covering something instead of being the end of the page.
+  const teaserRec = isPro ? null : (allRecs[3] ?? null);
+  const lockedCount = isPro ? 0 : Math.max(allRecs.length - 3, 0);
 
   const roadmap30 = (report.roadmap_30_day as unknown as RoadmapItem[]) ?? [];
   const roadmap90 = (report.roadmap_90_day as unknown as RoadmapItem[]) ?? [];
@@ -162,41 +167,69 @@ export default async function ReportResultsPage({ params }: { params: Promise<{ 
               </div>
             </Link>
           ))}
-          {!isPro && allRecs.length > 3 && (
-            <div className="flex items-center justify-between rounded-2xl border border-dashed border-border p-5 text-sm text-muted-foreground">
-              <span className="flex items-center gap-2">
-                <Lock className="h-4 w-4" />
-                {allRecs.length - 3} more recommendation{allRecs.length - 3 > 1 ? "s" : ""} on Pro
-              </span>
-              <Button asChild size="sm" variant="outline">
-                <Link href="/pricing">Upgrade</Link>
-              </Button>
-            </div>
-          )}
         </div>
+
+        {/* The gate. The teaser sits underneath a gradient that dissolves into
+            the page background, and the paywall is pulled up over the tail of
+            it, so the two read as one continuous "there is more below here". */}
+        {!isPro && (
+          <div className="relative mt-3.5">
+            {teaserRec && (
+              // relative so the gradient is scoped to this card, and tall
+              // enough that the top edge stays legible before it dissolves.
+              <div aria-hidden className="pointer-events-none relative select-none">
+                <div className="flex items-start justify-between gap-4 rounded-2xl border border-border bg-card p-5 pb-16">
+                  <div>
+                    <p className="mb-1 text-xs font-bold uppercase tracking-wide text-ploy-gold">
+                      Priority {teaserRec.priority} · {teaserRec.employee?.role}
+                    </p>
+                    <p className="mb-1.5 font-bold">{teaserRec.employee?.name}</p>
+                    <p className="text-sm text-muted-foreground">{teaserRec.reason}</p>
+                  </div>
+                  <div className="shrink-0 text-right">
+                    <p className="font-mono text-xl font-bold text-success">
+                      {teaserRec.estimated_roi_percent}%
+                    </p>
+                    <p className="text-[11px] text-muted-foreground">Est. ROI</p>
+                  </div>
+                </div>
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-transparent via-background/75 to-background" />
+              </div>
+            )}
+
+            {/* Pulled up into the tail of the fade so the card emerges from the
+                dissolving content rather than sitting below it. */}
+            <div className={teaserRec ? "relative -mt-12" : "relative"}>
+              <Paywall
+                title="Unlock your full AI Report"
+                description={
+                  lockedCount > 0
+                    ? `This is your free AI Snapshot. Upgrade to see ${lockedCount} more AI employee match${lockedCount > 1 ? "es" : ""}, your complete 30/90/1-year roadmap, department analysis, priority matrix, and agency recommendations.`
+                    : "This is your free AI Snapshot. Upgrade to see your complete 30/90/1-year roadmap, department analysis, priority matrix, and agency recommendations."
+                }
+                features={[
+                  "Complete 30/90/1-year roadmap",
+                  "Unlimited AI employee recommendations",
+                  "Agency recommendations",
+                  "Unlimited reports & PDF export",
+                ]}
+                ctaLabel="Upgrade Plan for Full Report"
+              />
+            </div>
+          </div>
+        )}
       </section>
 
-      {isPro ? (
+      {/* The roadmap is one of the things the paywall above is covering, so for
+          a free report it isn't rendered at all — the gate already stands in
+          for it. */}
+      {isPro && (
         <section className="mb-10">
           <h2 className="mb-4 flex items-center gap-2.5 text-lg font-bold">
             <span className="block h-4 w-1 rounded-full bg-ploy-gold" />
             Implementation Roadmap
           </h2>
           <RoadmapTabs roadmap30={roadmap30} roadmap90={roadmap90} roadmapYear={roadmapYear} />
-        </section>
-      ) : (
-        <section className="mb-10">
-          <Paywall
-            title="Unlock your full AI Report"
-            description="This is your free AI Snapshot. Upgrade to see your complete 30/90/1-year roadmap, department analysis, priority matrix, agency recommendations, and every AI employee match."
-            features={[
-              "Complete 30/90/1-year roadmap",
-              "Unlimited AI employee recommendations",
-              "Agency recommendations",
-              "Unlimited reports & PDF export",
-            ]}
-            ctaLabel="Upgrade Plan for Full Report"
-          />
         </section>
       )}
 
