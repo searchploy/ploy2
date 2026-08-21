@@ -1,9 +1,21 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { isAdminUser } from "@/lib/auth/admin";
 import { revalidatePath } from "next/cache";
 
+/**
+ * Server actions are callable endpoints — hiding the admin UI does not stop
+ * anyone invoking these. Neither of these checked who was calling; the only
+ * thing standing in the way was an RLS policy testing a JWT claim Supabase
+ * never issues, which denied everyone including the real admin.
+ */
+async function requireAdmin() {
+  if (!(await isAdminUser())) throw new Error("Not authorized");
+}
+
 export async function deleteModuleAction(formData: FormData) {
+  await requireAdmin();
   const id = formData.get("id") as string;
   const supabase = await createClient();
 
@@ -21,6 +33,7 @@ export async function saveModuleAction(
   formData: FormData,
   moduleId?: string
 ) {
+  await requireAdmin();
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
   const content = formData.get("content") as string;

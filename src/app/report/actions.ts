@@ -13,13 +13,28 @@ import type { Json } from "@/lib/types/database";
  * marketplace catalog so every "View in Marketplace" link resolves.
  */
 export async function generateReportAction(input: ReportInput) {
-  const catalog = await getLivePublishedEmployees();
-  const scored = generateReport(input, catalog);
-
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  // Report generation is open to anonymous visitors and does real work per
+  // call, so it is the most abusable endpoint in the app. Signed-in users are
+  // limited per account; everyone else shares an anonymous bucket, which is
+  // coarse but still caps a scripted loop. Checked before any work is done.
+  const bucket = user ? `report:${user.id}` : "report:anonymous";
+  const limit = user ? 10 : 30;
+  const { data: withinLimit } = await supabase.rpc("check_rate_limit", {
+    bucket,
+    max_hits: limit,
+    window_seconds: 3600,
+  });
+  if (withinLimit === false) {
+    throw new Error("You've generated a lot of reports just now. Please try again in a little while.");
+  }
+
+  const catalog = await getLivePublishedEmployees();
+  const scored = generateReport(input, catalog);
 
   // profile_id comes from the verified session above, never from the caller.
   const db = supabase;

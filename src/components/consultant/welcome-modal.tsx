@@ -32,7 +32,7 @@ export function WelcomeModal({ userId, hasSeen }: { userId: string; hasSeen: boo
 
   const handleClose = async () => {
     setOpen(false);
-    await markWelcomeModalSeen(userId);
+    await markWelcomeModalSeen();
   };
 
   return (

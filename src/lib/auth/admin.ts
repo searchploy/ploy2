@@ -4,13 +4,21 @@ import { ADMIN_EMAIL } from "@/lib/constants";
 export { ADMIN_EMAIL };
 
 /**
- * Check if the current user is an admin
- * Admins can bypass all paywalls
+ * Whether the current user is an admin. Admins bypass all paywalls.
+ *
+ * The app used to check email while the database checked profiles.role, so
+ * two different definitions of "admin" had to be kept in sync by hand. They
+ * are now the same test — profiles.role, matching is_admin() in the database —
+ * with the email kept as a secondary condition so the existing admin account
+ * cannot be locked out if its role is ever cleared.
+ *
+ * profiles.role is only trustworthy because migration 0021 stopped signup
+ * accepting a client-supplied 'admin' role; before that this had to be email.
  */
 export async function isAdminUser(): Promise<boolean> {
   const user = await getServerUser();
-  // Admin is identified by email address
-  return user?.email === ADMIN_EMAIL;
+  if (!user) return false;
+  return user.role === "admin" || user.email === ADMIN_EMAIL;
 }
 
 /**
