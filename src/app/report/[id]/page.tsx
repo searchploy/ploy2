@@ -54,18 +54,27 @@ function ScoreRing({ value, label }: { value: number; label: string }) {
 
 export default async function ReportResultsPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const supabase = await createClient();
+  const profile = await getServerUser();
 
-  const { data: report } = await supabase.from("reports").select("*").eq("id", id).maybeSingle();
+  // Reads use the caller's own client. Anonymous reports remain readable by
+  // RLS so a shared link works without the service key; the ownership check
+  // below is what stops one signed-in user opening another's report.
+  const db = await createClient();
+
+  const { data: report } = await db.from("reports").select("*").eq("id", id).maybeSingle();
   if (!report) notFound();
 
-  const { data: recommendations } = await supabase
+  const isOwner = Boolean(report.profile_id) && report.profile_id === profile?.id;
+  const isAnonymousReport = report.profile_id === null;
+  // 404 rather than 403: an unauthorised viewer shouldn't learn the id exists.
+  if (!isAnonymousReport && !isOwner && profile?.role !== "admin") notFound();
+
+  const { data: recommendations } = await db
     .from("report_recommendations")
     .select("id, priority, reason, estimated_roi_percent, estimated_monthly_savings, employee:employees(id, name, slug, role, price_monthly)")
     .eq("report_id", id)
     .order("priority", { ascending: true });
 
-  const profile = await getServerUser();
   const isPro = profile?.subscription_plan === "pro";
 
   const allRecs = (recommendations ?? []) as unknown as RecommendationRow[];

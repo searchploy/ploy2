@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getLivePublishedEmployees } from "@/lib/data/live-marketplace";
 import { generateReport, type ReportInput } from "@/lib/report/scoring";
+import type { Json } from "@/lib/types/database";
 
 /**
  * Scores the report deterministically, persists it (anonymous reports are
@@ -20,7 +21,10 @@ export async function generateReportAction(input: ReportInput) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const { data: report, error } = await supabase
+  // profile_id comes from the verified session above, never from the caller.
+  const db = supabase;
+
+  const { data: report, error } = await db
     .from("reports")
     .insert({
       profile_id: user?.id ?? null,
@@ -43,10 +47,13 @@ export async function generateReportAction(input: ReportInput) {
       estimated_monthly_investment: scored.estimated_monthly_investment,
       estimated_roi_percent: scored.estimated_roi_percent,
       biggest_bottlenecks: scored.biggest_bottlenecks,
-      recommended_ai_stack: scored.recommendations,
-      roadmap_30_day: scored.roadmap_30,
-      roadmap_90_day: scored.roadmap_90,
-      roadmap_one_year: scored.roadmap_year,
+      // jsonb columns. These are plain serialisable objects; the cast is only
+      // to satisfy the generated Json type, which the service client enforces
+      // and the untyped server client did not.
+      recommended_ai_stack: scored.recommendations as unknown as Json,
+      roadmap_30_day: scored.roadmap_30 as unknown as Json,
+      roadmap_90_day: scored.roadmap_90 as unknown as Json,
+      roadmap_one_year: scored.roadmap_year as unknown as Json,
       is_premium: false,
     })
     .select("id")
@@ -57,7 +64,7 @@ export async function generateReportAction(input: ReportInput) {
   }
 
   if (scored.recommendations.length > 0) {
-    await supabase.from("report_recommendations").insert(
+    await db.from("report_recommendations").insert(
       scored.recommendations.map((r) => ({
         report_id: report.id,
         employee_id: r.employee_id,
