@@ -45,7 +45,10 @@ export function DashboardSidebar({
   const pathname = usePathname();
 
   return (
-    <aside className="flex h-screen w-64 shrink-0 flex-col border-r border-border bg-card">
+    // sticky, not just h-screen: the page itself scrolls when content is
+    // taller than the viewport, so without this the sidebar scrolls away with
+    // a long lesson. top-0 pins it while the main column moves.
+    <aside className="sticky top-0 flex h-screen w-64 shrink-0 flex-col border-r border-border bg-card">
       <div className="flex h-16 items-center gap-2 border-b border-border px-6">
         <Link href="/">
           <Logo size="sm" />
