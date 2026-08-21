@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createClient, getServerUser } from "@/lib/supabase/server";
 import { isAdminUser } from "@/lib/auth/admin";
+import { logSecurityEvent } from "@/lib/auth/security-log";
 
 export type ModerationResult = { ok: true } | { ok: false; error: string };
 
@@ -13,8 +14,19 @@ export type ModerationResult = { ok: true } | { ok: false; error: string };
  * second line of defence — an owner physically cannot write status =
  * 'published', so even a bypass of this check fails at the database.
  */
-async function requireAdmin(): Promise<string | null> {
-  if (!(await isAdminUser())) return null;
+async function requireAdmin(action: string, targetId?: string): Promise<string | null> {
+  if (!(await isAdminUser())) {
+    // A refused attempt is the signal worth keeping — it is how probing shows
+    // up in the log at all.
+    await logSecurityEvent({
+      action,
+      outcome: "denied",
+      targetType: "listing",
+      targetId,
+      detail: { reason: "not_admin" },
+    });
+    return null;
+  }
   const user = await getServerUser();
   return user?.id ?? null;
 }
@@ -27,7 +39,7 @@ function revalidateListingSurfaces(slug?: string | null) {
 }
 
 export async function approveListing(id: string): Promise<ModerationResult> {
-  const adminId = await requireAdmin();
+  const adminId = await requireAdmin("listing.approve", id);
   if (!adminId) return { ok: false, error: "Not authorized." };
 
   const supabase = await createClient();
@@ -46,12 +58,13 @@ export async function approveListing(id: string): Promise<ModerationResult> {
 
   if (error) return { ok: false, error: error.message };
 
+  await logSecurityEvent({ action: "listing.approve", targetType: "listing", targetId: id });
   revalidateListingSurfaces(data?.slug);
   return { ok: true };
 }
 
 export async function rejectListing(id: string, reason?: string): Promise<ModerationResult> {
-  const adminId = await requireAdmin();
+  const adminId = await requireAdmin("listing.reject", id);
   if (!adminId) return { ok: false, error: "Not authorized." };
 
   const supabase = await createClient();
@@ -70,12 +83,18 @@ export async function rejectListing(id: string, reason?: string): Promise<Modera
 
   if (error) return { ok: false, error: error.message };
 
+  await logSecurityEvent({
+    action: "listing.reject",
+    targetType: "listing",
+    targetId: id,
+    detail: { had_reason: Boolean(reason?.trim()) },
+  });
   revalidateListingSurfaces(data?.slug);
   return { ok: true };
 }
 
 export async function deleteListingAsAdmin(id: string): Promise<ModerationResult> {
-  const adminId = await requireAdmin();
+  const adminId = await requireAdmin("listing.delete", id);
   if (!adminId) return { ok: false, error: "Not authorized." };
 
   const supabase = await createClient();
@@ -95,18 +114,30 @@ export async function deleteListingAsAdmin(id: string): Promise<ModerationResult
   const { error } = await supabase.from("employees").delete().eq("id", id);
   if (error) return { ok: false, error: error.message };
 
+  await logSecurityEvent({
+    action: "listing.delete",
+    targetType: "listing",
+    targetId: id,
+    detail: { slug: existing?.slug ?? null },
+  });
   revalidateListingSurfaces(existing?.slug);
   return { ok: true };
 }
 
 export async function setListingFeatured(id: string, featured: boolean): Promise<ModerationResult> {
-  const adminId = await requireAdmin();
+  const adminId = await requireAdmin("listing.feature", id);
   if (!adminId) return { ok: false, error: "Not authorized." };
 
   const supabase = await createClient();
   const { error } = await supabase.from("employees").update({ featured }).eq("id", id);
   if (error) return { ok: false, error: error.message };
 
+  await logSecurityEvent({
+    action: "listing.feature",
+    targetType: "listing",
+    targetId: id,
+    detail: { featured },
+  });
   revalidateListingSurfaces();
   return { ok: true };
 }

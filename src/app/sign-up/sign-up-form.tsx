@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
+import { MIN_PASSWORD_LENGTH, validatePassword } from "@/lib/auth/password";
 import { OTPInput } from "@/components/auth/otp-input";
 import type { UserRole } from "@/lib/types/database";
 
@@ -45,6 +46,15 @@ export function SignUpForm() {
     const formData = new FormData(e.currentTarget);
     const email = String(formData.get("email"));
     const password = String(formData.get("password"));
+
+    // Checked before the network call so a weak password never leaves the
+    // browser. Supabase enforces its own minimum server-side as well.
+    const passwordProblem = validatePassword(password, email);
+    if (passwordProblem) {
+      setLoading(false);
+      toast.error("Choose a stronger password", { description: passwordProblem });
+      return;
+    }
     const fullName = String(formData.get("full_name"));
     const companyName = String(formData.get("company_name") ?? "");
 
@@ -162,7 +172,15 @@ export function SignUpForm() {
             </div>
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" name="password" type="password" required minLength={8} placeholder="At least 8 characters" />
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                required
+                minLength={MIN_PASSWORD_LENGTH}
+                autoComplete="new-password"
+                placeholder={`At least ${MIN_PASSWORD_LENGTH} characters`}
+              />
             </div>
             <Button type="submit" disabled={loading} className="mt-2" size="lg">
               {loading ? "Creating account..." : "Create account"}

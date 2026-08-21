@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { isAdminUser } from "@/lib/auth/admin";
+import { logSecurityEvent } from "@/lib/auth/security-log";
 import { revalidatePath } from "next/cache";
 
 /**
@@ -10,13 +11,22 @@ import { revalidatePath } from "next/cache";
  * thing standing in the way was an RLS policy testing a JWT claim Supabase
  * never issues, which denied everyone including the real admin.
  */
-async function requireAdmin() {
-  if (!(await isAdminUser())) throw new Error("Not authorized");
+async function requireAdmin(action: string, targetId?: string) {
+  if (!(await isAdminUser())) {
+    await logSecurityEvent({
+      action,
+      outcome: "denied",
+      targetType: "classroom_module",
+      targetId,
+      detail: { reason: "not_admin" },
+    });
+    throw new Error("Not authorized");
+  }
 }
 
 export async function deleteModuleAction(formData: FormData) {
-  await requireAdmin();
   const id = formData.get("id") as string;
+  await requireAdmin("classroom.delete", id);
   const supabase = await createClient();
 
   const { error } = await supabase.from("classroom_modules").delete().eq("id", id);
@@ -26,6 +36,7 @@ export async function deleteModuleAction(formData: FormData) {
     throw new Error("Failed to delete module");
   }
 
+  await logSecurityEvent({ action: "classroom.delete", targetType: "classroom_module", targetId: id });
   revalidatePath("/dashboard/admin/classroom");
 }
 
@@ -33,7 +44,7 @@ export async function saveModuleAction(
   formData: FormData,
   moduleId?: string
 ) {
-  await requireAdmin();
+  await requireAdmin("classroom.save", moduleId);
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
   const content = formData.get("content") as string;
@@ -77,6 +88,11 @@ export async function saveModuleAction(
     }
   }
 
+  await logSecurityEvent({
+    action: moduleId ? "classroom.update" : "classroom.create",
+    targetType: "classroom_module",
+    targetId: moduleId,
+  });
   revalidatePath("/dashboard/admin/classroom");
   return { success: true };
 }

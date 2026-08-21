@@ -9,8 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { createClient } from "@/lib/supabase/client";
-
-const MIN_PASSWORD_LENGTH = 8;
+import { MIN_PASSWORD_LENGTH, validatePassword } from "@/lib/auth/password";
 
 /**
  * Second half of the reset flow. Arriving from the emailed link puts a
@@ -35,8 +34,9 @@ export function ResetPasswordForm() {
     const password = String(form.get("password"));
     const confirm = String(form.get("confirm"));
 
-    if (password.length < MIN_PASSWORD_LENGTH) {
-      toast.error(`Use at least ${MIN_PASSWORD_LENGTH} characters.`);
+    const problem = validatePassword(password);
+    if (problem) {
+      toast.error("Choose a stronger password", { description: problem });
       return;
     }
     if (password !== confirm) {
