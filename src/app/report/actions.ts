@@ -1,5 +1,6 @@
 "use server";
 
+import { randomUUID } from "node:crypto";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getLivePublishedEmployees } from "@/lib/data/live-marketplace";
@@ -39,9 +40,16 @@ export async function generateReportAction(input: ReportInput) {
   // profile_id comes from the verified session above, never from the caller.
   const db = supabase;
 
-  const { data: report, error } = await db
+  // The id is generated here rather than read back with RETURNING. Anonymous
+  // reports are no longer SELECT-able as a table (that is what allowed anyone
+  // to list every prospect's report), so an insert that reads its own row back
+  // would be refused for a signed-out visitor.
+  const reportId = randomUUID();
+
+  const { error } = await db
     .from("reports")
     .insert({
+      id: reportId,
       profile_id: user?.id ?? null,
       status: "complete",
       business_name: input.business_name || null,
@@ -70,18 +78,18 @@ export async function generateReportAction(input: ReportInput) {
       roadmap_90_day: scored.roadmap_90 as unknown as Json,
       roadmap_one_year: scored.roadmap_year as unknown as Json,
       is_premium: false,
-    })
-    .select("id")
-    .single();
+    });
 
-  if (error || !report) {
-    throw new Error(error?.message ?? "Failed to save your report. Please try again.");
+  if (error) {
+    // The underlying message can carry schema detail; keep it to the logs.
+    console.error("Failed to save report:", error);
+    throw new Error("Failed to save your report. Please try again.");
   }
 
   if (scored.recommendations.length > 0) {
     await db.from("report_recommendations").insert(
       scored.recommendations.map((r) => ({
-        report_id: report.id,
+        report_id: reportId,
         employee_id: r.employee_id,
         priority: r.priority,
         reason: r.reason,
@@ -91,5 +99,5 @@ export async function generateReportAction(input: ReportInput) {
     );
   }
 
-  redirect(`/report/${report.id}`);
+  redirect(`/report/${reportId}`);
 }

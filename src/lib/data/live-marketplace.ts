@@ -59,13 +59,23 @@ function withProBoost<T extends { id: string }>(rows: T[], boosted: Set<string>)
   return rows.map((row) => ({ ...row, is_pro_boosted: boosted.has(row.id) }));
 }
 
+/**
+ * The marketplace selects * for convenience, which includes profile_id — the
+ * owner's account id. Nothing in the public UI uses it and it is a real user
+ * identifier, so it is stripped before the row leaves the data layer rather
+ * than being shipped in the page payload.
+ */
+function withoutOwner<T extends { profile_id?: string | null }>(row: T): T {
+  return { ...row, profile_id: null };
+}
+
 export async function getLivePublishedEmployees(): Promise<EmployeeWithCategory[]> {
   const supabase = await createClient();
   const [{ data }, boosted] = await Promise.all([
     supabase.from("employees").select("*, category:categories(slug, name, icon)").eq("status", "published"),
     getProBoostedEmployeeIds(),
   ]);
-  return withProBoost((data as EmployeeWithCategory[] | null) ?? [], boosted);
+  return withProBoost(((data as EmployeeWithCategory[] | null) ?? []).map(withoutOwner), boosted);
 }
 
 /**
@@ -130,7 +140,7 @@ export async function getLiveEmployeeBySlugWithCategory(slug: string): Promise<E
   ]);
   const employee = data as EmployeeWithCategory | null;
   if (!employee) return null;
-  return { ...employee, is_pro_boosted: boosted.has(employee.id) };
+  return { ...withoutOwner(employee), is_pro_boosted: boosted.has(employee.id) };
 }
 
 export async function getLiveRelatedEmployees(employeeId: string, categoryId: string | null, limit = 3): Promise<Employee[]> {

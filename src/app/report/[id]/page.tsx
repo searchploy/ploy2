@@ -10,6 +10,16 @@ import type { RoadmapItem } from "@/lib/report/scoring";
 
 export const metadata: Metadata = { title: "Your AI Workforce Report" };
 
+/** Shape returned by get_public_report_recommendations (no join). */
+interface RawRecommendation {
+  id: string;
+  employee_id: string | null;
+  priority: number;
+  reason: string | null;
+  estimated_roi_percent: number | null;
+  estimated_monthly_savings: number | null;
+}
+
 interface RecommendationRow {
   id: string;
   priority: number;
@@ -61,23 +71,65 @@ export default async function ReportResultsPage({ params }: { params: Promise<{ 
   // below is what stops one signed-in user opening another's report.
   const db = await createClient();
 
-  const { data: report } = await db.from("reports").select("*").eq("id", id).maybeSingle();
+  // Owned reports come back through the caller's own session (RLS restricts
+  // them to the owner and admins). Anonymous reports are not readable as a
+  // table at all — that is what let anyone list every prospect's report — so
+  // they are fetched by id through get_public_report, which has no argument
+  // that could return more than the one row asked for.
+  const { data: ownRows } = await db.from("reports").select("*").eq("id", id).limit(1);
+  let report = ownRows?.[0] ?? null;
+
+  if (!report) {
+    const { data: publicRows } = await db.rpc("get_public_report", { p_report_id: id });
+    report = (publicRows as typeof ownRows | null)?.[0] ?? null;
+  }
   if (!report) notFound();
 
+  // Defence in depth: RLS and the function already scope this, but the page
+  // states the rule rather than inheriting it silently.
   const isOwner = Boolean(report.profile_id) && report.profile_id === profile?.id;
   const isAnonymousReport = report.profile_id === null;
-  // 404 rather than 403: an unauthorised viewer shouldn't learn the id exists.
   if (!isAnonymousReport && !isOwner && profile?.role !== "admin") notFound();
 
-  const { data: recommendations } = await db
-    .from("report_recommendations")
-    .select("id, priority, reason, estimated_roi_percent, estimated_monthly_savings, employee:employees(id, name, slug, role, price_monthly)")
-    .eq("report_id", id)
-    .order("priority", { ascending: true });
+  let recommendations: RecommendationRow[] | null = null;
+
+  if (isAnonymousReport) {
+    // The function returns the recommendation rows but cannot join, so the
+    // employees are fetched separately. They are published catalogue listings,
+    // which are public anyway — nothing private is being widened here.
+    const { data: rows } = await db.rpc("get_public_report_recommendations", { p_report_id: id });
+    const recs = (rows as RawRecommendation[] | null) ?? [];
+    const employeeIds = recs.map((r) => r.employee_id).filter((v): v is string => Boolean(v));
+
+    const { data: employees } = employeeIds.length
+      ? await db.from("employees").select("id, name, slug, role, price_monthly").in("id", employeeIds)
+      : { data: [] };
+
+    const employeeById = new Map((employees ?? []).map((e) => [e.id, e]));
+    recommendations = recs
+      .sort((a, b) => a.priority - b.priority)
+      .map((r) => ({
+        id: r.id,
+        priority: r.priority,
+        reason: r.reason,
+        estimated_roi_percent: r.estimated_roi_percent,
+        estimated_monthly_savings: r.estimated_monthly_savings,
+        employee: (r.employee_id ? employeeById.get(r.employee_id) : null) ?? null,
+      }));
+  } else {
+    const { data } = await db
+      .from("report_recommendations")
+      .select(
+        "id, priority, reason, estimated_roi_percent, estimated_monthly_savings, employee:employees(id, name, slug, role, price_monthly)"
+      )
+      .eq("report_id", id)
+      .order("priority", { ascending: true });
+    recommendations = data as unknown as RecommendationRow[] | null;
+  }
 
   const isPro = profile?.subscription_plan === "pro";
 
-  const allRecs = (recommendations ?? []) as unknown as RecommendationRow[];
+  const allRecs = recommendations ?? [];
   const visibleRecs = isPro ? allRecs : allRecs.slice(0, 3);
   // A real fourth recommendation, rendered fading out under the paywall so the
   // report visibly continues rather than just stopping — the gate reads as

@@ -57,11 +57,11 @@ export async function POST(request: NextRequest) {
       clientSecret: result.clientSecret,
     })
   } catch (error) {
+    // Detail stays in the server log; the caller gets a generic message so a
+    // Stripe or schema error cannot leak internals through the API response.
     console.error('Error creating checkout session:', error)
     return NextResponse.json(
-      {
-        error: error instanceof Error ? error.message : 'Failed to create checkout session',
-      },
+      { error: 'Failed to create checkout session' },
       { status: 500 }
     )
   }
