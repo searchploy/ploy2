@@ -126,6 +126,9 @@ export function VerifyEmailForm() {
           <p className="text-sm text-muted-foreground">
             {userEmail ? `We sent a code to ${userEmail}` : "Enter the 6-digit code from your email"}
           </p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            If it isn&apos;t in your inbox within a minute, check your spam folder.
+          </p>
         </div>
 
         <form onSubmit={handleVerifyCode} className="flex flex-col gap-4">

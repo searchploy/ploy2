@@ -10,6 +10,9 @@ import type { RoadmapItem } from "@/lib/report/scoring";
 
 export const metadata: Metadata = { title: "Your AI Workforce Report" };
 
+/** How many recommended AI employees a report shows without Ploy Pro. */
+const FREE_RECOMMENDATION_LIMIT = 2;
+
 /** Shape returned by get_public_report_recommendations (no join). */
 interface RawRecommendation {
   id: string;
@@ -130,12 +133,13 @@ export default async function ReportResultsPage({ params }: { params: Promise<{ 
   const isPro = profile?.subscription_plan === "pro";
 
   const allRecs = recommendations ?? [];
-  const visibleRecs = isPro ? allRecs : allRecs.slice(0, 3);
-  // A real fourth recommendation, rendered fading out under the paywall so the
-  // report visibly continues rather than just stopping — the gate reads as
-  // covering something instead of being the end of the page.
-  const teaserRec = isPro ? null : (allRecs[3] ?? null);
-  const lockedCount = isPro ? 0 : Math.max(allRecs.length - 3, 0);
+  const visibleRecs = isPro ? allRecs : allRecs.slice(0, FREE_RECOMMENDATION_LIMIT);
+  // The next recommendation, rendered fading out under the paywall so the
+  // report visibly continues rather than just stopping. Only its role and ROI
+  // are used — the name and reason stay out of the HTML, since anything
+  // rendered here is readable in page source regardless of the fade.
+  const teaserRec = isPro ? null : (allRecs[FREE_RECOMMENDATION_LIMIT] ?? null);
+  const lockedCount = isPro ? 0 : Math.max(allRecs.length - FREE_RECOMMENDATION_LIMIT, 0);
 
   const roadmap30 = (report.roadmap_30_day as unknown as RoadmapItem[]) ?? [];
   const roadmap90 = (report.roadmap_90_day as unknown as RoadmapItem[]) ?? [];
@@ -244,8 +248,8 @@ export default async function ReportResultsPage({ params }: { params: Promise<{ 
                     <p className="mb-1 text-xs font-bold uppercase tracking-wide text-ploy-gold">
                       Priority {teaserRec.priority} · {teaserRec.employee?.role}
                     </p>
-                    <p className="mb-1.5 font-bold">{teaserRec.employee?.name}</p>
-                    <p className="text-sm text-muted-foreground">{teaserRec.reason}</p>
+                    <div className="mb-2.5 h-4 w-40 rounded bg-muted-foreground/30 blur-[2px]" />
+                    <div className="h-3 w-64 max-w-full rounded bg-muted-foreground/20 blur-[2px]" />
                   </div>
                   <div className="shrink-0 text-right">
                     <p className="font-mono text-xl font-bold text-success">

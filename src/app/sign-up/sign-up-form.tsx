@@ -210,7 +210,8 @@ export function SignUpForm() {
           <DialogHeader>
             <DialogTitle>Verify your email</DialogTitle>
             <DialogDescription>
-              We sent a 6-digit code to {signUpEmail}. Enter it below to confirm your email.
+              We sent a 6-digit code to {signUpEmail}. Enter it below to confirm your email. If it
+              isn&apos;t in your inbox within a minute, check your spam folder.
             </DialogDescription>
           </DialogHeader>
 
