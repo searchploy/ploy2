@@ -113,11 +113,24 @@ export function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "text-[11px] font-bold uppercase tracking-[0.18em] transition-colors duration-300",
+                  "group relative text-[11px] font-bold uppercase tracking-[0.18em] transition-colors duration-300",
                   active ? "text-white" : "text-white/50 hover:text-white"
                 )}
               >
                 {link.label}
+                {/*
+                 * The same 2px rule as the hero card indicators, so the two
+                 * read as one idea. Present but transparent when inactive
+                 * rather than absent, so it widens out of the centre instead
+                 * of snapping into place.
+                 */}
+                <span
+                  aria-hidden
+                  className={cn(
+                    "absolute -bottom-2 left-1/2 h-[2px] -translate-x-1/2 bg-white transition-all duration-500",
+                    active ? "w-8 opacity-100" : "w-4 opacity-0 group-hover:opacity-40"
+                  )}
+                />
               </Link>
             );
           })}
