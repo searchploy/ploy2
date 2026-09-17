@@ -149,7 +149,12 @@ export function LiveEmployeeCard({
                 </span>
               )}
               {employee.avg_roi_percent != null && (
-                <span className="font-mono text-xs font-semibold text-success">Avg. ROI {employee.avg_roi_percent}%</span>
+                <span
+                  className="font-mono text-xs font-semibold text-success"
+                  title="Reported by the provider. Not verified by Ploy."
+                >
+                  Provider-reported ROI {employee.avg_roi_percent}%
+                </span>
               )}
             </div>
             {employee.website_url ? (
@@ -260,7 +265,12 @@ export function LiveEmployeeCard({
                 </span>
               )}
               {employee.avg_roi_percent != null && (
-                <span className="font-mono text-xs font-semibold text-success">Avg. ROI {employee.avg_roi_percent}%</span>
+                <span
+                  className="font-mono text-xs font-semibold text-success"
+                  title="Reported by the provider. Not verified by Ploy."
+                >
+                  Provider-reported ROI {employee.avg_roi_percent}%
+                </span>
               )}
             </div>
             <Button size="sm">View Details</Button>

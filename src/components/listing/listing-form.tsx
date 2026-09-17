@@ -9,8 +9,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import Link from "next/link";
+import { Checkbox } from "@/components/ui/checkbox";
 import { ListingPreview } from "@/components/listing/listing-preview";
 import { LogoUpload } from "@/components/listing/logo-upload";
+import { ProVisibilityDisclosure } from "@/components/legal/disclosures";
+import { acceptProviderTerms } from "@/app/actions/legal";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 import {
@@ -105,6 +109,11 @@ export function ListingForm({
   const [mode, setMode] = useState<"edit" | "preview">("edit");
   const [saving, setSaving] = useState(false);
   const [slugTouched, setSlugTouched] = useState(Boolean(existing));
+  // Never pre-checked, and never remembered from a previous submission: the
+  // provider re-confirms the listing is accurate each time they publish. The
+  // employees RLS policies require a recorded acceptance regardless, so this
+  // checkbox is the prompt, not the enforcement.
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   const [form, setForm] = useState({
     name: existing?.name ?? "",
@@ -191,6 +200,13 @@ export function ListingForm({
       return;
     }
 
+    if (!acceptedTerms) {
+      toast.error("Please confirm the Marketplace Provider Terms", {
+        description: "You'll need to agree before your listing can be submitted.",
+      });
+      return;
+    }
+
     setSaving(true);
     const {
       data: { user },
@@ -198,6 +214,16 @@ export function ListingForm({
 
     if (!user) {
       toast.error("You need to be signed in.");
+      setSaving(false);
+      return;
+    }
+
+    // Recorded before the write because the employees insert/update policies
+    // check for an acceptance row — without this the database refuses the
+    // listing rather than saving it unaccepted.
+    const accepted = await acceptProviderTerms();
+    if (!accepted.ok) {
+      toast.error("Couldn't record your agreement", { description: accepted.error });
       setSaving(false);
       return;
     }
@@ -295,8 +321,38 @@ export function ListingForm({
                 : "Our team reviews every AI employee before it goes on the marketplace. You'll see the status on your listing page."}
             </p>
           </div>
+
+          <p className="text-xs leading-relaxed text-muted-foreground">
+            Review is for inclusion on Ploy. It isn&apos;t a certification, and Ploy doesn&apos;t
+            verify or guarantee your product&apos;s performance, security or results.
+          </p>
+
+          <label
+            htmlFor="accept-provider-terms"
+            className="flex cursor-pointer items-start gap-2.5 rounded-xl border border-border bg-secondary/20 p-4 text-sm"
+          >
+            <Checkbox
+              id="accept-provider-terms"
+              checked={acceptedTerms}
+              onCheckedChange={(checked) => setAcceptedTerms(checked === true)}
+              className="mt-0.5"
+            />
+            <span className="text-muted-foreground">
+              I agree to the{" "}
+              <Link
+                href="/marketplace-provider-terms"
+                target="_blank"
+                className="font-medium text-foreground underline-offset-4 hover:text-ploy-gold hover:underline"
+              >
+                Ploy Marketplace Provider Terms
+              </Link>{" "}
+              and confirm that the information in this listing — including its pricing and what it
+              claims this AI employee does — is accurate, and that I have the right to list it.
+            </span>
+          </label>
+
           <div className="flex flex-wrap gap-3">
-            <Button onClick={publish} disabled={saving}>
+            <Button onClick={publish} disabled={saving || !acceptedTerms}>
               {saving ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" />
@@ -570,6 +626,8 @@ export function ListingForm({
           </p>
         </div>
       </Section>
+
+      <ProVisibilityDisclosure />
 
       <div className="flex flex-wrap gap-3">
         <Button onClick={goToPreview}>Preview listing</Button>

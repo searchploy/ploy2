@@ -5,6 +5,8 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getLivePublishedEmployees } from "@/lib/data/live-marketplace";
 import { generateReport, type ReportInput } from "@/lib/report/scoring";
+import { getEntitlements } from "@/lib/auth/entitlements";
+import { loadPublishedListings, saveRoadmap, toRoadmapSource } from "@/lib/report/roadmap-data";
 import type { Json } from "@/lib/types/database";
 
 /**
@@ -97,6 +99,42 @@ export async function generateReportAction(input: ReportInput) {
         estimated_monthly_savings: r.monthly_savings,
       }))
     );
+
+    // A Ploy Pro report arrives with its roadmap already built, so the results
+    // page has nothing to generate on first view. Failing here must not lose
+    // the report the visitor just waited for.
+    if (user) {
+      try {
+        const entitlements = await getEntitlements();
+        if (entitlements.pro || entitlements.isAdmin) {
+          const listings = await loadPublishedListings(
+            db,
+            scored.recommendations.map((r) => r.employee_id)
+          );
+          const source = toRoadmapSource(
+            {
+              business_name: input.business_name || null,
+              industry: input.industry || null,
+              employee_count: input.employee_count || null,
+              revenue_range: input.revenue_range || null,
+              departments: input.departments,
+              current_software: input.current_software,
+              pain_points: input.pain_points,
+              goals: input.goals,
+              ai_readiness_score: scored.ai_readiness_score,
+              estimated_hours_saved_monthly: scored.estimated_hours_saved_monthly,
+              estimated_annual_savings: scored.estimated_annual_savings,
+            },
+            scored.recommendations.map((r) => ({ employee_id: r.employee_id, priority: r.priority })),
+            listings
+          );
+          const { error: roadmapError } = await saveRoadmap(db, reportId, source);
+          if (roadmapError) console.error("Failed to save roadmap:", roadmapError);
+        }
+      } catch (roadmapError) {
+        console.error("Failed to save roadmap:", roadmapError);
+      }
+    }
   }
 
   redirect(`/report/${reportId}`);

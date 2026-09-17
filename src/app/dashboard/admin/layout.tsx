@@ -5,6 +5,7 @@ import {
   Receipt,
   BookOpen,
   FileText,
+  Flag,
 } from "lucide-react";
 import { redirect } from "next/navigation";
 import { DashboardSidebar, type DashboardNavItem } from "@/components/dashboard/sidebar";
@@ -15,6 +16,7 @@ const navItems: DashboardNavItem[] = [
   { label: "Overview", href: "/dashboard/admin", icon: <LayoutDashboard className="h-4 w-4" /> },
   { label: "Agencies", href: "/dashboard/admin/agencies", icon: <Building2 className="h-4 w-4" /> },
   { label: "Listings", href: "/dashboard/admin/listings", icon: <Package className="h-4 w-4" /> },
+  { label: "Flagged Listings", href: "/dashboard/admin/listing-reports", icon: <Flag className="h-4 w-4" /> },
   { label: "Reports", href: "/dashboard/admin/reports", icon: <FileText className="h-4 w-4" /> },
   { label: "Sales", href: "/dashboard/admin/sales", icon: <Receipt className="h-4 w-4" /> },
   { label: "Classroom", href: "/dashboard/admin/classroom", icon: <BookOpen className="h-4 w-4" /> },

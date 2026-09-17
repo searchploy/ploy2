@@ -9,8 +9,8 @@ const reasons = [
   },
   {
     icon: LineChart,
-    title: "ROI you can defend",
-    description: "Every recommendation comes with an estimated savings, hours-saved, and ROI number — not a hunch.",
+    title: "Numbers you can interrogate",
+    description: "Every recommendation comes with estimated savings, hours saved and ROI — shown with the assumptions behind them, so you can check the maths.",
   },
   {
     icon: Workflow,
@@ -19,13 +19,13 @@ const reasons = [
   },
   {
     icon: Users,
-    title: "Vetted AI employees, ready to hire",
-    description: "Skip the DIY prompt engineering. Every recommendation links to a production-ready AI employee built by a vetted agency.",
+    title: "Real products, ready to hire",
+    description: "Skip the DIY prompt engineering. Every recommendation links to a working AI employee from an agency you can go and evaluate yourself.",
   },
   {
     icon: ShieldCheck,
-    title: "Built by people who implement AI daily",
-    description: "Ploy's recommendations are grounded in a real marketplace of AI employees already deployed across hundreds of businesses.",
+    title: "Every listing is reviewed",
+    description: "Listings are reviewed before they reach the marketplace. Review is for inclusion, not a guarantee of a provider's performance or results.",
   },
   {
     icon: Rocket,

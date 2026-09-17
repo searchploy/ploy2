@@ -8,6 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { LiveEmployeeCard } from "@/components/marketplace/live-employee-card";
+import { MarketplaceBrowseDisclosure } from "@/components/legal/disclosures";
 import type { EmployeeWithCategory } from "@/lib/data/live-marketplace";
 import type { Agency, Category } from "@/lib/types/database";
 
@@ -405,7 +406,10 @@ export function MarketplaceBrowser({
           </div>
         </div>
 
-        <p className="text-sm text-muted-foreground">{filtered.length} AI employees</p>
+        <div className="flex flex-col gap-2">
+          <p className="text-sm text-muted-foreground">{filtered.length} AI employees</p>
+          <MarketplaceBrowseDisclosure />
+        </div>
 
         {filtered.length > 0 ? (
           <div className="flex flex-col gap-4">

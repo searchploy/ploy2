@@ -25,7 +25,9 @@ export default async function AdminSalesPage() {
 
       <div className="grid gap-4 sm:grid-cols-3">
         <StatCard label="Gross merchandise value" value={formatCurrency(gmv)} icon={ShoppingCart} />
-        <StatCard label="Ploy commission" value={formatCurrency(commission)} icon={Percent} />
+        {/* Retired model: Ploy takes no commission on marketplace sales. Kept
+            only because the legacy sample dataset still carries the field. */}
+        <StatCard label="Legacy commission field" value={formatCurrency(commission)} icon={Percent} />
         <StatCard label="Total orders" value={String(orders.length)} icon={DollarSign} />
       </div>
 

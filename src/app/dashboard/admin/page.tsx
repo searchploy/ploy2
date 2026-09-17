@@ -33,11 +33,13 @@ export default async function AdminOverviewPage() {
         <StatCard label="Total agencies" value={String(agencies.length)} icon={Building2} trend={pendingAgencies > 0 ? { value: `${pendingAgencies} pending review`, positive: false } : undefined} />
         <StatCard label="Total listings" value={String(employees.length)} icon={Package} trend={pendingListings > 0 ? { value: `${pendingListings} pending review`, positive: false } : undefined} />
         <StatCard label="Registered users" value={String(demoUsers.length * 40)} icon={Users} />
-        <StatCard label="Commission revenue" value={formatCurrency(totalCommission)} icon={DollarSign} trend={{ value: "+12% MoM", positive: true }} />
+        {/* Ploy no longer takes a commission on marketplace sales, so this is
+            order volume from the legacy sample dataset, not Ploy revenue. */}
+        <StatCard label="Sample order volume" value={formatCurrency(totalCommission)} icon={DollarSign} />
       </div>
 
       <Card className="p-6">
-        <h2 className="mb-4 font-semibold">Commission revenue over time</h2>
+        <h2 className="mb-4 font-semibold">Sample order volume over time</h2>
         <RevenueChart data={series} />
       </Card>
     </div>

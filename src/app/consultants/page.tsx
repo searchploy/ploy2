@@ -14,7 +14,6 @@ import {
 import { SectionHeading } from "@/components/shared/section-heading";
 import { UpgradeButton } from "@/components/pricing/upgrade-button";
 import { CheckoutStatusToast } from "@/components/pricing/checkout-status-toast";
-import { SuccessCarousel } from "@/components/consultants/success-carousel";
 import { getPrice } from "@/lib/stripe/server";
 
 export const metadata: Metadata = {
@@ -93,8 +92,12 @@ export default async function ConsultantsPage() {
         </div>
       </header>
 
-      {/* Success Stories Carousel */}
-      <SuccessCarousel />
+      {/* The "First Month Earnings — Consultants Making Money Immediately"
+          carousel was removed here. Every consultant in it was invented, each
+          with a specific first-month figure ($2,850–$6,100). Presenting made-up
+          earnings as real results for a paid programme is the single riskiest
+          claim on the site, so the component was deleted outright rather than
+          left behind for someone to re-mount. */}
 
       {/* Pricing */}
       <section className="py-12">
@@ -103,57 +106,13 @@ export default async function ConsultantsPage() {
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Simple, Transparent Pricing</h2>
           </div>
 
-          {/* Social Proof */}
-          <div className="mx-auto w-full max-w-5xl">
-            <div className="grid gap-6 sm:grid-cols-3">
-              {/* Recent Activity */}
-              <div className="rounded-2xl border border-border/50 bg-secondary/30 p-4">
-                <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-3">Recently Joined</p>
-                <div className="space-y-2">
-                  {[
-                    { name: "Sarah M.", city: "Austin, TX", action: "Started AI consulting" },
-                    { name: "Marcus J.", city: "Brooklyn, NY", action: "Landed first client" },
-                    { name: "Alex K.", city: "Denver, CO", action: "Generated $2.3k in revenue" },
-                  ].map((item, i) => (
-                    <div key={i} className="text-xs">
-                      <p className="font-medium text-foreground">{item.name}</p>
-                      <p className="text-muted-foreground">{item.action}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Stats */}
-              <div className="rounded-2xl border border-border/50 bg-secondary/30 p-4">
-                <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-4">By The Numbers</p>
-                <div className="space-y-3">
-                  <div>
-                    <p className="text-2xl font-bold text-ploy-gold">42+</p>
-                    <p className="text-xs text-muted-foreground">Consultants Earning</p>
-                  </div>
-                  <div>
-                    <p className="text-xl font-bold">$285k</p>
-                    <p className="text-xs text-muted-foreground">Client Revenue Generated</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Success Rate */}
-              <div className="rounded-2xl border border-border/50 bg-secondary/30 p-4">
-                <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-4">Average Results</p>
-                <div className="space-y-3">
-                  <div>
-                    <p className="text-2xl font-bold text-ploy-gold">$8.2k</p>
-                    <p className="text-xs text-muted-foreground">Avg. First Year Revenue</p>
-                  </div>
-                  <div>
-                    <p className="text-xl font-bold">2.1</p>
-                    <p className="text-xs text-muted-foreground">Avg. Clients Per Consultant</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          {/* The "Recently Joined" / "By The Numbers" / "Average Results" block
+              that sat here was removed: every figure in it was invented
+              (42+ consultants earning, $285k client revenue, $8.2k average
+              first-year revenue). Earnings claims for a paid programme have to
+              be substantiated by real, typical, documented results before they
+              can be shown at all — so nothing replaces it until there is real
+              data to show. */}
 
           {/* Ploy Consultant is a paid programme — there is no free tier, so
               this is a single card rather than a comparison. */}

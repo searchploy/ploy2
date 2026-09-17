@@ -7,7 +7,7 @@ export const homeFaqs: Faq[] = [
   {
     question: "What exactly is an AI Employee?",
     answer:
-      "An AI Employee is a production-ready AI agent built by a vetted agency to perform a specific job function — like an SDR, support agent, or bookkeeper. It's pre-trained on best practices for that role and gets customized to your workflows and software during onboarding.",
+      "An AI Employee is an AI agent built by an independent agency to perform a specific job function — like an SDR, support agent, or bookkeeper. It's built for that role and gets customized to your workflows and software during onboarding by the agency that provides it.",
   },
   {
     question: "Who builds and supports the AI Employees?",
@@ -27,11 +27,11 @@ export const homeFaqs: Faq[] = [
   {
     question: "What if the AI employee doesn't fit our workflow?",
     answer:
-      "Every listing shows detailed features, reviews, and pricing so you can evaluate fit before reaching out. If it's not right, keep comparing — there's no obligation until you sign up directly with an agency.",
+      "Every listing shows features, reviews, and pricing so you can evaluate fit before reaching out. If it's not right, keep comparing — there's no obligation until you sign up directly with an agency. Because the agreement is between you and that agency, their terms and refund policy are the ones that apply.",
   },
   {
-    question: "How does Ploy vet agencies?",
+    question: "Does Ploy check the listings on the marketplace?",
     answer:
-      "Agencies go through an application and review process before their listings go live, including verification of their track record, sample deployments, and support capabilities. Verified badges highlight agencies that have completed enhanced vetting.",
+      "Every listing is reviewed by our team before it appears on the marketplace, and any edit to a live listing goes back through review. That review is for inclusion on Ploy — it isn't a certification, and it doesn't verify that a provider's product performs as described or audit their security. Providers are responsible for the accuracy of their own listings, and you should evaluate any provider independently before buying. If something looks wrong, use 'Report this listing' on the listing page.",
   },
 ];

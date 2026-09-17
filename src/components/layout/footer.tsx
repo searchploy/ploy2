@@ -5,7 +5,7 @@ import { FOOTER_LINKS, SITE_DESCRIPTION } from "@/lib/constants";
 export function Footer() {
   return (
     <footer className="border-t border-border bg-secondary/40">
-      <div className="container grid gap-12 py-16 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
+      <div className="container grid gap-12 py-16 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-[1.4fr_repeat(4,1fr)]">
         <div className="flex flex-col gap-4">
           <Link href="/">
             <Logo size="sm" />
@@ -31,9 +31,11 @@ export function Footer() {
 
       <div className="container flex flex-col items-center justify-between gap-4 border-t border-border py-6 sm:flex-row">
         <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} Ploy, Inc. All rights reserved.</p>
-        <div className="flex gap-6 text-xs text-muted-foreground">
+        <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs text-muted-foreground">
           <Link href="/privacy" className="hover:text-foreground">Privacy</Link>
           <Link href="/terms" className="hover:text-foreground">Terms</Link>
+          <Link href="/ai-report-disclaimer" className="hover:text-foreground">AI Report Disclaimer</Link>
+          <Link href="/marketplace-provider-terms" className="hover:text-foreground">Provider Terms</Link>
           <Link href="/contact" className="hover:text-foreground">Contact</Link>
         </div>
       </div>

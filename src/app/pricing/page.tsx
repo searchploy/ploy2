@@ -39,45 +39,9 @@ const proKeyFeatures = [
   "Premium support",
 ];
 
-const testimonials = [
-  {
-    quote: "Ploy Pro helped us identify $2.3M in annual savings. The roadmap alone paid for itself in the first month.",
-    author: "Sarah Chen",
-    company: "TechFlow Inc.",
-    role: "VP Operations",
-  },
-  {
-    quote: "The AI recommendations were so specific to our workflow. We implemented three suggestions and cut processing time by 40%.",
-    author: "Marcus Johnson",
-    company: "Global Logistics",
-    role: "Operations Director",
-  },
-  {
-    quote: "Finally, a tool that speaks our language. The ROI projections helped convince our CFO to approve the AI initiative.",
-    author: "Emily Rodriguez",
-    company: "FinanceFlow Solutions",
-    role: "CEO",
-  },
-  {
-    quote: "The monthly updates keep us ahead of the curve. We went from exploring AI to leading the industry in just 6 months.",
-    author: "David Park",
-    company: "Innovation Labs",
-    role: "Founder",
-  },
-  {
-    quote: "We were skeptical about AI until we saw the actual numbers. The department-by-department analysis showed us exactly where to start.",
-    author: "Michelle Lee",
-    company: "Retail Dynamics",
-    role: "Operations Head",
-  },
-  {
-    quote: "The PDF export feature alone is worth the upgrade. We've shared reports with 30+ clients and closed 5 major deals.",
-    author: "Thomas Wright",
-    company: "Business Consultants LLC",
-    role: "Managing Partner",
-  },
-];
-
+// The testimonial list that sat here held invented quotes attributed to named
+// people at named companies. Removed rather than reworded — see
+// lib/data/testimonials.ts for where real, permissioned quotes should live.
 
 export default async function BusinessPricingPage() {
   const proPrice = await getPrice("pro");
@@ -123,9 +87,6 @@ export default async function BusinessPricingPage() {
                       <span className="text-sm">{feature}</span>
                     </div>
                   ))}
-                  <div className="pt-2 border-t border-border">
-                    <p className="text-xs text-muted-foreground">Ploy takes 20% commission on sales</p>
-                  </div>
                 </div>
 
                 <Button asChild variant="outline" size="lg" className="mt-auto">
@@ -140,7 +101,7 @@ export default async function BusinessPricingPage() {
                     Ploy Pro
                   </p>
                   <p className="font-mono text-3xl font-bold">
-                    ${proPrice?.amount.toFixed(2) ?? "29.99"}<span className="text-base font-normal text-muted-foreground">/mo</span>
+                    ${proPrice?.amount.toFixed(0) ?? "29"}<span className="text-base font-normal text-muted-foreground">/mo</span>
                   </p>
                 </div>
                 <p className="text-sm text-muted-foreground">Get premium visibility, unlimited reports, and grow faster.</p>
@@ -153,9 +114,6 @@ export default async function BusinessPricingPage() {
                       <span className="text-sm">{feature}</span>
                     </div>
                   ))}
-                  <div className="pt-2 border-t border-border">
-                    <p className="text-xs text-muted-foreground">Ploy takes 10% commission on sales</p>
-                  </div>
                 </div>
 
                 <UpgradeButton subscriptionType="pro" returnTo="/pricing" size="lg" className="mt-auto">
@@ -164,26 +122,6 @@ export default async function BusinessPricingPage() {
               </div>
             </div>
 
-            {/* Testimonials Section */}
-            <div className="mt-24">
-              <h2 className="mb-12 text-center text-2xl font-bold tracking-tight">Loved by Teams Like Yours</h2>
-              <div className="grid gap-6 sm:grid-cols-2">
-                {testimonials.map((testimonial, i) => (
-                  <div
-                    key={i}
-                    className="animate-slide-right rounded-2xl border border-border bg-card p-6 opacity-0"
-                    style={{ animationDelay: `${i * 100}ms`, animationFillMode: "forwards" }}
-                  >
-                    <p className="mb-4 text-sm italic text-muted-foreground">&quot;{testimonial.quote}&quot;</p>
-                    <div>
-                      <p className="font-semibold">{testimonial.author}</p>
-                      <p className="text-xs text-ploy-gold">{testimonial.role}</p>
-                      <p className="text-xs text-muted-foreground">{testimonial.company}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
         </div>
       </section>

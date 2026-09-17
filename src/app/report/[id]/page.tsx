@@ -1,12 +1,14 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { CheckCircle2, TriangleAlert } from "lucide-react";
+import { Suspense } from "react";
+import { CheckCircle2, Lock, TriangleAlert } from "lucide-react";
 import { createClient, getServerUser } from "@/lib/supabase/server";
+import { getEntitlements } from "@/lib/auth/entitlements";
 import { Button } from "@/components/ui/button";
 import { Paywall } from "@/components/shared/paywall";
-import { RoadmapTabs } from "@/app/report/[id]/roadmap-tabs";
-import type { RoadmapItem } from "@/lib/report/scoring";
+import { AiReportDisclosure, EstimatesDisclosure } from "@/components/legal/disclosures";
+import { RoadmapLoading, RoadmapSection } from "@/app/report/[id]/roadmap-section";
 
 export const metadata: Metadata = { title: "Your AI Workforce Report" };
 
@@ -25,6 +27,7 @@ interface RawRecommendation {
 
 interface RecommendationRow {
   id: string;
+  employee_id: string | null;
   priority: number;
   reason: string | null;
   estimated_roi_percent: number | null;
@@ -113,6 +116,7 @@ export default async function ReportResultsPage({ params }: { params: Promise<{ 
       .sort((a, b) => a.priority - b.priority)
       .map((r) => ({
         id: r.id,
+        employee_id: r.employee_id,
         priority: r.priority,
         reason: r.reason,
         estimated_roi_percent: r.estimated_roi_percent,
@@ -123,14 +127,18 @@ export default async function ReportResultsPage({ params }: { params: Promise<{ 
     const { data } = await db
       .from("report_recommendations")
       .select(
-        "id, priority, reason, estimated_roi_percent, estimated_monthly_savings, employee:employees(id, name, slug, role, price_monthly)"
+        "id, employee_id, priority, reason, estimated_roi_percent, estimated_monthly_savings, employee:employees(id, name, slug, role, price_monthly)"
       )
       .eq("report_id", id)
       .order("priority", { ascending: true });
     recommendations = data as unknown as RecommendationRow[] | null;
   }
 
-  const isPro = profile?.subscription_plan === "pro";
+  // profiles.subscription_plan is set to "pro" by the Stripe webhook for either
+  // product, so it can't tell Ploy Pro from Consulting Pro. Entitlements read
+  // the subscriptions table, which is per-product and not user-writable.
+  const entitlements = await getEntitlements();
+  const isPro = entitlements.pro || entitlements.isAdmin;
 
   const allRecs = recommendations ?? [];
   const visibleRecs = isPro ? allRecs : allRecs.slice(0, FREE_RECOMMENDATION_LIMIT);
@@ -140,10 +148,6 @@ export default async function ReportResultsPage({ params }: { params: Promise<{ 
   // rendered here is readable in page source regardless of the fade.
   const teaserRec = isPro ? null : (allRecs[FREE_RECOMMENDATION_LIMIT] ?? null);
   const lockedCount = isPro ? 0 : Math.max(allRecs.length - FREE_RECOMMENDATION_LIMIT, 0);
-
-  const roadmap30 = (report.roadmap_30_day as unknown as RoadmapItem[]) ?? [];
-  const roadmap90 = (report.roadmap_90_day as unknown as RoadmapItem[]) ?? [];
-  const roadmapYear = (report.roadmap_one_year as unknown as RoadmapItem[]) ?? [];
 
   const savings = report.estimated_annual_savings
     ? `$${Number(report.estimated_annual_savings).toLocaleString()}`
@@ -176,13 +180,15 @@ export default async function ReportResultsPage({ params }: { params: Promise<{ 
         </div>
         <div className="rounded-xl border border-border bg-secondary/30 p-5">
           <p className="font-mono text-2xl font-bold">{report.estimated_hours_saved_monthly ?? 0} hrs</p>
-          <p className="mt-1 text-sm text-muted-foreground">Hours Saved / Month</p>
+          <p className="mt-1 text-sm text-muted-foreground">Est. Hours Saved / Month</p>
         </div>
         <div className="rounded-xl border border-border bg-secondary/30 p-5">
           <p className="font-mono text-2xl font-bold">{report.estimated_roi_percent ?? 0}%</p>
           <p className="mt-1 text-sm text-muted-foreground">Estimated ROI</p>
         </div>
       </div>
+
+      <EstimatesDisclosure className="-mt-6 mb-10" />
 
       {(report.biggest_bottlenecks?.length ?? 0) > 0 && (
         <section className="mb-10">
@@ -233,6 +239,8 @@ export default async function ReportResultsPage({ params }: { params: Promise<{ 
             </Link>
           ))}
         </div>
+
+        <AiReportDisclosure className="mt-4" />
 
         {/* The gate. The teaser sits underneath a gradient that dissolves into
             the page background, and the paywall is pulled up over the tail of
@@ -285,16 +293,27 @@ export default async function ReportResultsPage({ params }: { params: Promise<{ 
         )}
       </section>
 
-      {/* The roadmap is one of the things the paywall above is covering, so for
-          a free report it isn't rendered at all — the gate already stands in
-          for it. */}
-      {isPro && (
-        <section className="mb-10">
-          <h2 className="mb-4 flex items-center gap-2.5 text-lg font-bold">
-            <span className="block h-4 w-1 rounded-full bg-ploy-gold" />
-            Implementation Roadmap
-          </h2>
-          <RoadmapTabs roadmap30={roadmap30} roadmap90={roadmap90} roadmapYear={roadmapYear} />
+      {/* The detailed roadmap is Ploy Pro only, and gated here on the server:
+          nothing about it is rendered for a free report. */}
+      {isPro ? (
+        <Suspense fallback={<RoadmapLoading />}>
+          <RoadmapSection
+            reportId={id}
+            report={report}
+            recommendations={allRecs.map((r) => ({ employee_id: r.employee_id, priority: r.priority }))}
+            canSave={isOwner}
+          />
+        </Suspense>
+      ) : (
+        <section className="mb-10 rounded-2xl border border-border bg-secondary/20 p-6 text-center">
+          <span className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-secondary text-ploy-gold">
+            <Lock className="h-4 w-4" />
+          </span>
+          <h2 className="text-lg font-bold">AI Transformation Roadmap</h2>
+          <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
+            This roadmap is available with Ploy Pro. It sequences your recommended AI employees across 30 days, 90 days
+            and a year, with owners, dependencies, KPIs and estimated impact.
+          </p>
         </section>
       )}
 

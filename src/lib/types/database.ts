@@ -847,6 +847,98 @@ export type Database = {
           },
         ]
       }
+      legal_acceptances: {
+        Row: {
+          accepted_at: string
+          created_at: string
+          document_type: Database["public"]["Enums"]["legal_document_type"]
+          document_version: string
+          id: string
+          profile_id: string
+        }
+        Insert: {
+          accepted_at?: string
+          created_at?: string
+          document_type: Database["public"]["Enums"]["legal_document_type"]
+          document_version: string
+          id?: string
+          profile_id: string
+        }
+        Update: {
+          accepted_at?: string
+          created_at?: string
+          document_type?: Database["public"]["Enums"]["legal_document_type"]
+          document_version?: string
+          id?: string
+          profile_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "legal_acceptances_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      listing_reports: {
+        Row: {
+          admin_notes: string | null
+          created_at: string
+          detail: string | null
+          employee_id: string
+          id: string
+          reason: Database["public"]["Enums"]["listing_report_reason"]
+          reporter_id: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: Database["public"]["Enums"]["listing_report_status"]
+          updated_at: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          created_at?: string
+          detail?: string | null
+          employee_id: string
+          id?: string
+          reason: Database["public"]["Enums"]["listing_report_reason"]
+          reporter_id?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: Database["public"]["Enums"]["listing_report_status"]
+          updated_at?: string
+        }
+        Update: {
+          admin_notes?: string | null
+          created_at?: string
+          detail?: string | null
+          employee_id?: string
+          id?: string
+          reason?: Database["public"]["Enums"]["listing_report_reason"]
+          reporter_id?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: Database["public"]["Enums"]["listing_report_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "listing_reports_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "listing_reports_reporter_id_fkey"
+            columns: ["reporter_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notifications: {
         Row: {
           body: string | null
@@ -1335,6 +1427,22 @@ export type Database = {
     }
     Functions: {
       verify_email: { Args: { user_id: string }; Returns: undefined }
+      record_legal_acceptance: {
+        Args: {
+          p_document_type: Database["public"]["Enums"]["legal_document_type"]
+          p_document_version: string
+        }
+        Returns: undefined
+      }
+      has_accepted_provider_terms: { Args: Record<string, never>; Returns: boolean }
+      submit_listing_report: {
+        Args: {
+          p_employee_id: string
+          p_reason: Database["public"]["Enums"]["listing_report_reason"]
+          p_detail?: string | null
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       contact_activity_type:
@@ -1350,6 +1458,20 @@ export type Database = {
         | "won"
         | "lost"
       contact_type: "prospect" | "client"
+      legal_document_type:
+        | "terms"
+        | "privacy"
+        | "marketplace_provider_terms"
+        | "ai_report_disclaimer"
+      listing_report_reason:
+        | "misleading"
+        | "fraud"
+        | "does_not_exist"
+        | "pricing"
+        | "misrepresentation"
+        | "security"
+        | "other"
+      listing_report_status: "open" | "under_review" | "resolved" | "dismissed"
       listing_status:
         | "draft"
         | "pending_review"
@@ -1497,6 +1619,8 @@ export type ConsultantContact = Tables<"consultant_contacts">
 export type ConsultantTask = Tables<"consultant_tasks">
 export type ConsultantNote = Tables<"consultant_notes">
 export type ClassroomModule = Tables<"classroom_modules">
+export type LegalAcceptance = Tables<"legal_acceptances">
+export type ListingReport = Tables<"listing_reports">
 
 export type SubscriptionType = Enums<"subscription_type">
 export type SubscriptionPlan = Enums<"subscription_plan">

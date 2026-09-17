@@ -4,7 +4,7 @@ import { useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
-import { Building2, Briefcase, Users, Loader2 } from "lucide-react";
+import { Building2, Users, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,8 +19,10 @@ import {
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 import { Turnstile, type TurnstileHandle } from "@/components/auth/turnstile";
+import { Checkbox } from "@/components/ui/checkbox";
 import { MIN_PASSWORD_LENGTH, validatePassword } from "@/lib/auth/password";
 import { OTPInput } from "@/components/auth/otp-input";
+import { acceptSignupTerms } from "@/app/actions/legal";
 import type { UserRole } from "@/lib/types/database";
 
 // Map signup selection to user role
@@ -39,11 +41,23 @@ export function SignUpForm() {
   const [verifyingCode, setVerifyingCode] = useState(false);
   const [signUpEmail, setSignUpEmail] = useState("");
   const [captchaToken, setCaptchaToken] = useState<string | undefined>();
+  // Never pre-checked: acceptance has to be a deliberate act to be worth
+  // recording. The acceptance row itself is written server-side once the
+  // account has a session (see handleVerifyCode).
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const captcha = useRef<TurnstileHandle | null>(null);
   const redirectTo = searchParams.get("redirect");
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    if (!acceptedTerms) {
+      toast.error("Please accept the Terms of Service", {
+        description: "You'll need to agree before creating an account.",
+      });
+      return;
+    }
+
     setLoading(true);
 
     const formData = new FormData(e.currentTarget);
@@ -110,6 +124,15 @@ export function SignUpForm() {
 
       // profiles.email_verified is mirrored from auth by a DB trigger — it is
       // deliberately not writable from the client.
+
+      // Recorded here rather than at submit because there is no authenticated
+      // user to attach an acceptance to until the code is verified. The user
+      // already ticked the box to get this far; a failure to record it should
+      // not strand them mid-signup, so it is logged rather than surfaced.
+      const accepted = await acceptSignupTerms();
+      if (!accepted.ok) {
+        console.error("Failed to record signup terms acceptance:", accepted.error);
+      }
 
       setShowCodeModal(false);
       setVerificationCode("");
@@ -190,7 +213,35 @@ export function SignUpForm() {
             </div>
             <Turnstile onToken={setCaptchaToken} handleRef={captcha} />
 
-            <Button type="submit" disabled={loading} className="mt-2" size="lg">
+            <label htmlFor="accept-terms" className="flex cursor-pointer items-start gap-2.5 text-sm">
+              <Checkbox
+                id="accept-terms"
+                checked={acceptedTerms}
+                onCheckedChange={(checked) => setAcceptedTerms(checked === true)}
+                className="mt-0.5"
+              />
+              <span className="text-muted-foreground">
+                I agree to the{" "}
+                <Link
+                  href="/terms"
+                  target="_blank"
+                  className="font-medium text-foreground underline-offset-4 hover:text-ploy-gold hover:underline"
+                >
+                  Terms of Service
+                </Link>{" "}
+                and acknowledge the{" "}
+                <Link
+                  href="/privacy"
+                  target="_blank"
+                  className="font-medium text-foreground underline-offset-4 hover:text-ploy-gold hover:underline"
+                >
+                  Privacy Policy
+                </Link>
+                .
+              </span>
+            </label>
+
+            <Button type="submit" disabled={loading || !acceptedTerms} className="mt-2" size="lg">
               {loading ? "Creating account..." : "Create account"}
             </Button>
           </form>

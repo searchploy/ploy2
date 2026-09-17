@@ -76,7 +76,7 @@ const REVENUE_READINESS_BONUS: Record<string, number> = {
 };
 
 /** Rough blended fully-loaded hourly labor cost by revenue bucket. */
-const REVENUE_HOURLY_COST: Record<string, number> = {
+export const REVENUE_HOURLY_COST: Record<string, number> = {
   "Under $100K": 28,
   "$100K – $500K": 32,
   "$500K – $1M": 36,
@@ -86,7 +86,7 @@ const REVENUE_HOURLY_COST: Record<string, number> = {
 };
 
 /** How automatable each pain point is with AI today (out of ~100 combined). */
-const PAIN_AUTOMATION_WEIGHT: Record<string, number> = {
+export const PAIN_AUTOMATION_WEIGHT: Record<string, number> = {
   "Too much manual data entry": 18,
   "High customer support volume": 16,
   "Not enough leads": 14,
@@ -112,7 +112,7 @@ const GOAL_GROWTH_WEIGHT: Record<string, number> = {
   "Hire faster": 8,
 };
 
-const BOTTLENECK_COPY: Record<string, string> = {
+export const BOTTLENECK_COPY: Record<string, string> = {
   "Not enough leads": "Your pipeline depends on inconsistent, manual lead generation instead of a repeatable system.",
   "Slow response times": "Slow first-response times are costing you deals and customer trust.",
   "Too much manual data entry": "Hours are lost every week on data entry that could run itself.",

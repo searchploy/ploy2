@@ -22,13 +22,16 @@ export const FOOTER_LINKS = {
     { label: "API", href: "/developers" },
   ],
   Company: [
-    { label: "Privacy", href: "/privacy" },
-    { label: "Terms", href: "/terms" },
     { label: "Contact", href: "/contact" },
+    { label: "Help Center", href: "/help" },
+  ],
+  Legal: [
+    { label: "Terms of Service", href: "/terms" },
+    { label: "Privacy Policy", href: "/privacy" },
+    { label: "AI Report Disclaimer", href: "/ai-report-disclaimer" },
+    { label: "Marketplace Provider Terms", href: "/marketplace-provider-terms" },
   ],
 } as const;
-
-export const COMMISSION_PCT = 15;
 
 /**
  * Admin account. Lives here (not in lib/auth/admin.ts) so Client Components can

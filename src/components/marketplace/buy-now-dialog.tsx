@@ -3,10 +3,9 @@ import { Button } from "@/components/ui/button";
 
 /**
  * Ploy never hosts checkout or setup. This is a plain outbound link to the
- * agency's own website — the business signs up, sets pricing, and gets set
- * up entirely on the agency's side. Ploy earns a commission if that visit
- * turns into a sale (tracked via `orders` / `commissions`, reported by the
- * agency), not by processing anything itself.
+ * agency's own website — the business signs up, sets pricing, and gets set up
+ * entirely on the agency's side. Ploy takes no commission, referral fee or
+ * revenue share on whatever happens after the click.
  */
 export function BuyNowDialog({
   agencyName,
@@ -20,7 +19,8 @@ export function BuyNowDialog({
 
   return (
     <Button asChild size="lg" variant="gradient" className="flex-1">
-      <a href={websiteUrl} target="_blank" rel="noopener noreferrer sponsored">
+      {/* Not rel="sponsored": Ploy is not paid for this placement. */}
+      <a href={websiteUrl} target="_blank" rel="noopener noreferrer">
         Visit {agencyName}
         <ExternalLink className="h-4 w-4" />
       </a>

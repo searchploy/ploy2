@@ -28,8 +28,8 @@ export function Hero() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="text-balance max-w-2xl text-lg text-muted-foreground"
         >
-          Tell us your business problems. We&apos;ll show you exactly which AI employees to hire,
-          how much they&apos;ll save you, and a roadmap to make it happen.
+          Tell us your business problems. We&apos;ll show you which AI employees could help, an
+          estimate of what they could save you, and a roadmap to put them to work.
         </motion.p>
 
         <motion.div

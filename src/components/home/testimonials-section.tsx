@@ -5,6 +5,10 @@ import { testimonials } from "@/lib/data/testimonials";
 import { initials } from "@/lib/utils";
 
 export function TestimonialsSection() {
+  // No real testimonials yet — render nothing rather than an empty section or
+  // placeholder quotes. See lib/data/testimonials.ts.
+  if (testimonials.length === 0) return null;
+
   return (
     <section className="bg-secondary/30 py-24">
       <div className="container flex flex-col gap-12">

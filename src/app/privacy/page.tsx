@@ -1,287 +1,440 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { Callout, DraftNotice, LegalPage, List, Section, SubHeading } from "@/components/legal/legal-page";
+import { LEGAL_VERSIONS, SUPPORT_EMAIL } from "@/lib/legal/constants";
 
-export const metadata: Metadata = { title: "Privacy Policy" };
+export const metadata: Metadata = {
+  title: "Privacy Policy",
+  description:
+    "What information Ploy collects, how it is used, who processes it, and the choices you have.",
+};
+
+const SECTIONS = [
+  { id: "introduction", heading: "Introduction" },
+  { id: "what-we-collect", heading: "Information we collect" },
+  { id: "how-we-use", heading: "How we use information" },
+  { id: "ai-processing", heading: "AI Reports and automated analysis" },
+  { id: "providers", heading: "Service providers we use" },
+  { id: "sharing", heading: "When information is shared" },
+  { id: "cookies", heading: "Cookies and tracking" },
+  { id: "retention", heading: "How long we keep information" },
+  { id: "security", heading: "Security" },
+  { id: "your-rights", heading: "Your choices and rights" },
+  { id: "deletion", heading: "Deleting your account" },
+  { id: "children", heading: "Children" },
+  { id: "international", heading: "International transfers" },
+  { id: "changes", heading: "Changes to this policy" },
+  { id: "contact", heading: "Contact" },
+];
 
 export default function PrivacyPage() {
   return (
-    <div className="container max-w-3xl py-12">
-      <article className="prose prose-neutral max-w-none dark:prose-invert">
-        <h1>Privacy Policy</h1>
-        <p className="text-sm text-muted-foreground">Last updated August 2026</p>
+    <LegalPage
+      title="Privacy Policy"
+      updated="September 16, 2026"
+      version={LEGAL_VERSIONS.privacy}
+      sections={SECTIONS}
+      intro={
+        <p>
+          This policy describes what information Ploy collects, why, and who else processes it. It
+          describes the Service as it actually works today — where something is not implemented yet,
+          this policy says so rather than describing an intention.
+        </p>
+      }
+    >
+      <DraftNotice />
 
-        <section className="mt-8 space-y-6">
-          <div>
-            <h2>1. Introduction</h2>
-            <p>
-              Ploy, Inc. ("Ploy", "we", "us", "our") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website and use our services.
-            </p>
-            <p>
-              Please read this Privacy Policy carefully. If you do not agree with our policies and practices, please do not use our Service. By accessing and using Ploy, you signify that you have read, understood, and agree to be bound by all the provisions of this Privacy Policy.
-            </p>
-          </div>
+      <Section id="introduction" number={1} heading="Introduction">
+        <p>
+          Ploy (&quot;Ploy&quot;, &quot;we&quot;, &quot;us&quot;) provides AI Reports, an AI employee
+          marketplace, and subscription tools for businesses and consultants. This policy applies to
+          information we handle through the Ploy website and Service.
+        </p>
+        <p>
+          It does not apply to third-party provider websites. When you click through to a provider,
+          that provider&apos;s own privacy policy governs what they collect. See the{" "}
+          <Link href="/terms" className="text-ploy-gold underline-offset-4 hover:underline">
+            Terms of Service
+          </Link>{" "}
+          for how that relationship works.
+        </p>
+      </Section>
 
-          <div>
-            <h2>2. Information We Collect</h2>
-            <p>
-              We collect information in several ways:
-            </p>
+      <Section id="what-we-collect" number={2} heading="Information we collect">
+        <SubHeading>Information you give us</SubHeading>
+        <List
+          items={[
+            <>
+              <strong className="text-foreground">Account information</strong> — your name, email
+              address, the account type you select, and company name where the account type asks for
+              one. Your password is handled by our authentication provider and is stored hashed;
+              Ploy never sees it.
+            </>,
+            <>
+              <strong className="text-foreground">AI Report inputs</strong> — everything you enter in
+              the report questionnaire: business name, website, industry, description, employee
+              count, revenue range, departments, current software, pain points and goals.
+            </>,
+            <>
+              <strong className="text-foreground">Generated reports and roadmaps</strong> — the
+              scores, bottlenecks, recommendations, estimates and roadmap produced from your inputs.
+            </>,
+            <>
+              <strong className="text-foreground">Marketplace listing information</strong> — if you
+              list an AI employee: the listing name, category, tagline, description, tasks,
+              industries, pricing, agency name, website URL and any logo image you upload.
+            </>,
+            <>
+              <strong className="text-foreground">Demo and contact requests</strong> — your name,
+              email, company and message when you request a demo for a listing.
+            </>,
+            <>
+              <strong className="text-foreground">Consultant CRM data</strong> — if you use
+              Consulting Pro, the client and prospect records you create, including the business
+              name, contact name, email, phone, deal value, stage and notes you enter about them.
+            </>,
+            <>
+              <strong className="text-foreground">Saved items</strong> — listings you favourite.
+            </>,
+            <>
+              <strong className="text-foreground">Listing reports</strong> — if you report a listing:
+              the reason you select and any detail you write.
+            </>,
+            <>
+              <strong className="text-foreground">Support correspondence</strong> — messages you send
+              us by email.
+            </>,
+          ]}
+        />
 
-            <h3>2.1 Information You Provide</h3>
-            <ul>
-              <li><strong>Account Information:</strong> Name, email address, phone number, company name, job title, business size, industry</li>
-              <li><strong>Profile Information:</strong> Business description, website, location, budget, business needs, AI goals</li>
-              <li><strong>Communication:</strong> Messages, inquiries, support requests, feedback, survey responses</li>
-              <li><strong>Payment Information:</strong> Billing address, payment method (processed through Stripe; we do not store credit card details)</li>
-              <li><strong>Content You Create:</strong> AI reports, assessments, saved preferences, project data</li>
-            </ul>
+        <Callout title="About the information you enter into a report">
+          <p>
+            Report inputs are free-text and structured answers about your business. Please do not
+            enter personal information about named individuals, customer records, credentials, or
+            confidential third-party information — none of it is needed to generate a report.
+          </p>
+          <p>
+            If you use the consultant CRM, you are entering information about other people. You are
+            responsible for having a lawful basis to do so and for telling those people as your own
+            privacy obligations require.
+          </p>
+        </Callout>
 
-            <h3>2.2 Information Collected Automatically</h3>
-            <ul>
-              <li><strong>Usage Data:</strong> Pages viewed, features used, time spent, search queries, filters applied</li>
-              <li><strong>Device Information:</strong> Device type, browser, operating system, IP address, device identifiers</li>
-              <li><strong>Analytics:</strong> Cookies, pixels, and similar tracking technologies to understand how you use our Service</li>
-              <li><strong>Referral Information:</strong> How you found us, previous websites visited, referral source</li>
-            </ul>
+        <SubHeading>Information created by using the Service</SubHeading>
+        <List
+          items={[
+            <>
+              <strong className="text-foreground">Subscription and billing records</strong> — your
+              subscription type, status, billing period and the customer and subscription
+              identifiers issued by Stripe, plus invoice and charge records. Ploy does not receive or
+              store your full card number.
+            </>,
+            <>
+              <strong className="text-foreground">Legal acceptance records</strong> — which version of
+              our legal documents you accepted and when.
+            </>,
+            <>
+              <strong className="text-foreground">Security events</strong> — a log of
+              security-relevant actions such as listing approvals, rejections, deletions and refused
+              attempts, recording who acted, on what, and the outcome. It deliberately excludes
+              passwords, tokens, session data and payment details.
+            </>,
+            <>
+              <strong className="text-foreground">Rate-limiting counters</strong> — short-lived counts
+              used to stop automated abuse of report generation and listing reports.
+            </>,
+            <>
+              <strong className="text-foreground">Notifications</strong> — in-app messages we generate
+              for you, such as a failed payment notice.
+            </>,
+          ]}
+        />
 
-            <h3>2.3 Information from Third Parties</h3>
-            <ul>
-              <li>Information shared by agencies or service providers you interact with</li>
-              <li>Information from authentication providers (Google, SSO)</li>
-              <li>Aggregated data from analytics and market research partners</li>
-            </ul>
-          </div>
+        <SubHeading>Information we do not collect</SubHeading>
+        <p>
+          To be specific about what is not happening: Ploy does not currently run product analytics,
+          advertising pixels, marketing trackers or third-party tracking cookies, does not build
+          advertising profiles, does not buy personal data from data brokers, and does not sell
+          personal information. Ploy does not offer social or single sign-on login, so we receive no
+          data from such providers.
+        </p>
+        <p>
+          Ploy&apos;s own application code does not record your IP address or browsing history.
+          However, the infrastructure providers listed below necessarily process network information
+          such as IP addresses to deliver, secure and operate the Service.
+        </p>
+      </Section>
 
-          <div>
-            <h2>3. How We Use Your Information</h2>
-            <p>
-              We use the information we collect for the following purposes:
-            </p>
-            <ul>
-              <li><strong>Service Delivery:</strong> Providing, maintaining, and improving the Ploy marketplace</li>
-              <li><strong>Personalization:</strong> Customizing your experience and recommendations based on preferences</li>
-              <li><strong>Communication:</strong> Sending service updates, security alerts, and customer support</li>
-              <li><strong>Marketing:</strong> Sending promotional emails, newsletters, and product updates (with your consent)</li>
-              <li><strong>Analytics:</strong> Analyzing usage patterns to improve our Service and user experience</li>
-              <li><strong>Marketplace Operations:</strong> Connecting you with agencies and service providers, facilitating transactions</li>
-              <li><strong>Legal Compliance:</strong> Fulfilling legal obligations, enforcing Terms of Service, preventing fraud</li>
-              <li><strong>Research:</strong> Conducting surveys, research, and generating insights about AI adoption trends</li>
-              <li><strong>Safety and Security:</strong> Detecting and preventing fraud, abuse, and security incidents</li>
-            </ul>
-          </div>
+      <Section id="how-we-use" number={3} heading="How we use information">
+        <p>We use the information described above to:</p>
+        <List
+          items={[
+            "Create and authenticate your account, and verify your email address",
+            "Generate your AI Reports, recommendations and implementation roadmaps",
+            "Operate the marketplace, including displaying approved listings and matching them to reports",
+            "Review listings submitted for moderation, and act on reports about listings",
+            "Process subscriptions, billing and access to paid features",
+            "Send service messages such as email verification, password resets and payment notices",
+            "Respond to support requests",
+            "Detect, investigate and prevent fraud, abuse, spam and security incidents",
+            "Keep records of legal document acceptance",
+            "Meet legal, tax and accounting obligations",
+            "Fix problems and improve how the Service works",
+          ]}
+        />
+        <p>
+          Ploy does not currently send marketing or promotional email. The preference toggles in
+          Account → Settings are not yet connected to a live email system; if we introduce marketing
+          email, we will honour those preferences and include an unsubscribe link.
+        </p>
+      </Section>
 
-          <div>
-            <h2>4. How We Share Your Information</h2>
+      <Section id="ai-processing" number={4} heading="AI Reports and automated analysis">
+        <Callout title="Your business information is not sent to a third-party AI model">
+          <p>
+            Despite the name, AI Reports are produced by Ploy&apos;s own scoring engine running on
+            Ploy&apos;s infrastructure. It applies a fixed set of rules and weightings to the
+            answers you give and to the published marketplace listings.
+          </p>
+          <p>
+            Ploy does not send your report inputs, your business information or your roadmap to
+            OpenAI, Anthropic, Google or any other external AI or large language model provider, and
+            does not use your information to train any AI model.
+          </p>
+        </Callout>
+        <p>
+          Your report inputs and the generated report are stored in Ploy&apos;s database so you can
+          return to the report, and so a Ploy Pro roadmap can be rebuilt. A report generated without
+          an account is stored without being linked to any user, and is reachable only by its unique
+          link.
+        </p>
+        <p>
+          Because reports are generated automatically, no decision with legal or similarly
+          significant effect is made about you by this processing — a report is information you
+          choose what to do with.
+        </p>
+      </Section>
 
-            <h3>4.1 Service Providers</h3>
-            <p>
-              We share information with third-party service providers who assist in operating our Service, including:
-            </p>
-            <ul>
-              <li><strong>Stripe:</strong> Payment processing and billing</li>
-              <li><strong>Supabase/PostgreSQL:</strong> Database and data storage</li>
-              <li><strong>Cloud providers:</strong> Hosting and infrastructure</li>
-              <li><strong>Analytics providers:</strong> Usage analytics and performance monitoring</li>
-              <li><strong>Email service providers:</strong> Sending emails and notifications</li>
-            </ul>
-            <p>
-              These providers are contractually obligated to use your information only as necessary to provide services to us and are required to maintain confidentiality and security.
-            </p>
+      <Section id="providers" number={5} heading="Service providers we use">
+        <p>
+          Ploy is built on a small number of infrastructure providers, each of which processes some
+          data on our behalf:
+        </p>
+        <List
+          items={[
+            <>
+              <strong className="text-foreground">Supabase</strong> — database, authentication and
+              file storage. Holds your account, business information, reports, listings, uploaded
+              logos and the other records described above, and sends authentication emails such as
+              verification codes and password resets.
+            </>,
+            <>
+              <strong className="text-foreground">Stripe</strong> — payment processing and
+              subscription billing. Stripe collects and processes your payment details directly;
+              Ploy receives identifiers, subscription status and invoice records, not your full card
+              details.
+            </>,
+            <>
+              <strong className="text-foreground">Vercel</strong> — application hosting and content
+              delivery. Processes network and request information, including IP addresses, in the
+              course of serving the site.
+            </>,
+            <>
+              <strong className="text-foreground">Cloudflare</strong> — the Turnstile anti-bot check
+              on our sign-up and authentication forms. Turnstile processes device and network
+              signals to distinguish people from automated scripts.
+            </>,
+          ]}
+        />
+        <p>
+          These providers act as our processors and are permitted to use the information only to
+          provide their service to us. Each has its own privacy and security documentation.
+        </p>
+      </Section>
 
-            <h3>4.2 Agencies and Service Providers</h3>
-            <p>
-              If you express interest in an agency or service, we may share your contact information and relevant project details with that provider to facilitate connection and service delivery. You consent to this sharing by using our marketplace.
-            </p>
+      <Section id="sharing" number={6} heading="When information is shared">
+        <p>
+          Ploy does not sell personal information and does not share it for third-party advertising.
+          Information is shared only in these situations:
+        </p>
+        <List
+          items={[
+            "With the service providers listed above, to operate the Service.",
+            "Publicly, for content you choose to publish — an approved marketplace listing is public, including its name, description, pricing, agency name, website and logo. Your account identifier is deliberately stripped before listing data is sent to the browser.",
+            "With a provider you contact — if you submit a demo request, the details you enter are made available so the request can be answered.",
+            "With Ploy administrators, who can access account, listing, report and moderation records in order to run and moderate the platform.",
+            "Where required by law — to comply with a legal obligation, court order or valid government request, or to establish, exercise or defend legal claims.",
+            "To protect safety and rights — to investigate fraud, abuse or security incidents, or to protect Ploy, our users or the public.",
+            "In a business transfer — if Ploy is involved in a merger, acquisition or sale of assets, information may transfer as part of that transaction. We would give notice before your information became subject to a different privacy policy.",
+          ]}
+        />
+        <p>
+          Listing reports are visible only to the person who filed them and to Ploy administrators.
+          They are not shown to the provider being reported or to other users.
+        </p>
+      </Section>
 
-            <h3>4.3 Legal Requirements</h3>
-            <p>
-              We may disclose your information when required by law or when we believe in good faith that disclosure is necessary to:
-            </p>
-            <ul>
-              <li>Comply with legal obligations, court orders, or government requests</li>
-              <li>Enforce our Terms of Service and other agreements</li>
-              <li>Protect the security or integrity of our Service</li>
-              <li>Protect the rights, privacy, safety, or property of Ploy, users, or the public</li>
-              <li>Detect, prevent, or address fraud, security, or technical issues</li>
-            </ul>
+      <Section id="cookies" number={7} heading="Cookies and tracking">
+        <p>
+          Ploy uses cookies that are necessary for the Service to function. In practice this means
+          authentication and session cookies set by our authentication provider, which keep you
+          signed in as you move between pages, and the cookies Cloudflare Turnstile needs to run its
+          anti-bot check.
+        </p>
+        <p>
+          Ploy does not currently use analytics cookies, advertising cookies, marketing pixels or
+          cross-site tracking. Because only strictly necessary cookies are in use, the Service does
+          not show a consent banner. If that changes, we will introduce appropriate consent controls
+          before setting non-essential cookies.
+        </p>
+        <p>
+          Blocking essential cookies in your browser will prevent you from signing in.
+        </p>
+      </Section>
 
-            <h3>4.4 Business Transfers</h3>
-            <p>
-              If Ploy is involved in a merger, acquisition, bankruptcy, or sale of assets, your information may be transferred as part of that transaction. We will provide notice before your personal information becomes subject to a different privacy policy.
-            </p>
+      <Section id="retention" number={8} heading="How long we keep information">
+        <p>
+          We keep information for as long as your account is active and for as long as we need it
+          for the purposes described in this policy.
+        </p>
+        <List
+          items={[
+            "Account, business, report, roadmap and listing data is kept while your account exists.",
+            "Deleting a listing removes it and its dependent records — favourites, report references, reviews and demo requests tied to it.",
+            "Billing and transaction records are kept for as long as required for tax, accounting and audit purposes, which is typically several years and is determined by law rather than by us.",
+            "Legal acceptance records are kept as a durable record of what was agreed and are not deleted while the account exists.",
+            "Security event logs are kept so incidents can be investigated and reconstructed.",
+            "Reports generated without an account are retained but are not linked to any person.",
+          ]}
+        />
+        <p>
+          We have not yet set fixed retention periods for every category. Where we cannot state a
+          precise period, we keep information only as long as it is needed for the purpose it was
+          collected for.
+        </p>
+      </Section>
 
-            <h3>4.5 Aggregated and De-Identified Data</h3>
-            <p>
-              We may share aggregated, anonymized data that cannot identify you personally, such as market trends, industry insights, and usage statistics. This sharing does not violate your privacy.
-            </p>
+      <Section id="security" number={9} heading="Security">
+        <p>Measures currently in place include:</p>
+        <List
+          items={[
+            "Encryption in transit (HTTPS/TLS) across the Service",
+            "Passwords stored hashed by our authentication provider, with minimum strength rules enforced",
+            "Row-level security in the database, so records are restricted to the account that owns them and to administrators",
+            "Server-side authorisation checks on paid features and administrative actions, rather than relying on the browser",
+            "An anti-bot check on sign-up, and rate limiting on report generation and listing reports",
+            "Logging of security-relevant administrative actions, including refused attempts",
+            "Payment card details handled by Stripe and never stored on Ploy's systems",
+          ]}
+        />
+        <p>
+          No service can promise perfect security. We cannot and do not guarantee that information
+          will never be accessed, disclosed, altered or destroyed without authorisation. If we
+          become aware of a breach affecting your information, we will act on it and notify you and
+          any regulator where the law requires.
+        </p>
+      </Section>
 
-            <h3>4.6 Your Consent</h3>
-            <p>
-              We may share your information with third parties when we have your explicit consent to do so.
-            </p>
-          </div>
+      <Section id="your-rights" number={10} heading="Your choices and rights">
+        <p>
+          Depending on where you live, you may have rights over your personal information — commonly
+          including the right to access a copy, correct inaccurate information, request deletion,
+          object to or restrict processing, and receive your data in a portable format. Residents of
+          the European Economic Area, the United Kingdom, California and several other jurisdictions
+          have specific statutory rights; which ones apply to you depends on your location and the
+          law in force there.
+        </p>
+        <p>
+          You can update your name and account details directly in Account → Profile, and you can
+          edit or delete your marketplace listing at any time from Account → My Listing.
+        </p>
+        <p>
+          For anything else — a copy of your data, a correction you cannot make yourself, deletion,
+          or an objection — email{" "}
+          <a href={`mailto:${SUPPORT_EMAIL}`} className="text-ploy-gold underline-offset-4 hover:underline">
+            {SUPPORT_EMAIL}
+          </a>{" "}
+          with &quot;Privacy request&quot; in the subject line. We will verify that the request comes
+          from you and respond within the time the applicable law allows. We will not discriminate
+          against you for exercising these rights.
+        </p>
+        <p>
+          Ploy does not sell or share personal information for cross-context behavioural
+          advertising, so there is nothing to opt out of in that respect.
+        </p>
+      </Section>
 
-          <div>
-            <h2>5. Data Retention</h2>
-            <p>
-              We retain your personal information for as long as your account is active and for a reasonable period afterward to fulfill legal obligations, resolve disputes, and enforce agreements. Specifically:
-            </p>
-            <ul>
-              <li><strong>Active Account Data:</strong> Retained during account active status and for 2 years after deletion</li>
-              <li><strong>Usage Analytics:</strong> Retained for up to 1 year</li>
-              <li><strong>Payment Records:</strong> Retained for 7 years as required by law</li>
-              <li><strong>Email Communications:</strong> Retained for 2 years</li>
-            </ul>
-            <p>
-              You may request deletion of your data, subject to legal retention requirements. We will not retain more information than necessary for our business purposes.
-            </p>
-          </div>
+      <Section id="deletion" number={11} heading="Deleting your account">
+        <Callout title="Account deletion is handled by request">
+          <p>
+            Self-service account deletion is not currently functional. Please do not rely on the
+            delete button in Account → Settings; it does not complete the deletion.
+          </p>
+          <p>
+            To delete your account, email{" "}
+            <a href={`mailto:${SUPPORT_EMAIL}`} className="text-ploy-gold underline-offset-4 hover:underline">
+              {SUPPORT_EMAIL}
+            </a>{" "}
+            from the address on the account with &quot;Delete my account&quot; in the subject line.
+            We will verify the request and confirm when it is done.
+          </p>
+        </Callout>
+        <p>When an account is deleted:</p>
+        <List
+          items={[
+            "Your profile and the records linked to it — reports, roadmaps, saved items, listing and CRM records — are removed.",
+            "Your marketplace listing is removed from the marketplace.",
+            "Any active subscription should be cancelled first, through Account → Billing, so it does not continue to bill.",
+            "Billing and transaction records are retained where tax, accounting or audit law requires it.",
+            "Some information may persist temporarily in backups until those backups age out.",
+          ]}
+        />
+      </Section>
 
-          <div>
-            <h2>6. Your Privacy Rights</h2>
+      <Section id="children" number={12} heading="Children">
+        <p>
+          Ploy is a business tool intended for people aged 18 and over, and is not directed at
+          children. We do not knowingly collect personal information from anyone under 18. If you
+          believe a child has given us personal information, contact us and we will delete it.
+        </p>
+      </Section>
 
-            <h3>6.1 GDPR Rights (EU Residents)</h3>
-            <p>
-              If you are located in the European Union, you have the following rights:
-            </p>
-            <ul>
-              <li><strong>Right to Access:</strong> Request a copy of your personal data</li>
-              <li><strong>Right to Rectification:</strong> Request correction of inaccurate data</li>
-              <li><strong>Right to Erasure:</strong> Request deletion of your data (right to be forgotten)</li>
-              <li><strong>Right to Restrict Processing:</strong> Limit how we use your data</li>
-              <li><strong>Right to Data Portability:</strong> Receive your data in a portable format</li>
-              <li><strong>Right to Object:</strong> Opt-out of certain uses of your data</li>
-              <li><strong>Right to Lodge a Complaint:</strong> File a complaint with your local data protection authority</li>
-            </ul>
+      <Section id="international" number={13} heading="International transfers">
+        <p>
+          Ploy and its service providers operate internationally, and your information may be
+          stored and processed in countries other than where you live — including the United States
+          — where data protection law may differ from your own.
+        </p>
+        <p>
+          Where information is transferred out of the European Economic Area or the United Kingdom,
+          we rely on our providers&apos; transfer mechanisms, such as Standard Contractual Clauses.
+          Our formal transfer documentation is still being finalised; if you need specifics for your
+          own compliance assessment, contact us.
+        </p>
+      </Section>
 
-            <h3>6.2 CCPA Rights (California Residents)</h3>
-            <p>
-              If you are a California resident, you have the following rights:
-            </p>
-            <ul>
-              <li><strong>Right to Know:</strong> Request what personal information we collect, use, and share</li>
-              <li><strong>Right to Delete:</strong> Request deletion of personal information</li>
-              <li><strong>Right to Opt-Out:</strong> Opt-out of the "sale" or "sharing" of personal information</li>
-              <li><strong>Right to Correct:</strong> Request correction of inaccurate data</li>
-              <li><strong>Right to Limit Use:</strong> Limit our use of sensitive personal information</li>
-            </ul>
+      <Section id="changes" number={14} heading="Changes to this policy">
+        <p>
+          We may update this policy as the Service changes. The version identifier and date at the
+          top of this page always show the current version. For material changes we will give notice
+          in the Service or by email before they take effect.
+        </p>
+      </Section>
 
-            <h3>6.3 Exercising Your Rights</h3>
-            <p>
-              To exercise any of these rights, please contact us at support@searchploy.com with "Privacy Request" in the subject line. Include specific details about what you're requesting. We will verify your identity and respond within 30 days (or as required by applicable law).
-            </p>
-          </div>
-
-          <div>
-            <h2>7. Cookies and Tracking Technologies</h2>
-            <p>
-              We use cookies and similar tracking technologies to enhance your experience:
-            </p>
-            <ul>
-              <li><strong>Essential Cookies:</strong> Required for authentication, security, and basic functionality</li>
-              <li><strong>Analytics Cookies:</strong> Track usage patterns and performance metrics</li>
-              <li><strong>Preference Cookies:</strong> Remember your settings and preferences</li>
-              <li><strong>Marketing Cookies:</strong> Display personalized advertisements and track campaign effectiveness</li>
-            </ul>
-            <p>
-              Most browsers allow you to control cookies through settings. Disabling cookies may impact Service functionality.
-            </p>
-          </div>
-
-          <div>
-            <h2>8. Third-Party Links and Services</h2>
-            <p>
-              Our Service may contain links to third-party websites, marketplaces, and services. We are not responsible for their privacy practices. We encourage you to review their privacy policies before providing personal information. This Privacy Policy applies only to information collected through Ploy.
-            </p>
-          </div>
-
-          <div>
-            <h2>9. Data Security</h2>
-            <p>
-              We implement industry-standard security measures to protect your information, including:
-            </p>
-            <ul>
-              <li>Encryption in transit (HTTPS/TLS) and at rest</li>
-              <li>Secure password hashing and authentication mechanisms</li>
-              <li>Regular security audits and vulnerability assessments</li>
-              <li>Restricted access to personal information</li>
-              <li>Firewalls and intrusion detection systems</li>
-            </ul>
-            <p>
-              However, no method of transmission over the internet or electronic storage is completely secure. While we strive to protect your information, we cannot guarantee absolute security. You use our Service at your own risk.
-            </p>
-          </div>
-
-          <div>
-            <h2>10. Children's Privacy</h2>
-            <p>
-              Ploy is not intended for users under 18 years old. We do not knowingly collect personal information from children under 18. If we become aware that a child has provided us with personal information, we will promptly delete such information. If you believe we have collected information from a child, please contact us immediately.
-            </p>
-          </div>
-
-          <div>
-            <h2>11. International Data Transfers</h2>
-            <p>
-              Your information may be stored and processed in countries other than where you reside. These countries may have different data protection laws than your home country. By using Ploy, you consent to the transfer of your information to countries outside your country of residence, which may not have the same data protection laws.
-            </p>
-            <p>
-              For users in the EU, we comply with GDPR requirements for international data transfers, including Standard Contractual Clauses and other lawful mechanisms.
-            </p>
-          </div>
-
-          <div>
-            <h2>12. Marketing and Communications</h2>
-            <p>
-              We may send you marketing emails about new features, services, promotions, and industry insights. You can opt-out of marketing emails by:
-            </p>
-            <ul>
-              <li>Clicking the "unsubscribe" link in any marketing email</li>
-              <li>Updating your preferences in your account settings</li>
-              <li>Contacting us at support@searchploy.com</li>
-            </ul>
-            <p>
-              We will not send promotional emails to contacts marked as "do not contact" and will honor opt-out requests within 10 business days.
-            </p>
-          </div>
-
-          <div>
-            <h2>13. California Privacy Rights</h2>
-            <p>
-              Under California law, you have the right to request information about the categories of personal information we share with third parties for their direct marketing purposes. To make this request, please contact us at support@searchploy.com with "California Privacy Rights" in the subject line.
-            </p>
-          </div>
-
-          <div>
-            <h2>14. Changes to This Privacy Policy</h2>
-            <p>
-              We may update this Privacy Policy periodically to reflect changes in our practices or for other operational, legal, or regulatory reasons. We will notify you of material changes by updating the "Last updated" date and providing notice via email or prominent notice on the Service. Continued use of Ploy after changes constitutes your acceptance of the updated Privacy Policy.
-            </p>
-          </div>
-
-          <div>
-            <h2>15. Data Protection Officer</h2>
-            <p>
-              We have appointed a Data Protection Officer to oversee our compliance with privacy laws. For privacy-related concerns, you may contact:
-            </p>
-            <p>
-              <strong>Email:</strong> support@searchploy.com<br />
-              <strong>Subject:</strong> Privacy Inquiry
-            </p>
-          </div>
-
-          <div>
-            <h2>16. Contact Us</h2>
-            <p>
-              If you have questions, concerns, or requests regarding this Privacy Policy or our privacy practices, please contact us:
-            </p>
-            <p>
-              <strong>Email:</strong> support@searchploy.com
-            </p>
-            <p>
-              We will respond to all privacy inquiries within 30 days or as required by applicable law.
-            </p>
-          </div>
-        </section>
-      </article>
-    </div>
+      <Section id="contact" number={15} heading="Contact">
+        <p>
+          Privacy questions and requests:{" "}
+          <a href={`mailto:${SUPPORT_EMAIL}`} className="text-ploy-gold underline-offset-4 hover:underline">
+            {SUPPORT_EMAIL}
+          </a>
+          .
+        </p>
+        <p className="text-xs">
+          {/* Required in several jurisdictions once the operating entity is confirmed. */}
+          Registered business name, postal address and (where required) EU/UK representative details
+          to be added before publication.
+        </p>
+      </Section>
+    </LegalPage>
   );
 }

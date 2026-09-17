@@ -20,7 +20,7 @@ const STATUS_UI = {
     body: "Your listing is under review. We'll notify you when it's approved.",
   },
   published: {
-    label: "Approved",
+    label: "Marketplace Approved",
     icon: CheckCircle2,
     badge: "bg-green-500/15 text-green-400",
     body: "Your AI employee is live on the marketplace.",
@@ -112,10 +112,17 @@ export function ListingManagementContent({ listing }: { listing: Employee }) {
                   </p>
                 )}
                 {isApproved && (
-                  <p className="mt-2 opacity-90">
-                    Editing it sends the changes back for review and temporarily removes it from the
-                    marketplace.
-                  </p>
+                  <>
+                    <p className="mt-2 opacity-90">
+                      Editing it sends the changes back for review and temporarily removes it from
+                      the marketplace.
+                    </p>
+                    <p className="mt-2 text-xs opacity-75">
+                      Marketplace approval means your listing was reviewed for inclusion on Ploy. It
+                      does not mean Ploy verifies or guarantees your product&apos;s performance,
+                      security, results or suitability.
+                    </p>
+                  </>
                 )}
               </div>
             )}

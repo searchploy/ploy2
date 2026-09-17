@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Star, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ProVisibilityDisclosure } from "@/components/legal/disclosures";
 
 /**
  * Explains, on the owner's own listing page, what Ploy Pro is currently doing
@@ -19,36 +20,45 @@ export function ProVisibilityPanel({
 
   if (isPro && isApproved) {
     return (
-      <Panel tone="gold" icon={<Star className="h-4 w-4 fill-ploy-gold" />} title="Ploy Pro Visibility">
-        Your approved AI Employee receives increased marketplace placement and additional exposure in
-        relevant AI reports.
-      </Panel>
+      <div className="flex flex-col gap-3">
+        <Panel tone="gold" icon={<Star className="h-4 w-4 fill-ploy-gold" />} title="Ploy Pro Visibility">
+          Your approved AI Employee may receive enhanced marketplace placement and additional
+          exposure in eligible AI reports.
+        </Panel>
+        <ProVisibilityDisclosure />
+      </div>
     );
   }
 
   if (isPro) {
     return (
-      <Panel tone="gold" icon={<Star className="h-4 w-4 fill-ploy-gold" />} title="Ploy Pro Visibility">
-        Your AI Employee is awaiting approval. Your Ploy Pro visibility benefits will activate once
-        your listing is approved.
-      </Panel>
+      <div className="flex flex-col gap-3">
+        <Panel tone="gold" icon={<Star className="h-4 w-4 fill-ploy-gold" />} title="Ploy Pro Visibility">
+          Your AI Employee is awaiting approval. Your Ploy Pro visibility benefits will activate once
+          your listing is approved.
+        </Panel>
+        <ProVisibilityDisclosure />
+      </div>
     );
   }
 
   return (
-    <Panel
-      tone="muted"
-      icon={<TrendingUp className="h-4 w-4 text-muted-foreground" />}
-      title="Get more visibility with Ploy Pro"
-      action={
-        <Button asChild size="sm" variant="outline">
-          <Link href="/pricing">See Ploy Pro</Link>
-        </Button>
-      }
-    >
-      Boost your AI Employee higher in the marketplace and increase its exposure in relevant AI
-      reports. Your listing stays on the marketplace either way.
-    </Panel>
+    <div className="flex flex-col gap-3">
+      <Panel
+        tone="muted"
+        icon={<TrendingUp className="h-4 w-4 text-muted-foreground" />}
+        title="Ploy Pro visibility"
+        action={
+          <Button asChild size="sm" variant="outline">
+            <Link href="/pricing">See Ploy Pro</Link>
+          </Button>
+        }
+      >
+        Ploy Pro listings may be placed higher in the marketplace and appear in more eligible AI
+        reports. Your listing stays on the marketplace either way.
+      </Panel>
+      <ProVisibilityDisclosure />
+    </div>
   );
 }
 

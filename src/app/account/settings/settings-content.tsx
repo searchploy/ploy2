@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+import { SUPPORT_EMAIL } from "@/lib/legal/constants";
 import type { Database } from "@/lib/types/database";
 
 type Profile = Database["public"]["Tables"]["profiles"]["Row"];
@@ -21,30 +23,22 @@ export function SettingsPageContent({ profile }: SettingsPageContentProps) {
     marketingEmails: false,
     productUpdates: true,
   });
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  const handleDeleteAccount = async () => {
-    if (
-      !confirm(
-        "Are you sure? This action cannot be undone. All your data will be permanently deleted."
-      )
-    ) {
-      return;
-    }
-
-    setIsDeleting(true);
-    try {
-      // Delete user account
-      const { error } = await supabase.auth.admin.deleteUser(profile?.id || "");
-
-      if (error) throw error;
-
-      router.push("/");
-    } catch (error) {
-      console.error("Error deleting account:", error);
-      setIsDeleting(false);
-    }
-  };
+  // Deletion is a support-handled request, not a button.
+  //
+  // This previously called supabase.auth.admin.deleteUser() from the browser
+  // with the anon key. The admin API requires the service role, so the call
+  // could never succeed — it failed silently while telling the user their
+  // account had been deleted. Deleting an account also has to cancel any live
+  // Stripe subscription and preserve billing records that must be retained,
+  // none of which can be done safely from the client.
+  //
+  // The Privacy Policy describes this same request-based process, so the two
+  // stay in step.
+  const deletionRequestHref = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(
+    "Delete my account"
+  )}&body=${encodeURIComponent(
+    `Please delete my Ploy account.\n\nAccount email: ${profile?.email ?? ""}\n`
+  )}`;
 
   if (!profile) {
     return (
@@ -165,7 +159,8 @@ export function SettingsPageContent({ profile }: SettingsPageContentProps) {
               <div>
                 <p className="font-medium">Marketing Emails</p>
                 <p className="text-sm text-muted-foreground">
-                  Receive news and product updates
+                  Ploy doesn&apos;t send marketing email yet. This preference will apply if that
+                  changes.
                 </p>
               </div>
               <Switch
@@ -199,20 +194,23 @@ export function SettingsPageContent({ profile }: SettingsPageContentProps) {
             Danger Zone
           </h2>
           <div className="rounded-lg border border-destructive/20 bg-destructive/5 p-6">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="font-medium">Delete Account</p>
-                <p className="text-sm text-muted-foreground">
-                  Permanently delete your account and all associated data
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Deleting your account removes your profile, reports, saved items and marketplace
+                  listing. Billing records we&apos;re required to keep are retained.
+                </p>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  If you have an active subscription, cancel it first in{" "}
+                  <Link href="/account/billing" className="text-ploy-gold hover:underline">
+                    Billing
+                  </Link>{" "}
+                  so it doesn&apos;t keep billing you.
                 </p>
               </div>
-              <Button
-                onClick={handleDeleteAccount}
-                disabled={isDeleting}
-                variant="destructive"
-                size="sm"
-              >
-                {isDeleting ? "Deleting..." : "Delete"}
+              <Button asChild variant="destructive" size="sm" className="shrink-0">
+                <a href={deletionRequestHref}>Request deletion</a>
               </Button>
             </div>
           </div>

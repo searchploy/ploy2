@@ -9,6 +9,8 @@ import { CategoryIcon } from "@/components/shared/category-icon";
 import { LiveEmployeeCard } from "@/components/marketplace/live-employee-card";
 import { PloyProBadge } from "@/components/marketplace/ploy-pro-badge";
 import { DemoRequestDialog } from "@/components/marketplace/demo-request-dialog";
+import { ReportListingDialog } from "@/components/marketplace/report-listing-dialog";
+import { MarketplaceListingDisclosure } from "@/components/legal/disclosures";
 import { createClient } from "@/lib/supabase/server";
 import {
   getLiveEmployeeBySlugWithCategory,
@@ -230,15 +232,26 @@ export default async function EmployeeDetailPage({ params }: { params: Promise<{
               {employee.avg_roi_percent != null && (
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <TrendingUp className="h-4 w-4" />
-                  Avg. ROI: <span className="font-medium text-success">{employee.avg_roi_percent}%</span>
+                  ROI: <span className="font-medium text-success">{employee.avg_roi_percent}%</span>
                 </div>
               )}
               {employee.expected_monthly_savings != null && (
                 <p className="text-xs text-muted-foreground">
-                  Businesses typically save ~${Number(employee.expected_monthly_savings).toLocaleString()}/mo
+                  Potential savings: ~${Number(employee.expected_monthly_savings).toLocaleString()}/mo
+                </p>
+              )}
+              {(employee.avg_roi_percent != null || employee.expected_monthly_savings != null) && (
+                <p className="text-xs text-muted-foreground">
+                  Figures reported by the provider. Not verified by Ploy, and not a guarantee of
+                  results.
                 </p>
               )}
             </div>
+
+            {/* The third-party disclosure sits above the CTA on purpose: it has
+                to be read before the decision to leave for the provider, not
+                after. */}
+            <MarketplaceListingDisclosure />
 
             <div className="flex flex-col gap-3">
               {/* Ploy refers interested businesses to the agency — it does not
@@ -252,7 +265,8 @@ export default async function EmployeeDetailPage({ params }: { params: Promise<{
                     </a>
                   </Button>
                   <p className="text-center text-xs text-muted-foreground">
-                    You&apos;ll continue on {employee.agency_name ?? "the agency"}&apos;s website.
+                    You&apos;re leaving Ploy for {employee.agency_name ?? "the agency"}&apos;s
+                    website. Ploy doesn&apos;t control that site or its terms.
                   </p>
                 </>
               ) : (
@@ -261,6 +275,10 @@ export default async function EmployeeDetailPage({ params }: { params: Promise<{
                   agencyName={employee.agency_name ?? "the agency"}
                 />
               )}
+            </div>
+
+            <div className="border-t border-border pt-4">
+              <ReportListingDialog employeeId={employee.id} employeeName={employee.name} />
             </div>
           </Card>
         </div>
