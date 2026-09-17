@@ -138,8 +138,7 @@
    */
   body {
     @apply text-foreground antialiased;
-    background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
-    position: relative;
+    background-color: #28282b;
   }
 
   #stars {
