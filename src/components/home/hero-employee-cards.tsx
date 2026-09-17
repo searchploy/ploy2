@@ -86,55 +86,62 @@ export function HeroEmployeeCards() {
          */}
         <div
           aria-hidden
-          className="absolute inset-x-7 top-6 h-full rounded-2xl border border-white/[0.08] bg-white/[0.02]"
+          className="absolute inset-x-7 top-6 h-full rounded-2xl border border-ploy-gold/[0.12] bg-white/[0.02]"
         />
         <div
           aria-hidden
-          className="absolute inset-x-3.5 top-3 h-full rounded-2xl border border-white/[0.12] bg-white/[0.03]"
+          className="absolute inset-x-3.5 top-3 h-full rounded-2xl border border-ploy-gold/25 bg-white/[0.03]"
         />
 
-        <div className="relative min-h-[20rem] overflow-hidden rounded-2xl border border-white/20 bg-white/[0.05] backdrop-blur-xl">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={employee.name}
-              initial={{ opacity: 0, y: 28 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -28 }}
-              transition={{ duration: 0.45, ease: "easeOut" }}
-              className="p-7"
-            >
-              <div className="flex items-center justify-between">
-                <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 text-white">
-                  <employee.Icon className="h-5 w-5" />
-                </span>
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/45">
-                  {employee.department}
-                </span>
-              </div>
-
-              <p className="mt-6 text-xl font-semibold leading-snug text-white">{employee.name}</p>
-
-              <div className="mt-5 flex flex-wrap gap-2">
-                {employee.features.map((feature) => (
-                  <span
-                    key={feature}
-                    className="rounded-full border border-white/[0.14] px-3 py-1.5 text-[11px] text-white/65"
-                  >
-                    {feature}
+        {/*
+         * The gold frame is drawn 1px outside this element's border box, so
+         * the clipping the sliding contents need happens on the layer inside
+         * rather than here — clipping overflow here would cut the frame away.
+         */}
+        <div className="metal-border metal-shine relative min-h-[20rem] rounded-2xl bg-white/[0.05] backdrop-blur-xl">
+          <div className="absolute inset-0 overflow-hidden rounded-2xl">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={employee.name}
+                initial={{ opacity: 0, y: 28 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -28 }}
+                transition={{ duration: 0.45, ease: "easeOut" }}
+                className="p-7"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 text-white">
+                    <employee.Icon className="h-5 w-5" />
                   </span>
-                ))}
-              </div>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/45">
+                    {employee.department}
+                  </span>
+                </div>
 
-              <div className="mt-7 flex items-center justify-between border-t border-white/10 pt-5">
-                <span className="text-[11px] uppercase tracking-[0.16em] text-white/50">
-                  Live in {employee.setupDays} {employee.setupDays === 1 ? "day" : "days"}
-                </span>
-                <span aria-hidden className="text-ploy-gold">
-                  →
-                </span>
-              </div>
-            </motion.div>
-          </AnimatePresence>
+                <p className="mt-6 text-xl font-semibold leading-snug text-white">{employee.name}</p>
+
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {employee.features.map((feature) => (
+                    <span
+                      key={feature}
+                      className="rounded-full border border-white/[0.14] px-3 py-1.5 text-[11px] text-white/65"
+                    >
+                      {feature}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="mt-7 flex items-center justify-between border-t border-white/10 pt-5">
+                  <span className="text-[11px] uppercase tracking-[0.16em] text-white/50">
+                    Live in {employee.setupDays} {employee.setupDays === 1 ? "day" : "days"}
+                  </span>
+                  <span aria-hidden className="text-ploy-gold">
+                    →
+                  </span>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
       </div>
 

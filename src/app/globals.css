@@ -475,6 +475,11 @@
     /* Negative, because `inset: 0` would resolve against the padding box and
        tuck the frame inside that reserved border. */
     inset: -1px;
+    /* So the frame follows a rounded host. Square hosts inherit 0 and are
+       unaffected. The host must not clip its overflow, or the 1px the frame
+       sits proud of the border box is cut away — give it an inner wrapper to
+       clip instead. */
+    border-radius: inherit;
     padding: 1px;
     background-image: var(--gradient-metal-button);
     background-size: 200% 100%;
