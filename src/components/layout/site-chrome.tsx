@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { PageBackdrop } from "@/components/shared/page-backdrop";
 
 /**
  * Dashboards (agency/business/admin) render their own sidebar shell, so we
@@ -19,6 +20,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
 
   return (
     <>
+      <PageBackdrop />
       <Navbar />
       <main className="flex-1">{children}</main>
       <Footer />

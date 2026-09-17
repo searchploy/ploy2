@@ -6,6 +6,7 @@ import Link from "next/link";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { HeroEmployeeCards } from "@/components/home/hero-employee-cards";
 import { HeroDashboardPreview } from "@/components/home/hero-dashboard-preview";
+import { ParallaxSection } from "@/components/shared/parallax-section";
 
 const rise = {
   initial: { opacity: 0, y: 18 },
@@ -174,9 +175,13 @@ export function Hero() {
         </svg>
       </section>
 
-      <section className="container relative px-4 pb-24">
-        <HeroDashboardPreview />
-      </section>
+      {/* Travels further than the sections below it — it sits closest to the
+          hero, so it carries that separation on into the page. */}
+      <ParallaxSection distance={60}>
+        <section className="container relative px-4 pb-24">
+          <HeroDashboardPreview />
+        </section>
+      </ParallaxSection>
     </>
   );
 }

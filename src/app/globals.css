@@ -250,6 +250,32 @@
   mix-blend-mode: overlay;
 }
 
+/*
+ * The plane the rest of the page sits on. It has to carry some structure:
+ * parallax against a flat fill is invisible, because there is nothing in it
+ * whose position the eye can track. Kept far below the hero's contrast so it
+ * reads as depth rather than as a second image.
+ */
+.page-canvas {
+  background:
+    radial-gradient(
+      ellipse 60% 45% at 16% 10%,
+      rgba(217, 164, 65, 0.05),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 55% 40% at 86% 36%,
+      rgba(255, 255, 255, 0.035),
+      transparent 68%
+    ),
+    radial-gradient(
+      ellipse 65% 50% at 28% 74%,
+      rgba(217, 164, 65, 0.035),
+      transparent 70%
+    ),
+    #28282b;
+}
+
 /* Corner falloff, so the hero crops like a print instead of ending at a seam. */
 .hero-vignette {
   background: radial-gradient(
