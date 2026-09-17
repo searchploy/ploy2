@@ -276,6 +276,47 @@
     #28282b;
 }
 
+/*
+ * The hero's torn lower edge, as a cut rather than a painted shape.
+ *
+ * Filling the curve with a flat colour seams visibly against the page backdrop
+ * behind it, which carries gradient blooms and so is never quite that colour.
+ * Masking the photograph away instead lets the backdrop show through, and the
+ * two cannot disagree.
+ *
+ * Two mask layers, composited as a union: a solid one down to the edge height,
+ * and the wave below it. The wave's own subpath is a hole in a full-bleed rect
+ * via fill-rule evenodd. Its height is fixed in pixels rather than a
+ * percentage so the curve keeps its proportions however tall the hero gets.
+ */
+.hero-torn-edge {
+  --edge: 70px;
+  -webkit-mask-image: linear-gradient(#fff 0 0),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 140' preserveAspectRatio='none'%3E%3Cpath fill='%23fff' fill-rule='evenodd' d='M0,0 H1440 V140 H0 Z M0,78 C96,112 168,44 268,62 C368,80 410,130 520,119 C624,109 668,50 778,63 C884,76 928,128 1040,116 C1142,105 1188,46 1296,61 C1372,71 1404,93 1440,84 L1440,140 L0,140 Z'/%3E%3C/svg%3E");
+  mask-image: linear-gradient(#fff 0 0),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 140' preserveAspectRatio='none'%3E%3Cpath fill='%23fff' fill-rule='evenodd' d='M0,0 H1440 V140 H0 Z M0,78 C96,112 168,44 268,62 C368,80 410,130 520,119 C624,109 668,50 778,63 C884,76 928,128 1040,116 C1142,105 1188,46 1296,61 C1372,71 1404,93 1440,84 L1440,140 L0,140 Z'/%3E%3C/svg%3E");
+  -webkit-mask-size:
+    100% calc(100% - var(--edge)),
+    100% var(--edge);
+  mask-size:
+    100% calc(100% - var(--edge)),
+    100% var(--edge);
+  -webkit-mask-position:
+    top left,
+    bottom left;
+  mask-position:
+    top left,
+    bottom left;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+@media (min-width: 640px) {
+  .hero-torn-edge {
+    --edge: 110px;
+  }
+}
+
 /* Corner falloff, so the hero crops like a print instead of ending at a seam. */
 .hero-vignette {
   background: radial-gradient(

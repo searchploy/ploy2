@@ -37,16 +37,23 @@ export function Hero() {
         ref={heroRef}
         className="relative isolate -mt-20 flex min-h-[100svh] flex-col overflow-hidden"
       >
-        {/* Oversized top and bottom so the drift never pulls an edge into frame. */}
-        <motion.div
+        {/*
+         * The torn edge is masked onto this static wrapper rather than the
+         * plane inside it. Masking the moving element would carry the edge
+         * along with the parallax instead of leaving it pinned to the bottom
+         * of the section.
+         */}
+        <div
           aria-hidden
-          style={{ y: backdropY }}
-          className="absolute inset-x-0 -top-[20%] -z-20 h-[140%]"
+          className="hero-torn-edge pointer-events-none absolute inset-0 -z-20 overflow-hidden"
         >
-          <div className="hero-canvas absolute inset-0" />
-          <div className="hero-grain pointer-events-none absolute inset-0" />
-          <div className="hero-vignette pointer-events-none absolute inset-0" />
-        </motion.div>
+          {/* Oversized top and bottom so the drift never pulls an edge into frame. */}
+          <motion.div style={{ y: backdropY }} className="absolute inset-x-0 -top-[20%] h-[140%]">
+            <div className="hero-canvas absolute inset-0" />
+            <div className="hero-grain absolute inset-0" />
+            <div className="hero-vignette absolute inset-0" />
+          </motion.div>
+        </div>
 
         <motion.div
           style={{ y: contentY }}
@@ -157,22 +164,6 @@ export function Hero() {
           </div>
         </motion.div>
 
-        {/*
-         * Torn lower edge. The path is deliberately irregular rather than a
-         * sine wave — even amplitudes read as a decorative divider, uneven ones
-         * read as the photograph having been ripped away.
-         */}
-        <svg
-          aria-hidden
-          viewBox="0 0 1440 140"
-          preserveAspectRatio="none"
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-[70px] w-full sm:h-[110px]"
-        >
-          <path
-            fill="#28282b"
-            d="M0,78 C96,112 168,44 268,62 C368,80 410,130 520,119 C624,109 668,50 778,63 C884,76 928,128 1040,116 C1142,105 1188,46 1296,61 C1372,71 1404,93 1440,84 L1440,140 L0,140 Z"
-          />
-        </svg>
       </section>
 
       {/* Travels further than the sections below it — it sits closest to the
