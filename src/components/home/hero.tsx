@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { HeroEmployeeCards } from "@/components/home/hero-employee-cards";
@@ -19,7 +20,7 @@ export function Hero() {
         <div aria-hidden className="hero-grain pointer-events-none absolute inset-0 -z-20" />
         <div aria-hidden className="hero-vignette pointer-events-none absolute inset-0 -z-10" />
 
-        <div className="container relative flex flex-1 items-center px-6 pb-40 pt-32 sm:pb-44">
+        <div className="container relative flex flex-1 items-center px-6 pb-40 pt-28 sm:pb-44">
           <div className="grid w-full grid-cols-1 items-center gap-16 lg:grid-cols-[1.05fr_0.95fr]">
             <div className="relative text-left">
               {/*
@@ -32,38 +33,57 @@ export function Hero() {
                 className="pointer-events-none absolute left-[43.5px] top-1/2 -z-10 h-screen w-px -translate-y-1/2 bg-gradient-to-b from-transparent via-white/15 to-transparent"
               />
 
-              <motion.div
-                {...rise}
-                transition={{ duration: 0.7, ease: "easeOut" }}
-                className="flex h-[88px] w-[88px] flex-col items-center justify-center rounded-full bg-white text-[#0a0a0b] shadow-[0_0_70px_rgba(255,255,255,0.16)]"
-              >
-                <span className="text-[13px] font-extrabold uppercase leading-none tracking-[0.14em]">
-                  AI
-                </span>
-                <span className="font-script mt-1 text-[17px] leading-none">is for</span>
+              <motion.div {...rise} transition={{ duration: 0.7, ease: "easeOut" }}>
+                <Image
+                  src="/ploy-mark.png"
+                  alt="Ploy"
+                  width={1261}
+                  height={1247}
+                  priority
+                  className="h-[88px] w-[88px] drop-shadow-[0_0_48px_rgba(255,255,255,0.28)]"
+                />
               </motion.div>
 
-              <h1 className="mt-12 flex flex-col items-start">
+              {/*
+               * One sentence broken across four lines so the emphasis lands on
+               * "useful". The connecting lines stay at 400 rather than the
+               * display weight — at this size a 200 is too faint to read.
+               */}
+              <h1 className="mt-10 flex flex-col items-start">
                 <motion.span
                   {...rise}
-                  transition={{ duration: 0.7, delay: 0.12, ease: "easeOut" }}
-                  className="font-script text-[3.25rem] uppercase leading-[0.95] tracking-[0.06em] text-white sm:text-6xl lg:text-[5rem]"
+                  transition={{ duration: 0.7, delay: 0.1, ease: "easeOut" }}
+                  className="display-caps text-[0.7rem] font-normal leading-none tracking-[0.32em] text-white/50 sm:text-xs lg:text-[0.8rem]"
+                >
+                  Find the most
+                </motion.span>
+                <motion.span
+                  {...rise}
+                  transition={{ duration: 0.7, delay: 0.18, ease: "easeOut" }}
+                  className="font-script mt-4 text-[3rem] uppercase leading-[0.95] tracking-[0.06em] text-white sm:text-6xl lg:text-[4.5rem]"
                 >
                   Useful
                 </motion.span>
                 <motion.span
                   {...rise}
-                  transition={{ duration: 0.7, delay: 0.22, ease: "easeOut" }}
-                  className="mt-4 text-[1.55rem] font-extralight uppercase leading-none tracking-[0.18em] text-white/95 sm:text-[2.6rem] sm:tracking-[0.24em] lg:text-[3.6rem]"
+                  transition={{ duration: 0.7, delay: 0.26, ease: "easeOut" }}
+                  className="display-caps mt-3 text-[1.35rem] leading-none tracking-[0.2em] text-white/95 sm:text-[2.1rem] lg:text-[2.6rem]"
                 >
-                  Employees
+                  AI Employees
+                </motion.span>
+                <motion.span
+                  {...rise}
+                  transition={{ duration: 0.7, delay: 0.34, ease: "easeOut" }}
+                  className="display-caps mt-5 text-[0.7rem] font-normal leading-none tracking-[0.32em] text-white/50 sm:text-xs lg:text-[0.8rem]"
+                >
+                  for your business
                 </motion.span>
               </h1>
 
               <motion.p
                 {...rise}
-                transition={{ duration: 0.7, delay: 0.34, ease: "easeOut" }}
-                className="mt-10 max-w-md text-balance text-sm leading-relaxed text-white/55"
+                transition={{ duration: 0.7, delay: 0.44, ease: "easeOut" }}
+                className="mt-8 max-w-md text-balance text-sm leading-relaxed text-white/55"
               >
                 Tell us your business problems. We&apos;ll show you which AI employees could help,
                 what they could save you, and how to put them to work.
@@ -71,8 +91,8 @@ export function Hero() {
 
               <motion.div
                 {...rise}
-                transition={{ duration: 0.7, delay: 0.44, ease: "easeOut" }}
-                className="mt-9 flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:gap-8"
+                transition={{ duration: 0.7, delay: 0.54, ease: "easeOut" }}
+                className="mt-8 flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:gap-8"
               >
                 <Link
                   href="/report"

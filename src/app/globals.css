@@ -195,6 +195,29 @@
 }
 
 /*
+ * The hero's wide thin capitals, lifted out so section titles and eyebrows
+ * across the site share one definition. The tracking is the whole effect — at
+ * normal spacing the light weight just reads as undersized body text.
+ *
+ * These sit in the components layer on purpose: it puts them above the `h1, h2,
+ * h3 { letter-spacing: -0.03em }` base rule they have to beat, while leaving
+ * call sites free to override size or tracking with ordinary utilities.
+ */
+@layer components {
+  .display-caps {
+    font-weight: 200;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+  }
+
+  .eyebrow-caps {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+  }
+}
+
+/*
  * Stands in for the single full-bleed monochrome photograph the layout is built
  * around. Three offset pools of light over a near-black ramp read as one raking
  * studio light rather than a flat fill, which is what keeps the headline legible

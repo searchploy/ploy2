@@ -82,8 +82,8 @@ export default async function ConsultantsPage() {
       {/* Hero */}
       <header className="relative overflow-hidden py-24">
         <div className="container flex flex-col items-center gap-6 text-center">
-          <span className="text-xs font-bold uppercase tracking-wide text-ploy-gold">For Consultants</span>
-          <h1 className="text-balance max-w-3xl text-4xl font-bold tracking-tighter sm:text-6xl">
+          <span className="eyebrow-caps text-[0.7rem] text-ploy-gold">For Consultants</span>
+          <h1 className="display-caps text-balance max-w-4xl text-[1.6rem] leading-[1.3] sm:text-3xl lg:text-[2.6rem]">
             Build an AI Consulting Business with Ploy
           </h1>
           <p className="max-w-2xl text-balance text-lg text-muted-foreground">
@@ -119,7 +119,7 @@ export default async function ConsultantsPage() {
           <div className="mx-auto w-full max-w-3xl">
             <div className="shadow-glow-card flex flex-col gap-6 rounded-3xl border border-transparent bg-card p-8 sm:p-10">
               <div>
-                <p className="mb-3 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-ploy-gold">
+                <p className="mb-3 flex items-center gap-1.5 eyebrow-caps text-[0.7rem] text-ploy-gold">
                   <Sparkles className="h-3.5 w-3.5" />
                   Ploy Consultant
                 </p>
