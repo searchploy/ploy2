@@ -236,54 +236,6 @@
   );
 }
 
-/* ---------- Hero orbit ---------- */
-
-/*
- * Each ring carries its own duration and direction inline; sharing one
- * keyframe keeps the browser compositing a single rotation per layer rather
- * than interpolating a separate animation definition for every element.
- * view-box resolves transform-origin against the SVG viewport, so 50% 50% is
- * the shared centre no matter how large the drawn element is.
- */
-.orbit-spin {
-  transform-box: view-box;
-  transform-origin: 50% 50%;
-  animation-name: orbit-spin;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-}
-
-@keyframes orbit-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Scaled rather than animating the `r` attribute, which Safari handles poorly. */
-.orbit-pulse {
-  transform-box: view-box;
-  transform-origin: 50% 50%;
-  animation: orbit-pulse 4.5s ease-out infinite;
-}
-
-@keyframes orbit-pulse {
-  from {
-    transform: scale(0.1);
-    opacity: 0.5;
-  }
-  to {
-    transform: scale(1);
-    opacity: 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .orbit-spin,
-  .orbit-pulse {
-    animation: none;
-  }
-}
-
 /* ---------- Ripple loader ---------- */
 
 /*

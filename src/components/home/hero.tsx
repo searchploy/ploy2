@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { HeroOrbit } from "@/components/home/hero-orbit";
+import { HeroEmployeeCards } from "@/components/home/hero-employee-cards";
 import { HeroDashboardPreview } from "@/components/home/hero-dashboard-preview";
 
 const rise = {
@@ -101,7 +101,7 @@ export function Hero() {
               transition={{ duration: 1.1, delay: 0.3, ease: "easeOut" }}
               className="hidden justify-center lg:flex"
             >
-              <HeroOrbit />
+              <HeroEmployeeCards />
             </motion.div>
           </div>
         </div>
