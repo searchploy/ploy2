@@ -139,19 +139,6 @@
   body {
     @apply text-foreground antialiased;
     background-color: #28282b;
-    background-image: radial-gradient(black 55%, #0000),
-      linear-gradient(
-        135deg,
-        red,
-        orange,
-        yellow,
-        lime,
-        cyan,
-        blue,
-        indigo,
-        deeppink
-      );
-    background-size: 100% 0.5%, contain;
   }
 
   #stars {
