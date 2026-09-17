@@ -36,7 +36,7 @@ export default async function MarketplacePage({
   return (
     <div className="container py-12">
       <div className="mb-10 flex flex-col gap-3">
-        <h1 className="display-caps text-[1.5rem] leading-[1.3] sm:text-[2rem]">
+        <h1 className="display-caps text-[1.5rem] sm:text-[2rem]">
           AI Employee Marketplace
         </h1>
         <p className="max-w-2xl text-muted-foreground">

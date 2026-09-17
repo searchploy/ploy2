@@ -28,7 +28,7 @@ export function SectionHeading({
        * hold the same presence across a section without wrapping to three
        * lines.
        */}
-      <h2 className="display-caps text-balance text-[1.35rem] leading-[1.35] sm:text-2xl lg:text-[2rem]">
+      <h2 className="display-caps text-balance text-[1.35rem] sm:text-[1.5rem] lg:text-[2rem]">
         {title}
       </h2>
       {description && (

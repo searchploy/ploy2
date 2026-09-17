@@ -55,7 +55,7 @@ export default async function BusinessPricingPage() {
       <header className="relative overflow-hidden py-24">
         <div className="container flex flex-col items-center gap-6 text-center">
           <span className="eyebrow-caps text-[0.7rem] text-ploy-gold">For Businesses</span>
-          <h1 className="display-caps text-balance max-w-4xl text-[1.6rem] leading-[1.3] sm:text-3xl lg:text-[2.6rem]">
+          <h1 className="display-caps text-balance max-w-4xl text-[1.6rem] sm:text-[1.875rem] lg:text-[2.6rem]">
             Unlock Your Complete <span className="gradient-text">AI Workforce Strategy</span>
           </h1>
           <p className="max-w-xl text-balance text-lg text-muted-foreground">

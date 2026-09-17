@@ -208,6 +208,13 @@
     font-weight: 200;
     text-transform: uppercase;
     letter-spacing: 0.16em;
+    /*
+     * Generous, because capitals have no descenders to fill the gap — the same
+     * leading that looks airy in mixed case reads as cramped here, and these
+     * titles routinely wrap to two lines. Single-line uses override it with
+     * leading-none.
+     */
+    line-height: 1.5;
   }
 
   .eyebrow-caps {
