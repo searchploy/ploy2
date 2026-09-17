@@ -146,6 +146,10 @@
   }
 
   #stars-old {
+    display: none;
+  }
+
+  #stars-old-never {
     width: 1px;
     height: 1px;
     background: transparent;
@@ -853,17 +857,8 @@
       1662px 1994px #fff,
       1111px 106px #fff,
       1954px 838px #fff;
-    animation: animStar 50s linear infinite;
   }
 
-  @keyframes animStar {
-    from {
-      transform: translateY(0px);
-    }
-    to {
-      transform: translateY(-2000px);
-    }
-  }
 
   /*
    * Headings run tight — the compact, engineered look depends on negative
