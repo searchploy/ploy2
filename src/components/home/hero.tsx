@@ -1,8 +1,9 @@
 "use client";
 
+import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { HeroEmployeeCards } from "@/components/home/hero-employee-cards";
 import { HeroDashboardPreview } from "@/components/home/hero-dashboard-preview";
 
@@ -12,15 +13,44 @@ const rise = {
 };
 
 export function Hero() {
+  const heroRef = useRef<HTMLElement>(null);
+  const reduceMotion = useReducedMotion();
+
+  /*
+   * Parallax between the photograph and what sits on it. Tracked from the hero
+   * meeting the top of the viewport to it leaving: the backdrop drifts down
+   * against the scroll while the content pulls up with it, so the two planes
+   * visibly separate as the section passes rather than moving as one.
+   */
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+  const backdropY = useTransform(scrollYProgress, [0, 1], [0, reduceMotion ? 0 : 180]);
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, reduceMotion ? 0 : -140]);
+
   return (
     <>
       {/* Pulled up by the navbar's height so the photograph runs behind it. */}
-      <section className="relative isolate -mt-20 flex min-h-[100svh] flex-col overflow-hidden">
-        <div aria-hidden className="hero-canvas absolute inset-0 -z-30" />
-        <div aria-hidden className="hero-grain pointer-events-none absolute inset-0 -z-20" />
-        <div aria-hidden className="hero-vignette pointer-events-none absolute inset-0 -z-10" />
+      <section
+        ref={heroRef}
+        className="relative isolate -mt-20 flex min-h-[100svh] flex-col overflow-hidden"
+      >
+        {/* Oversized top and bottom so the drift never pulls an edge into frame. */}
+        <motion.div
+          aria-hidden
+          style={{ y: backdropY }}
+          className="absolute inset-x-0 -top-[20%] -z-20 h-[140%]"
+        >
+          <div className="hero-canvas absolute inset-0" />
+          <div className="hero-grain pointer-events-none absolute inset-0" />
+          <div className="hero-vignette pointer-events-none absolute inset-0" />
+        </motion.div>
 
-        <div className="container relative flex flex-1 items-center px-6 pb-40 pt-28 sm:pb-44">
+        <motion.div
+          style={{ y: contentY }}
+          className="container relative flex flex-1 items-center px-6 pb-40 pt-28 sm:pb-44"
+        >
           <div className="grid w-full grid-cols-1 items-center gap-16 lg:grid-cols-[1.05fr_0.95fr]">
             <div className="relative text-left">
               {/*
@@ -124,7 +154,7 @@ export function Hero() {
               <HeroEmployeeCards />
             </motion.div>
           </div>
-        </div>
+        </motion.div>
 
         {/*
          * Torn lower edge. The path is deliberately irregular rather than a
