@@ -92,11 +92,11 @@ export function Hero() {
               <motion.div
                 {...rise}
                 transition={{ duration: 0.7, delay: 0.54, ease: "easeOut" }}
-                className="mt-8 flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:gap-8"
+                className="mt-8 flex flex-col items-start gap-5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-5"
               >
                 <Link
                   href="/report"
-                  className="group relative inline-flex items-center gap-3 border border-white/70 px-9 py-4 text-[11px] font-bold uppercase tracking-[0.22em] text-white transition-colors duration-300 hover:border-white hover:bg-white hover:text-[#0a0a0b]"
+                  className="metal-surface metal-shine group inline-flex items-center gap-3 whitespace-nowrap px-7 py-4 text-[11px] font-bold uppercase tracking-[0.2em] shadow-md transition-[filter] duration-300"
                 >
                   Generate AI Report
                   <span
@@ -108,7 +108,7 @@ export function Hero() {
                 </Link>
                 <Link
                   href="/marketplace"
-                  className="text-[11px] font-bold uppercase tracking-[0.22em] text-white/50 transition-colors hover:text-white"
+                  className="metal-border metal-shine inline-flex items-center whitespace-nowrap px-7 py-4 text-[11px] font-bold uppercase tracking-[0.2em] text-ploy-gold transition-colors duration-300 hover:text-ploy-gold-light"
                 >
                   Browse employees
                 </Link>

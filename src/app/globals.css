@@ -452,6 +452,51 @@
     animation: metalShine 5s linear infinite;
   }
 
+  /*
+   * Metal as an outline, for the quieter half of a CTA pair. The ramp is
+   * painted on a pseudo-element and masked down to its own 1px of padding, so
+   * the interior stays fully transparent and whatever sits behind the button
+   * shows through — a solid fill would print a flat rectangle over the hero
+   * photograph. It has to be ::before rather than the element: masking the
+   * element itself would take the label with it.
+   */
+  .metal-border {
+    position: relative;
+    /*
+     * Transparent, but it reserves the same 1px .metal-surface takes for its
+     * real border — without it a filled and an outlined button sitting in the
+     * same row come out 2px different in height.
+     */
+    border: 1px solid transparent;
+  }
+  .metal-border::before {
+    content: "";
+    position: absolute;
+    /* Negative, because `inset: 0` would resolve against the padding box and
+       tuck the frame inside that reserved border. */
+    inset: -1px;
+    padding: 1px;
+    background-image: var(--gradient-metal-button);
+    background-size: 200% 100%;
+    background-position: 50% center;
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  /*
+   * The highlight travels on the frame, not the element — .metal-shine alone
+   * would animate a background the element does not have.
+   */
+  .metal-border.metal-shine::before {
+    animation: metalShine 5s linear infinite;
+  }
+
   /* ---------- Gold hairlines and glow (section 13) ---------- */
   .gold-hairline {
     border-color: var(--gold-line);
