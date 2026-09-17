@@ -139,7 +139,7 @@ export function HeroEmployeeCards() {
       </div>
 
       {/* Clears the deepest card behind, which sits 24px proud of the front one. */}
-      <div className="mt-14 flex items-center gap-2">
+      <div className="mt-14 flex items-center justify-center gap-2">
         {FEATURED.map((item, i) => (
           <button
             key={item.name}
