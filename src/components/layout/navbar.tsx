@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ArrowRight, Store, Sparkles, Users2, Building2, LayoutDashboard, User, type LucideIcon } from "lucide-react";
+import { Menu, X, Store, Sparkles, Users2, Building2, LayoutDashboard, User, type LucideIcon } from "lucide-react";
 import type { User as AuthUser } from "@supabase/supabase-js";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/shared/logo";
@@ -25,8 +25,18 @@ export function Navbar() {
   const [profileOpen, setProfileOpen] = useState(false);
   const [user, setUser] = useState<AuthUser | null>(null);
   const [dashboardPath, setDashboardPath] = useState<string | null>(null);
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const supabaseRef = useRef(() => createClient());
+
+  // The bar sits directly on the hero photograph, so it only earns a surface
+  // once the photograph has scrolled out from under it.
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => {
     const supabase = supabaseRef.current();
@@ -82,46 +92,48 @@ export function Navbar() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-black">
-      <div className="flex h-16 items-center justify-center relative px-4">
-        <Link href="/" className="absolute left-4">
+    <header
+      className={cn(
+        "sticky top-0 z-50 w-full border-b transition-colors duration-500",
+        scrolled
+          ? "border-white/10 bg-black/80 backdrop-blur-md"
+          : "border-transparent bg-transparent"
+      )}
+    >
+      <div className="relative flex h-20 items-center justify-center px-6">
+        <Link href="/" className="absolute left-6">
           <Logo size="sm" />
         </Link>
 
-        <nav className="hidden items-center gap-1 rounded-full border border-border bg-secondary/50 p-1.5 md:flex">
+        <nav className="hidden items-center gap-10 md:flex">
           {NAV_LINKS.map((link) => {
-            const Icon = NAV_ICONS[link.href];
             const active = pathname === link.href || pathname?.startsWith(link.href);
             return (
-              <motion.div key={link.href} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
-                <Link
-                  href={link.href}
-                  className={cn(
-                    "flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-medium transition-colors",
-                    active
-                      ? "gold-hairline border bg-ploy-gold/[0.07] text-ploy-gold"
-                      : "border border-transparent text-muted-foreground hover:text-foreground"
-                  )}
-                >
-                  {Icon && <Icon className="h-3.5 w-3.5" />}
-                  {link.label}
-                </Link>
-              </motion.div>
+              <Link
+                key={link.href}
+                href={link.href}
+                className={cn(
+                  "text-[11px] font-bold uppercase tracking-[0.18em] transition-colors duration-300",
+                  active ? "text-white" : "text-white/50 hover:text-white"
+                )}
+              >
+                {link.label}
+              </Link>
             );
           })}
         </nav>
 
-        <div className="hidden items-center gap-3 md:flex absolute right-4">
+        <div className="absolute right-6 hidden items-center gap-7 md:flex">
           {user ? (
             <div className="relative">
               <button
                 onClick={() => setProfileOpen(!profileOpen)}
-                className="flex items-center gap-2 rounded-full border border-border bg-secondary/50 px-3 py-2 text-sm font-medium transition-colors hover:bg-secondary"
+                className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-white/70 transition-colors hover:text-white"
               >
-                <div className="h-5 w-5 rounded-full bg-ploy-gold flex items-center justify-center">
-                  <User className="h-3 w-3 text-primary-foreground" />
-                </div>
-                <span className="text-foreground">{user.email?.split("@")[0]}</span>
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/10">
+                  <User className="h-3 w-3" />
+                </span>
+                {user.email?.split("@")[0]}
               </button>
               <AccountMenu
                 isOpen={profileOpen}
@@ -132,21 +144,24 @@ export function Navbar() {
             </div>
           ) : (
             <>
-              <Link href="/sign-in" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+              <Link
+                href="/sign-in"
+                className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/50 transition-colors duration-300 hover:text-white"
+              >
                 Log in
               </Link>
-              <Button asChild size="sm">
-                <Link href="/#get-started">
-                  <ArrowRight className="h-3.5 w-3.5" />
-                  Get Started
-                </Link>
-              </Button>
+              <Link
+                href="/#get-started"
+                className="border-b border-white/70 pb-1 text-[11px] font-bold uppercase tracking-[0.18em] text-white transition-colors duration-300 hover:border-ploy-gold hover:text-ploy-gold"
+              >
+                Get Started
+              </Link>
             </>
           )}
         </div>
 
         <button
-          className="flex h-9 w-9 items-center justify-center rounded-full border border-border md:hidden absolute right-4"
+          className="absolute right-6 flex h-9 w-9 items-center justify-center rounded-full border border-white/20 text-white md:hidden"
           onClick={() => setOpen((o) => !o)}
           aria-label="Toggle menu"
         >
@@ -160,7 +175,7 @@ export function Navbar() {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="overflow-hidden border-t border-border md:hidden"
+            className="overflow-hidden border-t border-white/10 bg-black/95 backdrop-blur-md md:hidden"
           >
             <div className="container flex flex-col gap-4 py-4">
               {NAV_LINKS.map((link) => {

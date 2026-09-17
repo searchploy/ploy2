@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Manrope, IBM_Plex_Mono } from "next/font/google";
+import { Manrope, IBM_Plex_Mono, Caveat_Brush } from "next/font/google";
 import { SiteChrome } from "@/components/layout/site-chrome";
 import { Toaster } from "@/components/ui/sonner";
 import { SITE_DESCRIPTION, SITE_NAME } from "@/lib/constants";
@@ -14,7 +14,16 @@ import "./globals.css";
 const sans = Manrope({
   variable: "--font-sans",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["200", "300", "400", "500", "600", "700", "800"],
+  display: "swap",
+});
+
+// Carries the one handwritten word in the hero headline against the wide,
+// thin caps underneath it — the contrast between the two is the whole effect.
+const script = Caveat_Brush({
+  variable: "--font-script",
+  subsets: ["latin"],
+  weight: "400",
   display: "swap",
 });
 
@@ -48,13 +57,8 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${sans.variable} ${mono.variable} font-sans flex min-h-screen flex-col antialiased`}
+        className={`${sans.variable} ${mono.variable} ${script.variable} font-sans flex min-h-screen flex-col antialiased`}
       >
-        <div id="starfield">
-          <div id="stars" />
-          <div id="stars2" />
-          <div id="stars3" />
-        </div>
         <SiteChrome>{children}</SiteChrome>
         <Toaster />
       </body>
