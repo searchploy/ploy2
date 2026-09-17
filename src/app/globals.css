@@ -250,6 +250,75 @@
   mix-blend-mode: overlay;
 }
 
+/* ---------- Scroll-driven depth ---------- */
+
+/*
+ * Parallax on the compositor rather than in JavaScript.
+ *
+ * Driven from a scroll listener these planes trail the page: scrolling is
+ * composited off the main thread, so a transform written from a listener lands
+ * a frame or more late and the effect reads as lag rather than depth — the
+ * frame rate is fine, the layers are simply behind. A scroll timeline is
+ * evaluated by the compositor alongside the scroll itself, so they stay locked
+ * to it.
+ *
+ * Unsupported browsers fall through to no parallax, which is the correct
+ * degradation: the layout does not depend on any of it.
+ */
+@keyframes hero-plane-back {
+  to {
+    transform: translateY(180px);
+  }
+}
+
+@keyframes hero-plane-fore {
+  to {
+    transform: translateY(-140px);
+  }
+}
+
+/* Centred, so a section sits where the layout put it halfway through its pass. */
+@keyframes section-drift {
+  from {
+    transform: translateY(44px);
+  }
+  to {
+    transform: translateY(-44px);
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-plane-back,
+    .hero-plane-fore {
+      animation-duration: auto;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      /* The hero is the first thing on the page, so its own height is the
+         whole range — the effect is spent once the section has passed. */
+      animation-timeline: scroll(root block);
+      animation-range: 0 100vh;
+    }
+    .hero-plane-back {
+      animation-name: hero-plane-back;
+    }
+    .hero-plane-fore {
+      animation-name: hero-plane-fore;
+    }
+
+    /* A view timeline measures each section's own crossing of the viewport,
+       which is exactly the range the drift needs — no per-section wiring. */
+    .section-drift {
+      animation-name: section-drift;
+      animation-duration: auto;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+  }
+}
+
 /*
  * The plane the rest of the page sits on. It has to carry some structure:
  * parallax against a flat fill is invisible, because there is nothing in it

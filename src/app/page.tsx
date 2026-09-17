@@ -8,45 +8,44 @@ import { CategoriesSection } from "@/components/home/categories-section";
 import { ConsultantSection } from "@/components/home/consultant-section";
 import { TestimonialsSection } from "@/components/home/testimonials-section";
 import { CtaSection } from "@/components/home/cta-section";
-import { ParallaxSection } from "@/components/shared/parallax-section";
 
 /*
- * Each section drifts against the fixed plane behind it as it crosses the
- * viewport. Hero is left alone — it runs its own two-plane parallax, and
- * wrapping it would fight the negative top margin that pulls it under the
- * navbar.
+ * .section-drift lifts each section against the fixed plane behind it as it
+ * crosses the viewport. It is a scroll timeline in CSS, so this stays a server
+ * component and the page ships no scroll handlers. Hero is left alone — it runs
+ * its own two-plane version.
  */
 export default function HomePage() {
   return (
     <>
       <Hero />
-      <ParallaxSection>
+      <div className="section-drift">
         <WhatBringsYou />
-      </ParallaxSection>
-      <ParallaxSection>
+      </div>
+      <div className="section-drift">
         <HowItWorks />
-      </ParallaxSection>
-      <ParallaxSection>
+      </div>
+      <div className="section-drift">
         <WhyChoose />
-      </ParallaxSection>
-      <ParallaxSection>
+      </div>
+      <div className="section-drift">
         <AiReportPreview />
-      </ParallaxSection>
-      <ParallaxSection>
+      </div>
+      <div className="section-drift">
         <MarketplacePreview />
-      </ParallaxSection>
-      <ParallaxSection>
+      </div>
+      <div className="section-drift">
         <CategoriesSection />
-      </ParallaxSection>
-      <ParallaxSection>
+      </div>
+      <div className="section-drift">
         <ConsultantSection />
-      </ParallaxSection>
-      <ParallaxSection>
+      </div>
+      <div className="section-drift">
         <TestimonialsSection />
-      </ParallaxSection>
-      <ParallaxSection>
+      </div>
+      <div className="section-drift">
         <CtaSection />
-      </ParallaxSection>
+      </div>
     </>
   );
 }

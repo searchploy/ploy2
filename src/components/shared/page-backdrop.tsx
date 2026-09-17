@@ -1,30 +1,17 @@
-"use client";
-
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
-
 /*
- * The page's back plane. Fixed rather than in flow, so it holds still while
- * everything above it scrolls — that difference is most of the depth, and the
- * slow drift on top of it only keeps the plane from reading as a flat backing
- * board.
+ * The page's back plane. Fixed, and deliberately not animated.
  *
- * The range is deliberately long: mapped over a short scroll it would arrive at
- * its end position within the first section and sit static for the rest of the
- * page.
+ * A fixed layer is already as slow as a layer can be — it holds still while
+ * everything above it scrolls, which is the whole separation. Driving it from
+ * a scroll listener on top of that only made it trail the page, since the
+ * transform lands a frame behind a scroll that is composited off the main
+ * thread. Left alone, it is composited with the scroll and costs nothing.
  */
 export function PageBackdrop() {
-  const reduceMotion = useReducedMotion();
-  const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 4000], [0, reduceMotion ? 0 : 160]);
-
   return (
-    <motion.div
-      aria-hidden
-      style={{ y }}
-      className="pointer-events-none fixed inset-x-0 -top-[10%] -z-10 h-[130%]"
-    >
+    <div aria-hidden className="pointer-events-none fixed inset-0 -z-10">
       <div className="page-canvas absolute inset-0" />
       <div className="hero-grain absolute inset-0" />
-    </motion.div>
+    </div>
   );
 }

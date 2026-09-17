@@ -1,42 +1,25 @@
 "use client";
 
-import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { HeroEmployeeCards } from "@/components/home/hero-employee-cards";
 import { HeroDashboardPreview } from "@/components/home/hero-dashboard-preview";
-import { ParallaxSection } from "@/components/shared/parallax-section";
 
 const rise = {
   initial: { opacity: 0, y: 18 },
   animate: { opacity: 1, y: 0 },
 };
 
+/*
+ * The two planes below drift apart on scroll. That is driven by a scroll
+ * timeline in CSS rather than from here — see .hero-plane-back / -fore.
+ */
 export function Hero() {
-  const heroRef = useRef<HTMLElement>(null);
-  const reduceMotion = useReducedMotion();
-
-  /*
-   * Parallax between the photograph and what sits on it. Tracked from the hero
-   * meeting the top of the viewport to it leaving: the backdrop drifts down
-   * against the scroll while the content pulls up with it, so the two planes
-   * visibly separate as the section passes rather than moving as one.
-   */
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-  const backdropY = useTransform(scrollYProgress, [0, 1], [0, reduceMotion ? 0 : 180]);
-  const contentY = useTransform(scrollYProgress, [0, 1], [0, reduceMotion ? 0 : -140]);
-
   return (
     <>
       {/* Pulled up by the navbar's height so the photograph runs behind it. */}
-      <section
-        ref={heroRef}
-        className="relative isolate -mt-20 flex min-h-[100svh] flex-col overflow-hidden"
-      >
+      <section className="relative isolate -mt-20 flex min-h-[100svh] flex-col overflow-hidden">
         {/*
          * The torn edge is masked onto this static wrapper rather than the
          * plane inside it. Masking the moving element would carry the edge
@@ -48,17 +31,14 @@ export function Hero() {
           className="hero-torn-edge pointer-events-none absolute inset-0 -z-20 overflow-hidden"
         >
           {/* Oversized top and bottom so the drift never pulls an edge into frame. */}
-          <motion.div style={{ y: backdropY }} className="absolute inset-x-0 -top-[20%] h-[140%]">
+          <div className="hero-plane-back absolute inset-x-0 -top-[20%] h-[140%]">
             <div className="hero-canvas absolute inset-0" />
             <div className="hero-grain absolute inset-0" />
             <div className="hero-vignette absolute inset-0" />
-          </motion.div>
+          </div>
         </div>
 
-        <motion.div
-          style={{ y: contentY }}
-          className="container relative flex flex-1 items-center px-6 pb-40 pt-28 sm:pb-44"
-        >
+        <div className="hero-plane-fore container relative flex flex-1 items-center px-6 pb-40 pt-28 sm:pb-44">
           <div className="grid w-full grid-cols-1 items-center gap-16 lg:grid-cols-[1.05fr_0.95fr]">
             <div className="relative text-left">
               {/*
@@ -162,17 +142,14 @@ export function Hero() {
               <HeroEmployeeCards />
             </motion.div>
           </div>
-        </motion.div>
-
+        </div>
       </section>
 
-      {/* Travels further than the sections below it — it sits closest to the
-          hero, so it carries that separation on into the page. */}
-      <ParallaxSection distance={60}>
+      <div className="section-drift">
         <section className="container relative px-4 pb-24">
           <HeroDashboardPreview />
         </section>
-      </ParallaxSection>
+      </div>
     </>
   );
 }
