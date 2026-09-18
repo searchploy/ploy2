@@ -1,8 +1,10 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 import { HeroEmployeeCards } from "@/components/home/hero-employee-cards";
 import { HeroDashboardPreview } from "@/components/home/hero-dashboard-preview";
 
@@ -16,6 +18,17 @@ const rise = {
  * timeline in CSS rather than from here — see .hero-plane-back / -fore.
  */
 export function Hero() {
+  // A single flip, not a per-frame value, so unlike the old JS parallax there
+  // is nothing here to trail the scroll. Read on mount too, so a reload
+  // partway down the page does not show the cue.
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <>
       {/* Pulled up by the navbar's height so the photograph runs behind it. */}
@@ -143,6 +156,22 @@ export function Hero() {
             </motion.div>
           </div>
         </div>
+
+        {/* Sits above the torn edge, which takes the bottom 70/110px. */}
+        <button
+          type="button"
+          aria-label="Scroll down"
+          tabIndex={scrolled ? -1 : 0}
+          onClick={() => window.scrollTo({ top: window.innerHeight * 0.85, behavior: "smooth" })}
+          className={cn(
+            "absolute bottom-24 left-1/2 -translate-x-1/2 p-3 transition-opacity duration-500 sm:bottom-32",
+            scrolled ? "pointer-events-none opacity-0" : "opacity-100"
+          )}
+        >
+          <span className="scroll-cue-bob block">
+            <span className="scroll-cue-mark metal-shine block h-5 w-10" />
+          </span>
+        </button>
       </section>
 
       <div className="section-drift">

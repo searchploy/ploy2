@@ -257,6 +257,40 @@
   mix-blend-mode: overlay;
 }
 
+/* ---------- Scroll cue ---------- */
+
+/*
+ * The chevron is the metal ramp seen through a chevron-shaped mask, not a
+ * stroked SVG: a stroke can take a gradient but not the travelling highlight,
+ * which is animated through background-position. Masking a filled box keeps it
+ * identical to the gold buttons, shine included.
+ */
+.scroll-cue-mark {
+  background-image: var(--gradient-metal-button);
+  background-size: 200% 100%;
+  background-position: 50% center;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 24'%3E%3Cpolyline points='3,3 24,21 45,3' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='square'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 24'%3E%3Cpolyline points='3,3 24,21 45,3' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='square'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+}
+
+@keyframes scroll-cue-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .scroll-cue-bob {
+    animation: scroll-cue-bob 2.4s ease-in-out infinite;
+  }
+}
+
 /* ---------- Scroll-driven depth ---------- */
 
 /*
