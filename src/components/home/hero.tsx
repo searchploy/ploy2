@@ -64,7 +64,7 @@ export function Hero() {
 
               {/*
                * One sentence broken across four lines so the emphasis lands on
-               * "useful". The connecting lines stay at 400 rather than the
+               * "effective". The connecting lines stay at 400 rather than the
                * display weight — at this size a 200 is too faint to read.
                */}
               <h1 className="mt-10 flex flex-col items-start">
@@ -80,7 +80,7 @@ export function Hero() {
                   transition={{ duration: 0.7, delay: 0.18, ease: "easeOut" }}
                   className="font-script mt-4 text-[3rem] uppercase leading-[0.95] tracking-[0.06em] text-white sm:text-6xl lg:text-[4.5rem]"
                 >
-                  Useful
+                  Effective
                 </motion.span>
                 <motion.span
                   {...rise}
