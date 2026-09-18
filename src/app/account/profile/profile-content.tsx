@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,15 +15,38 @@ interface ProfilePageContentProps {
   profile: Profile | null;
 }
 
+type Report = Database["public"]["Tables"]["reports"]["Row"];
+
 export function ProfilePageContent({ profile }: ProfilePageContentProps) {
   const router = useRouter();
   const supabase = createClient();
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [reports, setReports] = useState<Report[]>([]);
+  const [isLoadingReports, setIsLoadingReports] = useState(true);
   const [formData, setFormData] = useState({
     full_name: profile?.full_name || "",
     email: profile?.email || "",
   });
+
+  useEffect(() => {
+    const fetchReports = async () => {
+      if (!profile?.id) return;
+
+      const { data, error } = await supabase
+        .from("reports")
+        .select("*")
+        .eq("profile_id", profile.id)
+        .order("created_at", { ascending: false });
+
+      if (!error && data) {
+        setReports(data);
+      }
+      setIsLoadingReports(false);
+    };
+
+    fetchReports();
+  }, [profile?.id, supabase]);
 
   const handleSave = async () => {
     setIsSaving(true);
@@ -191,6 +215,55 @@ export function ProfilePageContent({ profile }: ProfilePageContentProps) {
               )}
             </div>
           </div>
+        </div>
+
+        {/* AI Reports Section */}
+        <div className="space-y-4">
+          <div>
+            <h2 className="text-2xl font-bold tracking-tight">AI Reports</h2>
+            <p className="text-muted-foreground">Your generated AI Workforce Reports</p>
+          </div>
+
+          {isLoadingReports ? (
+            <div className="rounded-lg border border-border bg-card p-6 text-center text-muted-foreground">
+              Loading reports...
+            </div>
+          ) : reports.length > 0 ? (
+            <div className="grid gap-4">
+              {reports.map((report) => (
+                <Link
+                  key={report.id}
+                  href={`/report/${report.id}`}
+                  className="block rounded-lg border border-border bg-card p-6 hover:bg-card/80 transition-colors"
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-lg">{report.business_name || "Unnamed Report"}</h3>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        {report.industry ? `${report.industry} • ` : ""}
+                        {report.created_at ? format(new Date(report.created_at), "MMM d, yyyy") : ""}
+                      </p>
+                      {report.ai_readiness_score !== null && (
+                        <div className="mt-3">
+                          <p className="text-sm font-medium">
+                            AI Readiness Score: <span className="text-ploy-gold">{report.ai_readiness_score}%</span>
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                    <span className="text-sm text-muted-foreground">→</span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-lg border border-border bg-card p-6 text-center">
+              <p className="text-muted-foreground mb-4">No reports yet. Generate your first AI Workforce Report to get started.</p>
+              <Button asChild>
+                <Link href="/report">Generate Report</Link>
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </div>

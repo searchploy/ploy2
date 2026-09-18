@@ -108,6 +108,7 @@ export function ReportWizard() {
   const [loadingMessage, setLoadingMessage] = useState(LOADING_MESSAGES[0]);
   const [user, setUser] = useState<AuthUser | null>(null);
   const [hasPro, setHasPro] = useState(false);
+  const [reportLimitExceeded, setReportLimitExceeded] = useState(false);
   const supabaseRef = useRef(() => createClient());
 
   useEffect(() => {
@@ -116,7 +117,7 @@ export function ReportWizard() {
     const interval = setInterval(() => {
       i = (i + 1) % LOADING_MESSAGES.length;
       setLoadingMessage(LOADING_MESSAGES[i]);
-    }, 1400);
+    }, 2000);
     return () => clearInterval(interval);
   }, [isPending]);
 
@@ -126,11 +127,13 @@ export function ReportWizard() {
     const checkPlan = async (authUser: AuthUser | null) => {
       if (!authUser) {
         setHasPro(false);
+        setReportLimitExceeded(false);
         return;
       }
 
       if (authUser.email === ADMIN_EMAIL) {
         setHasPro(true);
+        setReportLimitExceeded(false);
         return;
       }
 
@@ -141,7 +144,20 @@ export function ReportWizard() {
         .eq("status", "active")
         .eq("plan", "pro");
 
-      setHasPro((subs ?? []).length > 0);
+      const isPro = (subs ?? []).length > 0;
+      setHasPro(isPro);
+
+      // Free plan users can only generate 1 report
+      if (!isPro) {
+        const { data: reports } = await supabase
+          .from("reports")
+          .select("id")
+          .eq("profile_id", authUser.id);
+
+        setReportLimitExceeded((reports ?? []).length >= 1);
+      } else {
+        setReportLimitExceeded(false);
+      }
     };
 
     const init = async () => {
@@ -214,6 +230,22 @@ export function ReportWizard() {
     startTransition(async () => {
       await generateReportAction(finalData);
     });
+  }
+
+  if (reportLimitExceeded) {
+    return (
+      <div className="mx-auto max-w-2xl py-12">
+        <div className="rounded-lg border border-border bg-card p-8 text-center">
+          <h1 className="font-display text-2xl font-bold mb-4">Report Limit Reached</h1>
+          <p className="text-muted-foreground mb-6">
+            You've already generated one AI report on the free plan. Upgrade to Pro to generate additional reports and access advanced features like ROI projections and implementation roadmaps.
+          </p>
+          <Button size="lg" asChild>
+            <a href="/pricing">Upgrade to Pro</a>
+          </Button>
+        </div>
+      </div>
+    );
   }
 
   if (isPending) {
