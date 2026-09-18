@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Star, Sparkles, Heart, User } from "lucide-react";
+import { Sparkles, Heart, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PloyProBadge } from "@/components/marketplace/ploy-pro-badge";
 import { toggleEmployeeFavorite } from "@/app/marketplace/actions";
@@ -96,14 +96,7 @@ export function LiveEmployeeCard({
                 {employee.is_pro_boosted && <PloyProBadge />}
               </h3>
               <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
-                {employee.avg_rating != null && employee.avg_rating > 0 && (
-                  <span className="flex items-center gap-1 font-medium text-amber-400">
-                    <Star className="h-3.5 w-3.5 fill-amber-400" />
-                    {employee.avg_rating}
-                  </span>
-                )}
-                {employee.total_reviews ? <span>({employee.total_reviews} reviews)</span> : null}
-                {employee.agency_name && <span>· Built by {employee.agency_name}</span>}
+                {employee.agency_name && <span>Built by {employee.agency_name}</span>}
               </div>
             </div>
           </div>
@@ -212,14 +205,7 @@ export function LiveEmployeeCard({
                 {employee.is_pro_boosted && <PloyProBadge />}
               </h3>
               <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
-                {employee.avg_rating != null && employee.avg_rating > 0 && (
-                  <span className="flex items-center gap-1 font-medium text-amber-400">
-                    <Star className="h-3.5 w-3.5 fill-amber-400" />
-                    {employee.avg_rating}
-                  </span>
-                )}
-                {employee.total_reviews ? <span>({employee.total_reviews} reviews)</span> : null}
-                {employee.agency_name && <span>· Built by {employee.agency_name}</span>}
+                {employee.agency_name && <span>Built by {employee.agency_name}</span>}
               </div>
             </div>
           </div>
