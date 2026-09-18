@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Star, Sparkles, Heart } from "lucide-react";
+import { Star, Sparkles, Heart, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PloyProBadge } from "@/components/marketplace/ploy-pro-badge";
 import { toggleEmployeeFavorite } from "@/app/marketplace/actions";
@@ -73,7 +73,7 @@ export function LiveEmployeeCard({
         {/* h-13/w-13 are not real Tailwind classes — 13 is not in the spacing
             scale — so this had no size and every uploaded logo rendered at its
             natural dimensions. Small thumbnails hid it. */}
-        <span className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-secondary text-2xl">
+        <span className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-secondary">
           {employee.thumbnail_url ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -83,7 +83,7 @@ export function LiveEmployeeCard({
               loading="lazy"
             />
           ) : (
-            "🤖"
+            <User className="h-8 w-8 text-muted-foreground" />
           )}
         </span>
 
@@ -189,7 +189,7 @@ export function LiveEmployeeCard({
         {/* h-13/w-13 are not real Tailwind classes — 13 is not in the spacing
             scale — so this had no size and every uploaded logo rendered at its
             natural dimensions. Small thumbnails hid it. */}
-        <span className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-secondary text-2xl">
+        <span className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-secondary">
           {employee.thumbnail_url ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -199,7 +199,7 @@ export function LiveEmployeeCard({
               loading="lazy"
             />
           ) : (
-            "🤖"
+            <User className="h-8 w-8 text-muted-foreground" />
           )}
         </span>
 
