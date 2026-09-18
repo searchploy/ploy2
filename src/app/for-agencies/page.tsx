@@ -21,9 +21,9 @@ const freeKeyFeatures = [
 ];
 
 const proKeyFeatures = [
-  "Unlimited AI reports",
-  "Featured listings",
   "Higher marketplace ranking",
+  "Featured listings",
+  "Unlimited AI reports",
   "Homepage placement",
   "Verified agency badge",
   "Priority review",
