@@ -6,7 +6,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { HeroEmployeeCards } from "@/components/home/hero-employee-cards";
-import { HeroDashboardPreview } from "@/components/home/hero-dashboard-preview";
 
 const rise = {
   initial: { opacity: 0, y: 18 },
@@ -173,12 +172,6 @@ export function Hero() {
           </span>
         </button>
       </section>
-
-      <div className="section-drift">
-        <section className="container relative px-4 pb-24">
-          <HeroDashboardPreview />
-        </section>
-      </div>
     </>
   );
 }
