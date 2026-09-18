@@ -164,7 +164,7 @@ export function Hero() {
           tabIndex={scrolled ? -1 : 0}
           onClick={() => window.scrollTo({ top: window.innerHeight * 0.85, behavior: "smooth" })}
           className={cn(
-            "absolute bottom-24 left-1/2 -translate-x-1/2 p-3 transition-opacity duration-500 sm:bottom-32",
+            "absolute bottom-12 left-1/2 -translate-x-1/2 p-3 transition-opacity duration-500 sm:bottom-16",
             scrolled ? "pointer-events-none opacity-0" : "opacity-100"
           )}
         >
