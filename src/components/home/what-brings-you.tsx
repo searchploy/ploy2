@@ -8,12 +8,11 @@ import { Button } from "@/components/ui/button";
 
 const paths = [
   {
-    emoji: "🏢",
-    title: "I Own a Business",
-    description:
-      "Discover how AI can transform your business with a personalized AI Workforce Report and recommendations.",
-    cta: "Generate AI Report",
-    href: "/sign-up?role=business",
+    emoji: "🤖",
+    title: "I Build AI Employees",
+    description: "List your AI employees, reach new customers, and grow your agency through the Ploy marketplace.",
+    cta: "List an AI Employee",
+    href: "/sign-up?role=agency",
   },
   {
     emoji: "💼",
@@ -24,11 +23,12 @@ const paths = [
     href: "/sign-up?role=consultant",
   },
   {
-    emoji: "🤖",
-    title: "I Build AI Employees",
-    description: "List your AI employees, reach new customers, and grow your agency through the Ploy marketplace.",
-    cta: "List an AI Employee",
-    href: "/sign-up?role=agency",
+    emoji: "🏢",
+    title: "I Own a Business",
+    description:
+      "Discover how AI can transform your business with a personalized AI Workforce Report and recommendations.",
+    cta: "Generate AI Report",
+    href: "/sign-up?role=business",
   },
 ];
 

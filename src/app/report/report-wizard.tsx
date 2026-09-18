@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useState, useTransition, useRef } from "react";
 import { ArrowLeft, ArrowRight, Loader2, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,7 +9,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ChipSelect } from "@/components/report/chip-select";
 import { ProgressSteps } from "@/components/report/progress-steps";
 import { generateReportAction } from "@/app/report/actions";
+import { createClient } from "@/lib/supabase/client";
+import { ADMIN_EMAIL } from "@/lib/constants";
 import type { ReportInput } from "@/lib/report/scoring";
+import type { User as AuthUser } from "@supabase/supabase-js";
 
 const INDUSTRIES = [
   "E-commerce",
@@ -103,6 +106,9 @@ export function ReportWizard() {
   const [goalsOther, setGoalsOther] = useState("");
   const [isPending, startTransition] = useTransition();
   const [loadingMessage, setLoadingMessage] = useState(LOADING_MESSAGES[0]);
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [hasPro, setHasPro] = useState(false);
+  const supabaseRef = useRef(() => createClient());
 
   useEffect(() => {
     if (!isPending) return;
@@ -114,12 +120,52 @@ export function ReportWizard() {
     return () => clearInterval(interval);
   }, [isPending]);
 
+  useEffect(() => {
+    const supabase = supabaseRef.current();
+
+    const checkPlan = async (authUser: AuthUser | null) => {
+      if (!authUser) {
+        setHasPro(false);
+        return;
+      }
+
+      if (authUser.email === ADMIN_EMAIL) {
+        setHasPro(true);
+        return;
+      }
+
+      const { data: subs } = await supabase
+        .from("subscriptions")
+        .select("type")
+        .eq("profile_id", authUser.id)
+        .eq("status", "active")
+        .eq("plan", "pro");
+
+      setHasPro((subs ?? []).length > 0);
+    };
+
+    const init = async () => {
+      const { data: { user: authUser } } = await supabase.auth.getUser();
+      setUser(authUser);
+      await checkPlan(authUser);
+    };
+    init();
+
+    const { data: { subscription: authSubscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      const nextUser = session?.user ?? null;
+      setUser(nextUser);
+      checkPlan(nextUser);
+    });
+
+    return () => authSubscription?.unsubscribe();
+  }, []);
+
   function update<K extends keyof ReportInput>(key: K, value: ReportInput[K]) {
     setData((d) => ({ ...d, [key]: value }));
   }
 
   function canProceedStep1() {
-    return data.business_name.trim() && data.industry && data.description.trim();
+    return data.business_name.trim() && data.website.trim() && data.industry && data.description.trim();
   }
 
   function canProceedStep2() {
@@ -203,12 +249,13 @@ export function ReportWizard() {
               required
             />
           </Field>
-          <Field label="Website" hint="optional">
+          <Field label="Website">
             <Input
               type="url"
               placeholder="https://yourwebsite.com"
               value={data.website}
               onChange={(e) => update("website", e.target.value)}
+              required
             />
           </Field>
           <Field label="Industry">
@@ -387,19 +434,31 @@ export function ReportWizard() {
               </div>
             ))}
           </div>
-          <div className="rounded-xl border border-ploy-gold/25 bg-secondary/40 p-5">
-            <p className="mb-2.5 text-xs font-bold text-ploy-gold">Your report will include:</p>
-            <div className="grid grid-cols-2 gap-2 text-sm text-muted-foreground">
-              <span>✓ AI Readiness Score</span>
-              <span>✓ Automation &amp; Growth Scores</span>
-              <span>✓ Annual Savings Estimate</span>
-              <span>✓ ROI Projections</span>
-              <span>✓ Top Bottlenecks</span>
-              <span>✓ Recommended AI Employees</span>
-              <span>✓ 30/90/1-Year Roadmap</span>
-              <span>✓ Implementation Priority</span>
+          {hasPro ? (
+            <div className="rounded-xl border border-ploy-gold/25 bg-secondary/40 p-5">
+              <p className="mb-2.5 text-xs font-bold text-ploy-gold">Your report will include:</p>
+              <div className="grid grid-cols-2 gap-2 text-sm text-muted-foreground">
+                <span>✓ AI Readiness Score</span>
+                <span>✓ Automation &amp; Growth Scores</span>
+                <span>✓ Annual Savings Estimate</span>
+                <span>✓ ROI Projections</span>
+                <span>✓ Top Bottlenecks</span>
+                <span>✓ Recommended AI Employees</span>
+                <span>✓ 30/90/1-Year Roadmap</span>
+                <span>✓ Implementation Priority</span>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="rounded-xl border border-border bg-secondary/30 p-5">
+              <p className="mb-2.5 text-xs font-bold text-foreground">Your free report includes:</p>
+              <div className="grid grid-cols-2 gap-2 text-sm text-muted-foreground">
+                <span>✓ AI Readiness Score</span>
+                <span>✓ Top Bottlenecks</span>
+                <span>✓ Recommended AI Employees</span>
+              </div>
+              <p className="mt-3 text-xs text-muted-foreground">Upgrade to Pro for full analysis, ROI projections, and implementation roadmap.</p>
+            </div>
+          )}
           <div className="flex items-center justify-between border-t border-border pt-6">
             <Button variant="ghost" onClick={back}>
               <ArrowLeft className="h-4 w-4" />
