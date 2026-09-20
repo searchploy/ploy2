@@ -8,7 +8,7 @@ export function Footer() {
       <div className="container grid gap-12 py-16 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-[1.4fr_repeat(4,1fr)]">
         <div className="flex flex-col gap-4">
           <Link href="/">
-            <Logo size="sm" />
+            <Logo size="md" />
           </Link>
           <p className="max-w-sm text-sm text-muted-foreground">{SITE_DESCRIPTION}</p>
         </div>

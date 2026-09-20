@@ -51,7 +51,7 @@ export function DashboardSidebar({
     <aside className="sticky top-0 flex h-screen w-64 shrink-0 flex-col border-r border-border bg-card">
       <div className="flex h-16 items-center gap-2 border-b border-border px-6">
         <Link href="/">
-          <Logo size="sm" />
+          <Logo size="md" />
         </Link>
       </div>
 

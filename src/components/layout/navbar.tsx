@@ -102,7 +102,7 @@ export function Navbar() {
     >
       <div className="relative flex h-20 items-center justify-center px-6">
         <Link href="/" className="absolute left-6">
-          <Logo size="sm" />
+          <Logo size="md" />
         </Link>
 
         <nav className="hidden items-center gap-10 md:flex">
