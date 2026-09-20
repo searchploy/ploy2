@@ -543,6 +543,49 @@
   }
 }
 
+/*
+ * The default loading indicator. Adapted from the Uiverse spinner by
+ * Leoodaviid, unchanged except for the names.
+ *
+ * The visible mark is the box-shadow, not the element. An outer box-shadow is
+ * clipped to outside the border box, so a 1px upward offset with no blur leaks
+ * a single hairline arc across the top of the circle — and rotating that is
+ * the whole effect. Consequences worth knowing before editing:
+ *   - giving .ring-loader a background or border hides the arc entirely
+ *   - below roughly 24px the arc is too short to read as motion, which is why
+ *     buttons keep their own small spinner rather than scaling this down
+ *
+ * Named rather than reusing `.loader` (the Ploy ripple screen) or `spin`
+ * (Tailwind's animate-spin utility). Both would have been silently overridden.
+ */
+.ring-loader-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ring-loader {
+  width: var(--ring-loader-size, 50px);
+  height: var(--ring-loader-size, 50px);
+  border-radius: 50%;
+  animation: ring-loader-spin 1s linear infinite;
+}
+
+@keyframes ring-loader-spin {
+  0% {
+    transform: rotate(0deg);
+    box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.4);
+  }
+  50% {
+    transform: rotate(180deg);
+    box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.4);
+  }
+  100% {
+    transform: rotate(360deg);
+    box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.4);
+  }
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -767,6 +810,15 @@
   /* Loader still needs to read as "busy", so hold the rings mid-swell. */
   .loader .box {
     transform: scale(1.15);
+  }
+  /*
+   * Slowed rather than stopped. This spinner is nothing but its motion — held
+   * still, the 1px arc reads as a rendering artefact, not as "working". Four
+   * seconds is well outside the range that triggers vestibular discomfort
+   * while still showing the page is alive.
+   */
+  .ring-loader {
+    animation-duration: 4s;
   }
   .metal-shine {
     background-position: 50% center;

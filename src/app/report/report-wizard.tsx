@@ -73,6 +73,15 @@ const GOALS = [
   "Other",
 ];
 
+/**
+ * How long the generating screen is held, and how fast the status lines cycle
+ * under it. Kept together: at 5s and 2s the visitor reads three of the six
+ * messages, so changing one without the other either strands a message
+ * mid-sentence or shows the same line the whole way through.
+ */
+const LOADING_HOLD_MS = 5000;
+const LOADING_MESSAGE_MS = 2000;
+
 const LOADING_MESSAGES = [
   "Reading your business profile…",
   "Identifying bottlenecks…",
@@ -106,7 +115,6 @@ export function ReportWizard() {
   const [goalsOther, setGoalsOther] = useState("");
   const [isPending, startTransition] = useTransition();
   const [loadingMessage, setLoadingMessage] = useState(LOADING_MESSAGES[0]);
-  const [user, setUser] = useState<AuthUser | null>(null);
   const [hasPro, setHasPro] = useState(false);
   const [reportLimitExceeded, setReportLimitExceeded] = useState(false);
   const supabaseRef = useRef(() => createClient());
@@ -117,7 +125,7 @@ export function ReportWizard() {
     const interval = setInterval(() => {
       i = (i + 1) % LOADING_MESSAGES.length;
       setLoadingMessage(LOADING_MESSAGES[i]);
-    }, 2000);
+    }, LOADING_MESSAGE_MS);
     return () => clearInterval(interval);
   }, [isPending]);
 
@@ -162,15 +170,12 @@ export function ReportWizard() {
 
     const init = async () => {
       const { data: { user: authUser } } = await supabase.auth.getUser();
-      setUser(authUser);
       await checkPlan(authUser);
     };
     init();
 
     const { data: { subscription: authSubscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      const nextUser = session?.user ?? null;
-      setUser(nextUser);
-      checkPlan(nextUser);
+      checkPlan(session?.user ?? null);
     });
 
     return () => authSubscription?.unsubscribe();
@@ -228,6 +233,13 @@ export function ReportWizard() {
         .filter(Boolean),
     };
     startTransition(async () => {
+      // A deliberate hold, not work. Scoring is deterministic and usually
+      // returns in well under a second, so the loading screen used to flash
+      // past before a single status line had been read. The pause runs before
+      // the action rather than alongside it because the action ends in a
+      // redirect — once that fires the screen is gone, so there is nothing
+      // left to hold.
+      await new Promise((resolve) => setTimeout(resolve, LOADING_HOLD_MS));
       await generateReportAction(finalData);
     });
   }
@@ -238,7 +250,9 @@ export function ReportWizard() {
         <div className="rounded-lg border border-border bg-card p-8 text-center">
           <h1 className="font-display text-2xl font-bold mb-4">Report Limit Reached</h1>
           <p className="text-muted-foreground mb-6">
-            You've already generated one AI report on the free plan. Upgrade to Pro to generate additional reports and access advanced features like ROI projections and implementation roadmaps.
+            You&apos;ve already generated one AI report on the free plan. Upgrade to Pro to generate
+            additional reports and access advanced features like ROI projections and implementation
+            roadmaps.
           </p>
           <Button size="lg" asChild>
             <a href="/pricing">Upgrade to Pro</a>

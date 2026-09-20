@@ -1,4 +1,5 @@
-import { Loader2, Target, TriangleAlert } from "lucide-react";
+import { Target, TriangleAlert } from "lucide-react";
+import { RingLoader } from "@/components/shared/ring-loader";
 import { createClient } from "@/lib/supabase/server";
 import { getProBoostedEmployeeIds } from "@/lib/data/live-marketplace";
 import { ROADMAP_ENGINE_VERSION, buildDetailedRoadmap } from "@/lib/report/roadmap";
@@ -34,8 +35,8 @@ function Shell({ children }: { children: React.ReactNode }) {
 export function RoadmapLoading() {
   return (
     <Shell>
-      <div className="flex flex-col items-center gap-3 rounded-2xl border border-border bg-secondary/20 p-8 text-center">
-        <Loader2 className="h-5 w-5 animate-spin text-ploy-gold" />
+      <div className="flex flex-col items-center gap-4 rounded-2xl border border-border bg-secondary/20 p-8 text-center">
+        <RingLoader size={32} />
         <p className="text-sm text-muted-foreground">Building your personalized AI roadmap…</p>
       </div>
     </Shell>
