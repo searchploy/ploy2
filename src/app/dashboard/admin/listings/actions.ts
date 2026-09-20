@@ -141,3 +141,30 @@ export async function setListingFeatured(id: string, featured: boolean): Promise
   revalidateListingSurfaces();
   return { ok: true };
 }
+
+export async function updateListingLogo(
+  id: string,
+  logoUrl: string | null
+): Promise<ModerationResult> {
+  const adminId = await requireAdmin("listing.logo", id);
+  if (!adminId) return { ok: false, error: "Not authorized." };
+
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("employees")
+    .update({ thumbnail_url: logoUrl })
+    .eq("id", id)
+    .select("slug")
+    .single();
+
+  if (error) return { ok: false, error: error.message };
+
+  await logSecurityEvent({
+    action: "listing.logo",
+    targetType: "listing",
+    targetId: id,
+    detail: { had_logo: Boolean(logoUrl) },
+  });
+  revalidateListingSurfaces(data?.slug);
+  return { ok: true };
+}
