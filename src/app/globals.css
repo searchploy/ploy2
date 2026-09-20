@@ -581,48 +581,29 @@
 }
 
 /*
- * Inner pulsing element, a sibling of the ring rather than a child — nested,
- * it would inherit the rotation and the mark would tumble.
+ * The mark, which breathes while the ring turns around it. It is a sibling of
+ * the ring rather than a child — nested, it would inherit the rotation and
+ * tumble.
  *
- * Centred with `inset: 0` plus `margin: auto`, not with a translate. The
- * element has a definite width, so `inset: 0` alone is over-constrained: the
- * browser keeps `left` and drops `right`, which pins the box to the top-left
- * corner. `margin: auto` resolves the leftover space evenly instead.
- *
- * The translate idiom would work too, but the pulse animates `transform`, so
- * the centring would have to be repeated in every keyframe and would silently
- * break the moment one of them was edited.
+ * Stretched over the whole container and centred with flex, rather than sized
+ * and offset. An absolutely positioned box with `inset: 0` and a definite
+ * width is over-constrained: the browser keeps `left`, drops `right`, and
+ * pins it to the top-left corner. Filling the container sidesteps that, and
+ * it leaves the pulse free to own `transform` outright — centring by
+ * translate would have to be restated in every keyframe.
  */
-.ring-loader-inner {
+.ring-loader-logo {
   position: absolute;
   inset: 0;
-  margin: auto;
   display: flex;
   align-items: center;
   justify-content: center;
   pointer-events: none;
-  border: 2px solid hsl(var(--secondary));
-  border-radius: 5px;
-  width: calc(var(--ring-loader-size, 140px) * 0.38);
-  height: calc(var(--ring-loader-size, 140px) * 0.38);
   animation: ring-loader-pulse 1s ease-in-out infinite;
 }
 
-.ring-loader-logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-}
-
-/*
- * Roughly 58% of the square, which leaves the mark visible clearance on each
- * side. Taking it much higher crowds the mark against the border and the
- * square stops reading as a frame around it.
- */
 .ring-loader-logo img {
-  width: calc(var(--ring-loader-size, 140px) * var(--ring-loader-logo-ratio, 0.22));
+  width: calc(var(--ring-loader-size, 140px) * var(--ring-loader-logo-ratio, 0.4));
   height: auto;
 }
 
@@ -638,15 +619,12 @@
 @keyframes ring-loader-pulse {
   0% {
     transform: scale(1);
-    border-radius: 5px;
   }
   50% {
-    transform: scale(1.2);
-    border-radius: 12px;
+    transform: scale(1.12);
   }
   100% {
     transform: scale(1);
-    border-radius: 5px;
   }
 }
 
@@ -869,7 +847,7 @@
   .animate-slide-right,
   .loader .box,
   .loader .logo img,
-  .ring-loader-inner {
+  .ring-loader-logo {
     animation: none !important;
   }
   /* Loader still needs to read as "busy", so hold the rings mid-swell. */

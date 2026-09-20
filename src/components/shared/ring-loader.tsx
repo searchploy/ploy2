@@ -2,10 +2,9 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 /**
- * The site's default loading indicator — an outer ring that rotates, with an
- * inner pulsing square containing the Ploy mark. The two animations are
- * independent: the ring spins at 1s, the inner element scales and rounds at
- * 1s ease-in-out.
+ * The site's default loading indicator — a ring that rotates around the Ploy
+ * mark, which breathes. The two animations are independent: the ring spins at
+ * 1s linear, the mark scales at 1s ease-in-out.
  *
  * `logo` is off for small instances: below roughly 64px the mark is too small
  * to resolve and reads as visual noise.
@@ -30,13 +29,11 @@ export function RingLoader({
       aria-label="Loading"
     >
       <div className="ring-loader" />
-      <div className="ring-loader-inner">
-        {logo && (
-          <div className="ring-loader-logo" aria-hidden>
-            <Image src="/ploy-mark.png" alt="" width={1261} height={1247} priority />
-          </div>
-        )}
-      </div>
+      {logo && (
+        <div className="ring-loader-logo" aria-hidden>
+          <Image src="/ploy-mark.png" alt="" width={1261} height={1247} priority />
+        </div>
+      )}
       <span className="sr-only">Loading</span>
     </div>
   );
