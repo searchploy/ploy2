@@ -4,7 +4,7 @@ import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import Link from "next/link";
-import { Check, X, Star, MoreHorizontal, Trash2, Eye, Search } from "lucide-react";
+import { Check, X, Star, MoreHorizontal, Trash2, Eye, Search, User } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -98,6 +98,20 @@ export function ListingsModerationTabs({ listings }: { listings: EmployeeWithCat
   function Row({ listing, showReviewActions }: { listing: EmployeeWithCategory; showReviewActions: boolean }) {
     return (
       <div className="flex items-center gap-4 border-b border-border p-4 last:border-b-0">
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-secondary">
+          {listing.thumbnail_url ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={listing.thumbnail_url}
+              alt=""
+              className="h-full w-full object-cover"
+              loading="lazy"
+            />
+          ) : (
+            <User className="h-6 w-6 text-muted-foreground" />
+          )}
+        </div>
+
         <button
           onClick={() => {
             setRejectionReason("");

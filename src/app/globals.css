@@ -559,8 +559,8 @@
  */
 .ring-loader-container {
   position: relative;
-  width: var(--ring-loader-size, 140px);
-  height: var(--ring-loader-size, 140px);
+  width: var(--ring-loader-size, 180px);
+  height: var(--ring-loader-size, 180px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -603,7 +603,7 @@
 }
 
 .ring-loader-logo img {
-  width: calc(var(--ring-loader-size, 140px) * var(--ring-loader-logo-ratio, 0.4));
+  width: calc(var(--ring-loader-size, 180px) * var(--ring-loader-logo-ratio, 0.42));
   height: auto;
 }
 

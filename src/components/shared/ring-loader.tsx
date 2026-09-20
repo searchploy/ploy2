@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
  * for five seconds under rotating status copy and wants a heavier indicator.
  */
 export function RingLoader({
-  size = 140,
+  size = 180,
   logo = true,
   className,
 }: {
@@ -40,7 +40,7 @@ export function RingLoader({
 }
 
 /** Full-viewport version for route-level loading states. */
-export function RingLoadingScreen({ size = 140 }: { size?: number }) {
+export function RingLoadingScreen({ size = 180 }: { size?: number }) {
   return (
     <div className="flex min-h-[70vh] w-full items-center justify-center p-8">
       <RingLoader size={size} />
