@@ -545,15 +545,14 @@
 
 /*
  * The default loading indicator. Adapted from the Uiverse spinner by
- * Leoodaviid, unchanged except for the names.
+ * chrissie_6564: a rotating ring around a pulsing square holding the Ploy mark.
  *
- * The visible mark is the box-shadow, not the element. An outer box-shadow is
- * clipped to outside the border box, so a 1px upward offset with no blur leaks
- * a single hairline arc across the top of the circle — and rotating that is
- * the whole effect. Consequences worth knowing before editing:
- *   - giving .ring-loader a background or border hides the arc entirely
- *   - below roughly 24px the arc is too short to read as motion, which is why
- *     buttons keep their own small spinner rather than scaling this down
+ * The arc is a border trick. All four borders are set, but three are left at
+ * rgba(0,0,0,0.1) — invisible against this palette — so only border-left shows
+ * and rotating the element drags that quarter-arc around the circle. Worth
+ * knowing before editing: the arc's weight is the border width, so it does not
+ * thin out as the loader scales, and buttons keep their own small spinner
+ * rather than scaling this down.
  *
  * Named rather than reusing `.loader` (the Ploy ripple screen) or `spin`
  * (Tailwind's animate-spin utility). Both would have been silently overridden.
@@ -582,20 +581,30 @@
 }
 
 /*
- * Inner pulsing element positioned absolutely so the outer ring can rotate
- * independently. The logo sits inside.
+ * Inner pulsing element, a sibling of the ring rather than a child — nested,
+ * it would inherit the rotation and the mark would tumble.
+ *
+ * Centred with `inset: 0` plus `margin: auto`, not with a translate. The
+ * element has a definite width, so `inset: 0` alone is over-constrained: the
+ * browser keeps `left` and drops `right`, which pins the box to the top-left
+ * corner. `margin: auto` resolves the leftover space evenly instead.
+ *
+ * The translate idiom would work too, but the pulse animates `transform`, so
+ * the centring would have to be repeated in every keyframe and would silently
+ * break the moment one of them was edited.
  */
 .ring-loader-inner {
   position: absolute;
   inset: 0;
+  margin: auto;
   display: flex;
   align-items: center;
   justify-content: center;
   pointer-events: none;
   border: 2px solid hsl(var(--secondary));
   border-radius: 5px;
-  width: calc(var(--ring-loader-size, 140px) * 0.3);
-  height: calc(var(--ring-loader-size, 140px) * 0.3);
+  width: calc(var(--ring-loader-size, 140px) * 0.38);
+  height: calc(var(--ring-loader-size, 140px) * 0.38);
   animation: ring-loader-pulse 1s ease-in-out infinite;
 }
 
@@ -607,8 +616,13 @@
   height: 100%;
 }
 
+/*
+ * Roughly 58% of the square, which leaves the mark visible clearance on each
+ * side. Taking it much higher crowds the mark against the border and the
+ * square stops reading as a frame around it.
+ */
 .ring-loader-logo img {
-  width: calc(var(--ring-loader-size, 140px) * var(--ring-loader-logo-ratio, 0.25));
+  width: calc(var(--ring-loader-size, 140px) * var(--ring-loader-logo-ratio, 0.22));
   height: auto;
 }
 
@@ -854,7 +868,8 @@
   .animate-fade-in,
   .animate-slide-right,
   .loader .box,
-  .loader .logo img {
+  .loader .logo img,
+  .ring-loader-inner {
     animation: none !important;
   }
   /* Loader still needs to read as "busy", so hold the rings mid-swell. */
@@ -862,10 +877,12 @@
     transform: scale(1.15);
   }
   /*
-   * Slowed rather than stopped. This spinner is nothing but its motion — held
-   * still, the 1px arc reads as a rendering artefact, not as "working". Four
-   * seconds is well outside the range that triggers vestibular discomfort
-   * while still showing the page is alive.
+   * The ring is slowed rather than stopped: held still it reads as a stray
+   * arc, not as "working". Four seconds is well outside the range that
+   * triggers vestibular discomfort while still showing the page is alive.
+   * The inner pulse is stopped outright above — a repeating size oscillation
+   * is the part of this that reduced motion is actually asking about, and the
+   * ring alone carries the "busy" meaning.
    */
   .ring-loader {
     animation-duration: 4s;
