@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { getResource } from "@/lib/consultant-resources";
 import { ResourceContent } from "@/components/consultant/resource-content";
+import { ConsultantTemplateDisclosure } from "@/components/legal/disclosures";
 
 export default async function ResourcePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -22,6 +23,7 @@ export default async function ResourcePage({ params }: { params: Promise<{ id: s
         </Link>
         <h1 className="text-3xl font-bold">{resource.title}</h1>
         <p className="text-muted-foreground mt-2">{resource.intro}</p>
+        {resource.legalNotice && <ConsultantTemplateDisclosure className="mt-5" />}
       </div>
 
       {/* Table of Contents */}

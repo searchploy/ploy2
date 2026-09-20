@@ -52,6 +52,8 @@ export const DISCLOSURES = {
     "Eligible Ploy Pro listings may receive enhanced marketplace placement and additional exposure in AI Reports. Increased visibility does not guarantee traffic, leads, sales, conversions, or revenue.",
   marketplaceApproval:
     "Marketplace approval means the listing has been reviewed for inclusion on Ploy. It does not guarantee the provider's performance, security, results, or suitability.",
+  consultantTemplate:
+    "Ploy's templates are starting points for your own business, not legal, tax, or professional advice. A proposal is a commercial document, not a services agreement — you should have your own contract terms prepared or reviewed by a qualified professional in your jurisdiction, and you are responsible for what you send to your clients.",
 } as const;
 
 /** Reasons a visitor can report a marketplace listing. Mirrors the listing_report_reason enum. */

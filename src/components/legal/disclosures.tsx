@@ -109,3 +109,17 @@ export function ApprovalMeaningDisclosure({ className = "" }: { className?: stri
     </p>
   );
 }
+
+/**
+ * Sits at the top of a consultant resource that a reader could mistake for a
+ * legal document — the proposal template in particular, which ends by telling
+ * them to sign an agreement Ploy does not supply.
+ */
+export function ConsultantTemplateDisclosure({ className = "" }: { className?: string }) {
+  return (
+    <Note icon={<Info className="h-3.5 w-3.5" />} className={className}>
+      <span className="font-medium text-foreground">Template, not legal advice.</span>{" "}
+      {DISCLOSURES.consultantTemplate}
+    </Note>
+  );
+}
