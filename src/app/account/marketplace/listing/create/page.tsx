@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ListingForm } from "@/components/listing/listing-form";
+import { getEntitlements } from "@/lib/auth/entitlements";
 
 export const metadata = {
   title: "List your AI Employee",
@@ -21,20 +22,23 @@ export default async function CreateListingPage() {
     redirect("/sign-in?redirect=/account/marketplace/listing/create");
   }
 
-  // One listing per user. Also enforced by a unique index on employees.profile_id
-  // and by RLS, so this is a friendly guard rather than the actual restriction.
-  const { data: existing } = await supabase
-    .from("employees")
-    .select("id, slug")
-    .eq("profile_id", user.id)
-    .maybeSingle();
+  const [{ data: existingListings }, entitlements, { data: categories }] = await Promise.all([
+    supabase
+      .from("employees")
+      .select("id, slug")
+      .eq("profile_id", user.id),
+    getEntitlements(),
+    supabase
+      .from("categories")
+      .select("id, name")
+      .order("sort_order", { ascending: true, nullsFirst: false }),
+  ]);
 
-  const { data: categories } = await supabase
-    .from("categories")
-    .select("id, name")
-    .order("sort_order", { ascending: true, nullsFirst: false });
+  const listingCount = existingListings?.length ?? 0;
+  const maxListings = entitlements.pro ? 5 : 1;
+  const atLimit = listingCount >= maxListings;
 
-  if (existing) {
+  if (atLimit) {
     return (
       <div className="container max-w-2xl py-12">
         <Card className="flex flex-col items-center gap-4 p-10 text-center">
@@ -42,18 +46,24 @@ export default async function CreateListingPage() {
             <Store className="h-5 w-5" />
           </span>
           <div>
-            <p className="font-medium">You already have an AI employee listed.</p>
+            <p className="font-medium">
+              You&apos;ve reached your listing limit.
+            </p>
             <p className="mt-1 text-sm text-muted-foreground">
-              Each Ploy Pro account can list one AI employee.
+              {entitlements.pro
+                ? "Ploy Pro accounts can list up to 5 AI employees."
+                : "Free accounts can list 1 AI employee. Upgrade to Ploy Pro for up to 5 listings."}
             </p>
           </div>
           <div className="flex flex-wrap justify-center gap-3">
             <Button asChild>
-              <Link href="/account/marketplace/listing">View My Listing</Link>
+              <Link href="/account/marketplace/listing">My Listings</Link>
             </Button>
-            <Button asChild variant="outline">
-              <Link href="/account/marketplace/listing/edit">Edit Listing</Link>
-            </Button>
+            {!entitlements.pro && (
+              <Button asChild variant="outline">
+                <Link href="/for-agencies">Upgrade to Pro</Link>
+              </Button>
+            )}
           </div>
         </Card>
       </div>

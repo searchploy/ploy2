@@ -141,14 +141,6 @@ export function LiveEmployeeCard({
                   <span className="text-xs font-normal text-muted-foreground">/mo</span>
                 </span>
               )}
-              {employee.avg_roi_percent != null && (
-                <span
-                  className="font-mono text-xs font-semibold text-success"
-                  title="Reported by the provider. Not verified by Ploy."
-                >
-                  Provider-reported ROI {employee.avg_roi_percent}%
-                </span>
-              )}
             </div>
             {employee.website_url ? (
               <Button size="sm" asChild>
@@ -248,14 +240,6 @@ export function LiveEmployeeCard({
                 <span className="font-mono text-base font-bold">
                   ${employee.price_monthly}
                   <span className="text-xs font-normal text-muted-foreground">/mo</span>
-                </span>
-              )}
-              {employee.avg_roi_percent != null && (
-                <span
-                  className="font-mono text-xs font-semibold text-success"
-                  title="Reported by the provider. Not verified by Ploy."
-                >
-                  Provider-reported ROI {employee.avg_roi_percent}%
                 </span>
               )}
             </div>

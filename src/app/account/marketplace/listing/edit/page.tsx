@@ -1,50 +1,27 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { ListingForm } from "@/components/listing/listing-form";
 
-export const metadata = {
-  title: "Edit your AI Employee",
-  description: "Update your Ploy marketplace listing",
-};
-
-export default async function EditListingPage() {
+export default async function EditListingRedirect() {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/sign-in?redirect=/account/marketplace/listing/edit");
+    redirect("/sign-in?redirect=/account/marketplace/listing");
   }
 
-  // RLS restricts this to the caller's own row, so a user cannot reach
-  // someone else's listing here.
-  const { data: listing } = await supabase
+  // Redirect to the first listing's edit page (or create if none exist)
+  const { data: listings } = await supabase
     .from("employees")
-    .select("*")
+    .select("id")
     .eq("profile_id", user.id)
-    .maybeSingle();
+    .order("created_at", { ascending: false })
+    .limit(1);
 
-  if (!listing) {
+  if (!listings || listings.length === 0) {
     redirect("/account/marketplace/listing/create");
   }
 
-  const { data: categories } = await supabase
-    .from("categories")
-    .select("id, name")
-    .order("sort_order", { ascending: true, nullsFirst: false });
-
-  return (
-    <div className="container max-w-3xl py-10">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight">Edit your AI Employee</h1>
-        <p className="mt-1 text-muted-foreground">
-          Changes are reviewed before they go live. Your listing is temporarily removed from the
-          marketplace until the update is approved.
-        </p>
-      </div>
-
-      <ListingForm categories={categories ?? []} existing={listing} />
-    </div>
-  );
+  redirect(`/account/marketplace/listing/edit/${listings[0].id}`);
 }
