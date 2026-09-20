@@ -17,6 +17,7 @@ import {
 import { AlertDialog } from "@/components/dashboard/alert-dialog";
 import { ListingReviewDialog, StatusPill } from "@/components/dashboard/listing-review-dialog";
 import { ListingsLogoDialog } from "@/components/dashboard/listings-logo-dialog";
+import { ListingsWebsiteDialog } from "@/components/dashboard/listings-website-dialog";
 import { PloyProBadge } from "@/components/marketplace/ploy-pro-badge";
 import {
   approveListing,
@@ -41,6 +42,8 @@ export function ListingsModerationTabs({ listings }: { listings: EmployeeWithCat
   const [pendingDelete, setPendingDelete] = useState<EmployeeWithCategory | null>(null);
   const [logoDialogOpen, setLogoDialogOpen] = useState(false);
   const [logoDialogListing, setLogoDialogListing] = useState<EmployeeWithCategory | null>(null);
+  const [websiteDialogOpen, setWebsiteDialogOpen] = useState(false);
+  const [websiteDialogListing, setWebsiteDialogListing] = useState<EmployeeWithCategory | null>(null);
   const [search, setSearch] = useState("");
 
   // One search box across all three tabs. The counts below reflect it too, so a
@@ -204,6 +207,27 @@ export function ListingsModerationTabs({ listings }: { listings: EmployeeWithCat
                         </svg>
                         Change logo
                       </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => {
+                          setWebsiteDialogListing(listing);
+                          setWebsiteDialogOpen(true);
+                        }}
+                      >
+                        <svg
+                          className="h-3.5 w-3.5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.658 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+                          />
+                        </svg>
+                        Edit website
+                      </DropdownMenuItem>
                       <DropdownMenuItem asChild>
                         <Link href={`/marketplace/${listing.slug}`}>
                           <Eye className="h-3.5 w-3.5" /> View live
@@ -344,6 +368,18 @@ export function ListingsModerationTabs({ listings }: { listings: EmployeeWithCat
           setLogoDialogOpen(open);
           if (!open) {
             setLogoDialogListing(null);
+            router.refresh();
+          }
+        }}
+      />
+
+      <ListingsWebsiteDialog
+        listing={websiteDialogListing ?? undefined}
+        open={websiteDialogOpen}
+        onOpenChange={(open) => {
+          setWebsiteDialogOpen(open);
+          if (!open) {
+            setWebsiteDialogListing(null);
             router.refresh();
           }
         }}

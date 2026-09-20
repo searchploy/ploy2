@@ -168,3 +168,30 @@ export async function updateListingLogo(
   revalidateListingSurfaces(data?.slug);
   return { ok: true };
 }
+
+export async function updateListingWebsite(
+  id: string,
+  websiteUrl: string | null
+): Promise<ModerationResult> {
+  const adminId = await requireAdmin("listing.website", id);
+  if (!adminId) return { ok: false, error: "Not authorized." };
+
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("employees")
+    .update({ website_url: websiteUrl })
+    .eq("id", id)
+    .select("slug")
+    .single();
+
+  if (error) return { ok: false, error: error.message };
+
+  await logSecurityEvent({
+    action: "listing.website",
+    targetType: "listing",
+    targetId: id,
+    detail: { had_url: Boolean(websiteUrl) },
+  });
+  revalidateListingSurfaces(data?.slug);
+  return { ok: true };
+}
