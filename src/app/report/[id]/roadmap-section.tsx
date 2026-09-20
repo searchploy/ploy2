@@ -36,7 +36,7 @@ export function RoadmapLoading() {
   return (
     <Shell>
       <div className="flex flex-col items-center gap-4 rounded-2xl border border-border bg-secondary/20 p-8 text-center">
-        <RingLoader size={32} />
+        <RingLoader size={40} logo={false} />
         <p className="text-sm text-muted-foreground">Building your personalized AI roadmap…</p>
       </div>
     </Shell>

@@ -559,16 +559,47 @@
  * (Tailwind's animate-spin utility). Both would have been silently overridden.
  */
 .ring-loader-container {
+  position: relative;
+  width: var(--ring-loader-size, 140px);
+  height: var(--ring-loader-size, 140px);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .ring-loader {
-  width: var(--ring-loader-size, 50px);
-  height: var(--ring-loader-size, 50px);
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   animation: ring-loader-spin 1s linear infinite;
+}
+
+/*
+ * The mark is a sibling of the ring rather than a child of it — nested, it
+ * would inherit the rotation and the logo would tumble. It sits still and the
+ * hairline orbits it.
+ */
+.ring-loader-logo {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+/*
+ * Sized off the ring variable rather than as a percentage. A percentage here
+ * resolves against a track that is itself sized from the image, and the
+ * circular dependency resolved as full width — which pinned the mark to the
+ * left edge instead of centring it.
+ *
+ * Half the ring is deliberate. Much smaller and the arc stops reading as
+ * belonging to the mark: it looks like a stray line orbiting nothing.
+ */
+.ring-loader-logo img {
+  width: calc(var(--ring-loader-size, 140px) * var(--ring-loader-logo-ratio, 0.5));
+  height: auto;
 }
 
 @keyframes ring-loader-spin {
