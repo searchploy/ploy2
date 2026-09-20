@@ -119,6 +119,7 @@ export function ListingForm({
     name: existing?.name ?? "",
     slug: existing?.slug ?? "",
     categoryId: existing?.category_id ?? "",
+    customCategory: "",
     tagline: existing?.tagline ?? "",
     description: existing?.description ?? "",
     primaryTasks: existing?.primary_tasks ?? ([] as string[]),
@@ -138,8 +139,13 @@ export function ListingForm({
     setForm((f) => ({ ...f, [key]: value }));
 
   const categoryName = useMemo(
-    () => categories.find((c) => c.id === form.categoryId)?.name ?? null,
-    [categories, form.categoryId]
+    () => {
+      if (form.categoryId === "cat-other") {
+        return form.customCategory.trim() || "Other";
+      }
+      return categories.find((c) => c.id === form.categoryId)?.name ?? null;
+    },
+    [categories, form.categoryId, form.customCategory]
   );
 
   const toggle = (key: "primaryTasks" | "bestFor", value: string, max?: number) => {
@@ -165,7 +171,8 @@ export function ListingForm({
   /** Returns the first validation error, or null when the form is publishable. */
   const validate = (): string | null => {
     if (!form.name.trim()) return "Add an AI employee name.";
-    if (!form.categoryId) return "Choose a category.";
+    if (!form.categoryId && !form.customCategory.trim())
+      return "Choose a category or enter a custom one.";
     if (!form.tagline.trim()) return "Add a tagline.";
     if (form.tagline.length > MAX_TAGLINE) return "Your tagline is too long.";
     if (!form.description.trim()) return "Add a description.";
@@ -425,6 +432,18 @@ export function ListingForm({
             ))}
           </select>
         </div>
+
+        {form.categoryId === "cat-other" && (
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="customCategory">Custom category name *</Label>
+            <Input
+              id="customCategory"
+              value={form.customCategory}
+              placeholder="e.g., Accounting, Manufacturing, Education"
+              onChange={(e) => set("customCategory", e.target.value)}
+            />
+          </div>
+        )}
 
         <div className="flex flex-col gap-1.5">
           <div className="flex items-center justify-between">

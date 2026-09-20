@@ -10,7 +10,7 @@ import { getPrice } from "@/lib/stripe/server";
 
 export const metadata: Metadata = {
   title: "For Agencies",
-  description: "Grow your AI agency with Ploy Pro. Get premium marketplace visibility and unlimited AI reports.",
+  description: "Grow your AI agency with Ploy Pro. Get premium marketplace visibility, featured placement, and unlimited AI reports.",
 };
 
 const freeKeyFeatures = [
@@ -30,7 +30,6 @@ const proKeyFeatures = [
   "Advanced analytics",
   "Lead conversion analytics",
   "Trending placement",
-  "Unlimited employee listings",
   "Priority support",
 ];
 
@@ -54,7 +53,7 @@ export default async function ForAgenciesPage() {
             Unlock More with <span className="gradient-text">Ploy Pro</span>
           </h1>
           <p className="max-w-xl text-balance text-lg text-muted-foreground">
-            Agencies: Get premium marketplace visibility, list unlimited AI employees, and appear in more AI reports.
+            Agencies: Get premium marketplace visibility, featured placement, and appear in more AI reports.
           </p>
         </div>
       </header>

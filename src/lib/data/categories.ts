@@ -13,6 +13,7 @@ export const categories: Category[] = [
   { id: "cat-real-estate", name: "Real Estate", slug: "real-estate", description: "Lead follow-up and listing management.", icon: "Building2", sort_order: 10, created_at: "2025-01-01" },
   { id: "cat-ecommerce", name: "Ecommerce", slug: "ecommerce", description: "Order support and post-purchase automation.", icon: "ShoppingCart", sort_order: 11, created_at: "2025-01-01" },
   { id: "cat-construction", name: "Construction", slug: "construction", description: "Bid follow-up and project coordination.", icon: "HardHat", sort_order: 12, created_at: "2025-01-01" },
+  { id: "cat-other", name: "Other", slug: "other", description: "Specify your own category.", icon: "MoreHorizontal", sort_order: 13, created_at: "2025-01-01" },
 ];
 
 export async function getCategories(): Promise<Category[]> {
