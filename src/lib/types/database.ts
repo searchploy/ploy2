@@ -330,6 +330,65 @@ export type Database = {
           },
         ]
       }
+      consultant_client_subscriptions: {
+        Row: {
+          client_id: string
+          created_at: string | null
+          employee_name: string
+          id: string
+          monthly_fee_cents: number | null
+          notes: string | null
+          setup_fee_cents: number | null
+          started_on: string | null
+          status: string | null
+          updated_at: string | null
+          user_id: string
+          vendor_cost_cents: number | null
+          vendor_name: string | null
+          vendor_url: string | null
+        }
+        Insert: {
+          client_id: string
+          created_at?: string | null
+          employee_name: string
+          id?: string
+          monthly_fee_cents?: number | null
+          notes?: string | null
+          setup_fee_cents?: number | null
+          started_on?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id: string
+          vendor_cost_cents?: number | null
+          vendor_name?: string | null
+          vendor_url?: string | null
+        }
+        Update: {
+          client_id?: string
+          created_at?: string | null
+          employee_name?: string
+          id?: string
+          monthly_fee_cents?: number | null
+          notes?: string | null
+          setup_fee_cents?: number | null
+          started_on?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string
+          vendor_cost_cents?: number | null
+          vendor_name?: string | null
+          vendor_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "consultant_client_subscriptions_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "consultant_clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       consultant_clients: {
         Row: {
           business_name: string

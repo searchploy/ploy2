@@ -5,6 +5,7 @@ import {
   BarChart3,
   BookOpen,
   FileText,
+  Repeat,
 } from "lucide-react";
 import { DashboardSidebar, type DashboardNavItem } from "@/components/dashboard/sidebar";
 import { getServerUser } from "@/lib/supabase/server";
@@ -13,6 +14,7 @@ import { getEntitlements } from "@/lib/auth/entitlements";
 const navItems: DashboardNavItem[] = [
   { label: "Dashboard", href: "/dashboard/consultant", icon: <LayoutDashboard className="h-4 w-4" /> },
   { label: "Clients", href: "/dashboard/consultant/clients", icon: <Users2 className="h-4 w-4" /> },
+  { label: "Subscriptions", href: "/dashboard/consultant/subscriptions", icon: <Repeat className="h-4 w-4" /> },
   { label: "AI Reports", href: "/dashboard/consultant/reports", icon: <BarChart3 className="h-4 w-4" /> },
   { label: "Classroom", href: "/dashboard/consultant/classroom", icon: <BookOpen className="h-4 w-4" /> },
   { label: "Resources", href: "/dashboard/consultant/resources", icon: <FileText className="h-4 w-4" /> },

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Users2, BarChart3, TrendingUp, DollarSign } from "lucide-react";
+import { Users2, BarChart3, TrendingUp, DollarSign, Repeat } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -74,6 +74,23 @@ export default async function ConsultantDashboardPage() {
     console.error("Error fetching reports:", e);
   }
 
+  // Active subscriptions only: a cancelled one is history, not money arriving
+  // this month.
+  let monthlyRecurringCents = 0;
+  try {
+    const { data: subscriptions } = await supabase
+      .from("consultant_client_subscriptions")
+      .select("monthly_fee_cents")
+      .eq("user_id", user.id)
+      .eq("status", "Active");
+    monthlyRecurringCents = (subscriptions ?? []).reduce(
+      (total, s) => total + (Number(s.monthly_fee_cents) || 0),
+      0
+    );
+  } catch (e) {
+    console.error("Error fetching subscriptions:", e);
+  }
+
   const stats = [
     {
       label: "Clients",
@@ -89,6 +106,11 @@ export default async function ConsultantDashboardPage() {
       label: "Deals Closed",
       value: clients.filter((c) => c.status === "Closed").length,
       icon: <TrendingUp className="h-5 w-5" />,
+    },
+    {
+      label: "Monthly Recurring",
+      value: `$${(monthlyRecurringCents / 100).toLocaleString()}`,
+      icon: <Repeat className="h-5 w-5" />,
     },
     {
       label: "Est. Revenue",
@@ -114,7 +136,7 @@ export default async function ConsultantDashboardPage() {
         </div>
 
         {/* Stats Grid */}
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
           {stats.map((stat) => (
             <Card key={stat.label} className="p-6">
               <div className="flex items-start justify-between">

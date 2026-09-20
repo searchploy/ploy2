@@ -2,49 +2,11 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BookOpen, Clock } from "lucide-react";
 import Link from "next/link";
+import { classroomModules } from "@/lib/data/classroom-content";
 
-const modules = [
-  {
-    id: 1,
-    title: "Understanding AI For Business",
-    description: "Learn the fundamentals of AI and how to explain it to clients.",
-  },
-  {
-    id: 2,
-    title: "Finding Businesses",
-    description: "Strategies for finding and researching potential clients.",
-  },
-  {
-    id: 3,
-    title: "Booking Discovery Calls",
-    description: "How to get meetings with business owners.",
-  },
-  {
-    id: 4,
-    title: "Running AI Reports",
-    description: "Guide to using the AI Report tool effectively.",
-  },
-  {
-    id: 5,
-    title: "Presenting Reports",
-    description: "How to present findings and build confidence.",
-  },
-  {
-    id: 6,
-    title: "Handling Objections",
-    description: "Common objections and how to respond.",
-  },
-  {
-    id: 7,
-    title: "Closing Clients",
-    description: "Techniques to close deals and get commitments.",
-  },
-  {
-    id: 8,
-    title: "Growing Your Consulting Business",
-    description: "Strategies for scaling and long-term success.",
-  },
-];
+// Read from the lesson content itself. This page used to keep its own copy of
+// the list, so adding a lesson left it invisible here.
+const modules = classroomModules;
 
 export default function ClassroomPage() {
   return (
@@ -60,7 +22,7 @@ export default function ClassroomPage() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium">Learning Progress</p>
-              <p className="text-xs text-muted-foreground mt-1">0 of 8 lessons completed</p>
+              <p className="text-xs text-muted-foreground mt-1">0 of {modules.length} lessons completed</p>
             </div>
             <div className="text-2xl font-bold text-ploy-gold">0%</div>
           </div>
