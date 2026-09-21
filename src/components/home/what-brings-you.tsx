@@ -2,20 +2,20 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Bot, Building2, Briefcase } from "lucide-react";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Button } from "@/components/ui/button";
 
 const paths = [
   {
-    emoji: "🤖",
+    icon: Bot,
     title: "I Build AI Employees",
     description: "List your AI employees, reach new customers, and grow your agency through the Ploy marketplace.",
     cta: "List an AI Employee",
     href: "/sign-up?role=agency",
   },
   {
-    emoji: "🏢",
+    icon: Building2,
     title: "I Own a Business",
     description:
       "Discover how AI can transform your business with a personalized AI Workforce Report and recommendations.",
@@ -23,7 +23,7 @@ const paths = [
     href: "/sign-up?role=business",
   },
   {
-    emoji: "💼",
+    icon: Briefcase,
     title: "I Want to Start an AI Consulting Business",
     description:
       "Learn how to help businesses implement AI using Ploy's platform while building your own consulting business.",
@@ -47,7 +47,9 @@ export function WhatBringsYou() {
               transition={{ duration: 0.5, delay: i * 0.08 }}
               className="hover-glow-border group flex flex-col gap-5 rounded-2xl border border-border bg-card p-9"
             >
-              <span className="text-5xl">{path.emoji}</span>
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-foreground text-background">
+                <path.icon className="h-5 w-5" />
+              </div>
               <h3 className="text-xl font-bold tracking-tight">{path.title}</h3>
               <p className="flex-1 text-sm leading-relaxed text-muted-foreground">{path.description}</p>
               <Button asChild size="lg" className="mt-2 w-full">
