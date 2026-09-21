@@ -54,12 +54,14 @@ export default async function EmployeeDetailPage({ params }: { params: Promise<{
       <div className="grid gap-10 lg:grid-cols-[1fr_380px]">
         <div className="flex flex-col gap-6">
           <div className="flex flex-wrap items-center gap-2">
-            {employee.category && (
+            {employee.category ? (
               <Badge variant="blue">
                 <CategoryIcon name={employee.category.icon} className="h-3 w-3" />
                 {employee.category.name}
               </Badge>
-            )}
+            ) : employee.custom_category ? (
+              <Badge variant="blue">{employee.custom_category}</Badge>
+            ) : null}
             {employee.featured && <Badge variant="premium">Featured</Badge>}
           </div>
 

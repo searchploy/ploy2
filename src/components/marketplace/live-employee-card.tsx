@@ -125,9 +125,9 @@ export function LiveEmployeeCard({
                 Report Match
               </span>
             )}
-            {employee.category && (
+            {(employee.category?.name ?? employee.custom_category) && (
               <span className="rounded-full border border-border px-2.5 py-1 text-xs text-muted-foreground">
-                {employee.category.name}
+                {employee.category?.name ?? employee.custom_category}
               </span>
             )}
             {employee.setup_time && (

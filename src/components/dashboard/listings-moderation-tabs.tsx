@@ -53,7 +53,13 @@ export function ListingsModerationTabs({ listings }: { listings: EmployeeWithCat
     const term = search.trim().toLowerCase();
     if (!term) return listings;
     return listings.filter((listing) =>
-      [listing.name, listing.agency_name, listing.category?.name, listing.slug, listing.role]
+      [
+        listing.name,
+        listing.agency_name,
+        listing.category?.name ?? listing.custom_category,
+        listing.slug,
+        listing.role,
+      ]
         .filter(Boolean)
         .some((field) => String(field).toLowerCase().includes(term))
     );
@@ -129,7 +135,11 @@ export function ListingsModerationTabs({ listings }: { listings: EmployeeWithCat
           </p>
           <p className="truncate text-sm text-muted-foreground">
             {listing.agency_name ?? "—"}
-            {listing.category ? ` · ${listing.category.name}` : ""}
+            {listing.category
+              ? ` · ${listing.category.name}`
+              : listing.custom_category
+                ? ` · ${listing.custom_category}`
+                : ""}
           </p>
         </button>
 

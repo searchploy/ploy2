@@ -87,6 +87,13 @@ function Chip({
   );
 }
 
+/**
+ * Marks the "Other" choice in the category select. Categories are real rows
+ * with uuid ids, so this string can never collide with one — and it must never
+ * reach category_id, which is a uuid foreign key.
+ */
+const OTHER_CATEGORY = "other";
+
 function Counter({ value, max }: { value: number; max: number }) {
   return (
     <span className={cn("text-xs", value > max ? "text-destructive" : "text-muted-foreground")}>
@@ -118,8 +125,10 @@ export function ListingForm({
   const [form, setForm] = useState({
     name: existing?.name ?? "",
     slug: existing?.slug ?? "",
-    categoryId: existing?.category_id ?? "",
-    customCategory: "",
+    // An existing listing with a custom category has no category_id, so the
+    // sentinel is what re-opens the text field when they come back to edit it.
+    categoryId: existing?.custom_category ? OTHER_CATEGORY : existing?.category_id ?? "",
+    customCategory: existing?.custom_category ?? "",
     tagline: existing?.tagline ?? "",
     description: existing?.description ?? "",
     primaryTasks: existing?.primary_tasks ?? ([] as string[]),
@@ -140,7 +149,7 @@ export function ListingForm({
 
   const categoryName = useMemo(
     () => {
-      if (form.categoryId === "cat-other") {
+      if (form.categoryId === OTHER_CATEGORY) {
         return form.customCategory.trim() || "Other";
       }
       return categories.find((c) => c.id === form.categoryId)?.name ?? null;
@@ -171,8 +180,9 @@ export function ListingForm({
   /** Returns the first validation error, or null when the form is publishable. */
   const validate = (): string | null => {
     if (!form.name.trim()) return "Add an AI employee name.";
-    if (!form.categoryId && !form.customCategory.trim())
-      return "Choose a category or enter a custom one.";
+    if (!form.categoryId) return "Choose a category.";
+    if (form.categoryId === OTHER_CATEGORY && !form.customCategory.trim())
+      return "Name your custom category.";
     if (!form.tagline.trim()) return "Add a tagline.";
     if (form.tagline.length > MAX_TAGLINE) return "Your tagline is too long.";
     if (!form.description.trim()) return "Add a description.";
@@ -239,7 +249,11 @@ export function ListingForm({
       profile_id: user.id,
       name: form.name.trim(),
       slug: form.slug.trim() || slugify(form.name),
-      category_id: form.categoryId,
+      // "Other" is not a row in categories, so the uuid column stays null and
+      // the provider's own wording is the only record of it.
+      category_id: form.categoryId === OTHER_CATEGORY ? null : form.categoryId || null,
+      custom_category:
+        form.categoryId === OTHER_CATEGORY ? form.customCategory.trim() : null,
       tagline: form.tagline.trim(),
       description: form.description.trim(),
       primary_tasks: form.primaryTasks,
@@ -431,10 +445,11 @@ export function ListingForm({
                 {category.name}
               </option>
             ))}
+            <option value={OTHER_CATEGORY}>Other</option>
           </select>
         </div>
 
-        {form.categoryId === "cat-other" && (
+        {form.categoryId === OTHER_CATEGORY && (
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="customCategory">Custom category name *</Label>
             <Input

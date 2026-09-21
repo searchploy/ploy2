@@ -743,6 +743,7 @@ export type Database = {
           integrations: string[] | null
           is_published: boolean | null
           best_for_description: string | null
+          custom_category: string | null
           primary_tasks: string[] | null
           website_url: string | null
           rejection_reason: string | null
@@ -783,6 +784,7 @@ export type Database = {
           integrations?: string[] | null
           is_published?: boolean | null
           best_for_description?: string | null
+          custom_category?: string | null
           primary_tasks?: string[] | null
           website_url?: string | null
           rejection_reason?: string | null
@@ -823,6 +825,7 @@ export type Database = {
           integrations?: string[] | null
           is_published?: boolean | null
           best_for_description?: string | null
+          custom_category?: string | null
           primary_tasks?: string[] | null
           website_url?: string | null
           rejection_reason?: string | null
