@@ -15,20 +15,20 @@ const paths = [
     href: "/sign-up?role=agency",
   },
   {
-    emoji: "💼",
-    title: "I Want to Start an AI Consulting Business",
-    description:
-      "Learn how to help businesses implement AI using Ploy's platform while building your own consulting business.",
-    cta: "Become a Consultant",
-    href: "/sign-up?role=consultant",
-  },
-  {
     emoji: "🏢",
     title: "I Own a Business",
     description:
       "Discover how AI can transform your business with a personalized AI Workforce Report and recommendations.",
     cta: "Generate AI Report",
     href: "/sign-up?role=business",
+  },
+  {
+    emoji: "💼",
+    title: "I Want to Start an AI Consulting Business",
+    description:
+      "Learn how to help businesses implement AI using Ploy's platform while building your own consulting business.",
+    cta: "Become a Consultant",
+    href: "/sign-up?role=consultant",
   },
 ];
 
