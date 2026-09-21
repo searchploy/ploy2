@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Search, SlidersHorizontal, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { LiveEmployeeCard } from "@/components/marketplace/live-employee-card";
 import { MarketplaceBrowseDisclosure } from "@/components/legal/disclosures";
+import { MARKETPLACE_VISITED_KEY } from "@/lib/constants";
 import type { EmployeeWithCategory } from "@/lib/data/live-marketplace";
 import type { Agency, Category } from "@/lib/types/database";
 
@@ -191,6 +192,18 @@ export function MarketplaceBrowser({
   // actually lands on.
   const [sort, setSort] = useState<SortKey>("recommended");
   const [filtersOpen, setFiltersOpen] = useState(false);
+
+  // Tells a listing's back link there is a marketplace in this tab's history
+  // worth popping. history.length can't answer that — it counts the blank
+  // entry a fresh tab starts on, so a visitor arriving from a shared link
+  // would get sent back to about:blank.
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(MARKETPLACE_VISITED_KEY, "1");
+    } catch {
+      // Private mode or blocked storage: the back link falls back to its href.
+    }
+  }, []);
 
   const filtered = useMemo(() => {
     let result = employees.filter((e) => {

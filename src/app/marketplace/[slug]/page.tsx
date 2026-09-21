@@ -11,6 +11,7 @@ import { PloyProBadge } from "@/components/marketplace/ploy-pro-badge";
 import { DemoRequestDialog } from "@/components/marketplace/demo-request-dialog";
 import { ReportListingDialog } from "@/components/marketplace/report-listing-dialog";
 import { MarketplaceListingDisclosure } from "@/components/legal/disclosures";
+import { BackToMarketplace } from "@/components/marketplace/back-to-marketplace";
 import { createClient } from "@/lib/supabase/server";
 import {
   getLiveEmployeeBySlugWithCategory,
@@ -51,6 +52,8 @@ export default async function EmployeeDetailPage({ params }: { params: Promise<{
 
   return (
     <div className="container flex flex-col gap-14 py-12">
+      <BackToMarketplace />
+
       <div className="grid gap-10 lg:grid-cols-[1fr_380px]">
         <div className="flex flex-col gap-6">
           <div className="flex flex-wrap items-center gap-2">

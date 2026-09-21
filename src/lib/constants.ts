@@ -40,3 +40,10 @@ export const FOOTER_LINKS = {
  * pick a landing route after sign-in.
  */
 export const ADMIN_EMAIL = "admin@searchploy.com";
+
+/**
+ * Set once the marketplace browser has rendered in a tab, and read by a
+ * listing's back link to decide whether popping history lands on the
+ * marketplace or somewhere outside the site.
+ */
+export const MARKETPLACE_VISITED_KEY = "ploy:marketplace-visited";
