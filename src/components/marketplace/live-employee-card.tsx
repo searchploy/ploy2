@@ -150,7 +150,7 @@ export function LiveEmployeeCard({
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  window.open(employee.website_url, "_blank");
+                  window.open(employee.website_url, "_blank", "noopener,noreferrer");
                 }}
               >
                 Go to website
