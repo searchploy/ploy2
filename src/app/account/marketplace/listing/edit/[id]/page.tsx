@@ -7,14 +7,15 @@ export const metadata = {
   description: "Update your Ploy marketplace listing",
 };
 
-export default async function EditListingPage({ params }: { params: { id: string } }) {
+export default async function EditListingPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect(`/sign-in?redirect=/account/marketplace/listing/edit/${params.id}`);
+    redirect(`/sign-in?redirect=/account/marketplace/listing/edit/${id}`);
   }
 
   // RLS restricts this to the caller's own row, so a user cannot reach
@@ -22,7 +23,7 @@ export default async function EditListingPage({ params }: { params: { id: string
   const { data: listing } = await supabase
     .from("employees")
     .select("*")
-    .eq("id", params.id)
+    .eq("id", id)
     .eq("profile_id", user.id)
     .maybeSingle();
 

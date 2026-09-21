@@ -271,11 +271,12 @@ export function ListingForm({
     setSaving(false);
 
     if (dbError) {
-      // The one-listing-per-user unique index surfaces here too.
+      // employees.slug is unique across the whole table, so this fires when the
+      // name a provider chose slugifies onto one that already exists.
       const duplicate = dbError.code === "23505";
-      toast.error(duplicate ? "You already have a listing" : "Couldn't save your listing", {
+      toast.error(duplicate ? "That name is already taken" : "Couldn't save your listing", {
         description: duplicate
-          ? "Each Ploy Pro account can list one AI employee."
+          ? "Another listing already uses this name. Try a more specific one."
           : dbError.message,
       });
       return;
