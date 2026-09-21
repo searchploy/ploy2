@@ -49,6 +49,8 @@ export function LiveEmployeeCard({
 
   const cardClassName = "hover-glow-border relative flex flex-col gap-4 rounded-2xl border border-border bg-card p-6 transition-colors sm:flex-row sm:items-start";
 
+  const websiteUrl = employee.website_url;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 14 }}
@@ -144,13 +146,13 @@ export function LiveEmployeeCard({
                 </span>
               )}
             </div>
-            {employee.website_url ? (
+            {websiteUrl ? (
               <Button
                 size="sm"
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  window.open(employee.website_url, "_blank", "noopener,noreferrer");
+                  window.open(websiteUrl, "_blank", "noopener,noreferrer");
                 }}
               >
                 Go to website
