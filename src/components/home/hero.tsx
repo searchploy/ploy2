@@ -99,7 +99,7 @@ export function Hero() {
                   transition={{ duration: 0.7, delay: 0.26, ease: "easeOut" }}
                   className="display-caps mt-3 text-[1.35rem] leading-none tracking-[0.2em] text-white/95 sm:text-[2.1rem] lg:text-[2.6rem]"
                 >
-                  AI Employees
+                  AI Tools
                 </motion.span>
                 <motion.span
                   {...rise}
