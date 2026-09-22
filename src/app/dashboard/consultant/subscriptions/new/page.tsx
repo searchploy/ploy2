@@ -19,7 +19,7 @@ export default async function NewSubscriptionPage() {
       <div>
         <h1 className="text-3xl font-bold">Add subscription</h1>
         <p className="mt-1 text-muted-foreground">
-          Log an AI employee you&apos;ve set up for a client
+          Log an AI tool you&apos;ve set up for a client
         </p>
       </div>
 

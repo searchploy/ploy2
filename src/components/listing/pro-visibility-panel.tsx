@@ -22,7 +22,7 @@ export function ProVisibilityPanel({
     return (
       <div className="flex flex-col gap-3">
         <Panel tone="gold" icon={<Star className="h-4 w-4 fill-ploy-gold" />} title="Ploy Pro Visibility">
-          Your approved AI Employee may receive enhanced marketplace placement and additional
+          Your approved AI tool may receive enhanced marketplace placement and additional
           exposure in eligible AI reports.
         </Panel>
         <ProVisibilityDisclosure />
@@ -34,7 +34,7 @@ export function ProVisibilityPanel({
     return (
       <div className="flex flex-col gap-3">
         <Panel tone="gold" icon={<Star className="h-4 w-4 fill-ploy-gold" />} title="Ploy Pro Visibility">
-          Your AI Employee is awaiting approval. Your Ploy Pro visibility benefits will activate once
+          Your AI tool is awaiting approval. Your Ploy Pro visibility benefits will activate once
           your listing is approved.
         </Panel>
         <ProVisibilityDisclosure />

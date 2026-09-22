@@ -39,7 +39,7 @@ function LearnMore({ href }: { href: string }) {
   );
 }
 
-/** Sits directly under the recommended AI employees in an AI Report. */
+/** Sits directly under the recommended AI tools in an AI Report. */
 export function AiReportDisclosure({ className = "" }: { className?: string }) {
   return (
     <Note icon={<Info className="h-3.5 w-3.5" />} className={className}>

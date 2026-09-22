@@ -11,7 +11,7 @@ export async function CategoriesSection() {
       <div className="container flex flex-col gap-12">
         <SectionHeading
           eyebrow="Shop by problem"
-          title="AI employees for every business problem"
+          title="AI tools for every business problem"
           description="Not sure which technology you need? Start with the problem you're trying to solve."
         />
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">

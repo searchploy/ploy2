@@ -77,7 +77,7 @@ export default async function AgencyProfilePage({ params }: { params: Promise<{ 
             </section>
 
             <section className="flex flex-col gap-6">
-              <h2 className="text-xl font-semibold">AI Employees ({enrichedEmployees.length})</h2>
+              <h2 className="text-xl font-semibold">AI Tools ({enrichedEmployees.length})</h2>
               {enrichedEmployees.length > 0 ? (
                 <div className="grid gap-6 sm:grid-cols-2">
                   {enrichedEmployees.map((e, i) => (
@@ -85,7 +85,7 @@ export default async function AgencyProfilePage({ params }: { params: Promise<{ 
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-muted-foreground">No published AI employees yet.</p>
+                <p className="text-sm text-muted-foreground">No published AI tools yet.</p>
               )}
             </section>
 

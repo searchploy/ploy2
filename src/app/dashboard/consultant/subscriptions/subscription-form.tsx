@@ -129,7 +129,7 @@ export function SubscriptionForm({
           </Select>
         </div>
         <div className="flex flex-col gap-1.5">
-          <Label htmlFor="employeeName">AI Employee *</Label>
+          <Label htmlFor="employeeName">AI Tool *</Label>
           <Input
             id="employeeName"
             name="employeeName"

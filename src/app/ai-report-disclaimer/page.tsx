@@ -70,7 +70,7 @@ export default function AiReportDisclaimerPage() {
 
       <Section id="recommendations" number={3} heading="About the recommendations">
         <p>
-          Recommended AI employees are marketplace listings whose stated capabilities matched your
+          Recommended AI tools are marketplace listings whose stated capabilities matched your
           answers most closely under the engine&apos;s scoring rules. A recommendation means a
           listing scored well against what you told us. It is not an endorsement, a certification,
           or a finding that the product will work for you.
@@ -140,7 +140,7 @@ export default function AiReportDisclaimerPage() {
           items={[
             "Revenue increases, sales, leads, conversions or business growth",
             "Cost savings, hours saved, productivity improvements or return on investment",
-            "That a recommended AI employee, workflow, provider or strategy is suitable for your business",
+            "That a recommended AI tool, workflow, provider or strategy is suitable for your business",
             "That a third-party product will perform as its listing describes",
             "That an implementation will succeed, or succeed within an estimated timeframe",
             "That the information you supplied, or a provider supplied, is accurate or complete",
@@ -150,7 +150,7 @@ export default function AiReportDisclaimerPage() {
 
       <Section id="your-responsibility" number={7} heading="Evaluating a provider yourself">
         <p>
-          Before purchasing or implementing an AI employee, you should independently evaluate the
+          Before purchasing or implementing an AI tool, you should independently evaluate the
           provider and the product. At a minimum, that means looking at:
         </p>
         <List

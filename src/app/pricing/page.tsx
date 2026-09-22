@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 export const revalidate = 3600;
 
 const freeKeyFeatures = [
-  "Browse AI employees",
+  "Browse AI tools",
   "AI Readiness Score",
   "Limited AI reports",
 ];

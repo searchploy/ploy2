@@ -24,7 +24,7 @@ export async function AgencySection() {
         <SectionHeading
           eyebrow="Agencies"
           title="Built by Leading AI Agencies"
-          description="Every AI employee on Ploy is built and supported by a vetted agency you can get to know before you buy."
+          description="Every AI tool on Ploy is built and supported by a vetted agency you can get to know before you buy."
         />
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {withStats.map(({ agency, employeeCount, rating }, i) => (

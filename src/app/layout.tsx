@@ -39,13 +39,13 @@ const mono = IBM_Plex_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: `${SITE_NAME} — The AI Adoption Platform`,
+    default: `${SITE_NAME} — AI Tools Marketplace for Business`,
     template: `%s | ${SITE_NAME}`,
   },
   description: SITE_DESCRIPTION,
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
   openGraph: {
-    title: `${SITE_NAME} — The AI Adoption Platform`,
+    title: `${SITE_NAME} — AI Tools Marketplace for Business`,
     description: SITE_DESCRIPTION,
     type: "website",
   },

@@ -8,9 +8,10 @@ import {
 } from "@/lib/data/live-marketplace";
 
 export const metadata: Metadata = {
-  title: "AI Employee Marketplace",
+  title: "AI Tools Marketplace",
   description:
-    "Find AI employees for your business by the problem you want to solve. Compare solutions and go straight to the agency behind them.",
+    "Find AI tools for your business by the problem you want to solve. Compare solutions and go straight to the agency behind them.",
+  alternates: { canonical: "/marketplace" },
 };
 
 // A newly published listing must appear immediately. Without this the page is
@@ -37,10 +38,10 @@ export default async function MarketplacePage({
     <div className="container py-12">
       <div className="mb-10 flex flex-col gap-3">
         <h1 className="display-caps text-[1.5rem] sm:text-[2rem]">
-          AI Employee Marketplace
+          AI Tools Marketplace
         </h1>
         <p className="max-w-2xl text-muted-foreground">
-          Find the right AI employee for your business. Filter by the problem you&apos;re solving,
+          Find the right AI tool for your business. Filter by the problem you&apos;re solving,
           then head to the agency&apos;s site to get started.
         </p>
       </div>

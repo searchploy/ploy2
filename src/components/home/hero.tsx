@@ -76,7 +76,7 @@ export function Hero() {
 
               {/*
                * One sentence broken across four lines so the emphasis lands on
-               * "effective". The connecting lines stay at 400 rather than the
+               * "right". The connecting lines stay at 400 rather than the
                * display weight — at this size a 200 is too faint to read.
                */}
               <h1 className="mt-10 flex flex-col items-start">
@@ -85,14 +85,14 @@ export function Hero() {
                   transition={{ duration: 0.7, delay: 0.1, ease: "easeOut" }}
                   className="display-caps text-[0.7rem] font-normal leading-none tracking-[0.32em] text-white/50 sm:text-xs lg:text-[0.8rem]"
                 >
-                  Find the most
+                  Find the
                 </motion.span>
                 <motion.span
                   {...rise}
                   transition={{ duration: 0.7, delay: 0.18, ease: "easeOut" }}
                   className="font-script mt-4 text-[3rem] uppercase leading-[0.95] tracking-[0.06em] text-white sm:text-6xl lg:text-[4.5rem]"
                 >
-                  Effective
+                  Right
                 </motion.span>
                 <motion.span
                   {...rise}
@@ -115,7 +115,7 @@ export function Hero() {
                 transition={{ duration: 0.7, delay: 0.44, ease: "easeOut" }}
                 className="mt-8 max-w-md text-balance text-sm leading-relaxed text-white/55"
               >
-                Tell us your business problems. We&apos;ll show you which AI employees could help,
+                Tell us what your business needs. We&apos;ll show you which AI tools could help,
                 what they could save you, and how to put them to work.
               </motion.p>
 
@@ -140,7 +140,7 @@ export function Hero() {
                   href="/marketplace"
                   className="metal-border metal-shine inline-flex items-center whitespace-nowrap px-7 py-4 text-[11px] font-bold uppercase tracking-[0.2em] text-ploy-gold transition-colors duration-300 hover:text-ploy-gold-light"
                 >
-                  Browse employees
+                  Browse AI tools
                 </Link>
               </motion.div>
             </div>

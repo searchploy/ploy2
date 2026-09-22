@@ -37,15 +37,15 @@ export const DISCLOSURES = {
   // Each string continues the bolded lead-in its component renders ("AI-generated
   // recommendations.", "Third-party product."), so it must not repeat it.
   aiReport:
-    "These recommendations are based on the information you provided and are for informational purposes. Ploy does not guarantee that a recommended AI employee or strategy will produce a particular result.",
+    "These recommendations are based on the information you provided and are for informational purposes. Ploy does not guarantee that a recommended AI tool or strategy will produce a particular result.",
   aiReportEstimates:
     "Estimates are based on the information provided about your business and the assumptions used by Ploy's analysis. Actual results will vary.",
   roadmap:
     "This roadmap is a planning tool generated from the information provided about your business. Timelines, costs and potential savings are estimates, not guarantees, and it is not a substitute for professional business, financial, legal, security or technical advice.",
   marketplaceListing:
-    "This AI employee is provided by an independent provider. Ploy does not guarantee its performance, security, suitability, or results.",
+    "This AI tool is provided by an independent provider. Ploy does not guarantee its performance, security, suitability, availability, accuracy, or results.",
   marketplaceBrowse:
-    "AI employees on Ploy are offered by independent third-party providers. Ploy does not develop, operate or control them, and any purchase you make is directly with the provider.",
+    "AI tools on Ploy are offered by independent third-party providers. Ploy does not develop, operate, control, endorse or warrant them, and any purchase you make is directly with the provider.",
   externalLink:
     "You are leaving Ploy. Ploy does not control this website or its products, services, policies or terms.",
   ployProVisibility:

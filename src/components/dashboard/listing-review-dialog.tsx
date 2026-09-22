@@ -143,7 +143,7 @@ export function ListingReviewDialog({
               <Textarea
                 id="rejection-reason"
                 value={rejectionReason}
-                placeholder="e.g. The description doesn't clearly explain what this AI employee does."
+                placeholder="e.g. The description doesn't clearly explain what this AI tool does."
                 className="min-h-20"
                 onChange={(e) => onRejectionReasonChange(e.target.value)}
               />

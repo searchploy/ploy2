@@ -257,7 +257,7 @@ function buildRoadmap(recs: RecommendedEmployee[]): {
   roadmap_90: RoadmapItem[];
   roadmap_year: RoadmapItem[];
 } {
-  const first = recs[0]?.name ?? "your top recommended AI employee";
+  const first = recs[0]?.name ?? "your top recommended AI tool";
   const second = recs[1]?.name;
   const third = recs[2]?.name;
 

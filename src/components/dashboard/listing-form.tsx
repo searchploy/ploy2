@@ -34,7 +34,7 @@ export function ListingForm({
     await new Promise((r) => setTimeout(r, 700));
     setSaving(false);
     toast.success(isEdit ? "Listing updated" : "Listing created", {
-      description: isEdit ? "Your changes are live." : "Your new AI employee is pending review.",
+      description: isEdit ? "Your changes are live." : "Your new AI tool is pending review.",
     });
     router.push(redirectTo);
   }
@@ -63,7 +63,7 @@ export function ListingForm({
 
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="flex flex-col gap-1.5">
-            <Label htmlFor="name">Employee name</Label>
+            <Label htmlFor="name">AI tool name</Label>
             <Input id="name" name="name" required defaultValue={employee?.name} placeholder="AI Sales Rep" />
           </div>
           <div className="flex flex-col gap-1.5">
@@ -90,7 +90,7 @@ export function ListingForm({
 
         <div className="flex flex-col gap-1.5">
           <Label htmlFor="description">Description</Label>
-          <Textarea id="description" name="description" required defaultValue={employee?.description} rows={5} placeholder="Describe what this AI employee does and how it works..." />
+          <Textarea id="description" name="description" required defaultValue={employee?.description} rows={5} placeholder="Describe what this AI tool does and how it works..." />
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">

@@ -10,15 +10,15 @@ export function CtaSection() {
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-ploy-gold/[0.08] via-transparent to-transparent" />
           <div className="relative flex flex-col items-center gap-6">
             <h2 className="text-balance max-w-2xl text-3xl font-bold tracking-tighter sm:text-5xl">
-              Ready to hire your first AI employee?
+              Ready to find your first AI tool?
             </h2>
             <p className="max-w-xl text-balance text-background/70">
-              Browse the marketplace or list your agency&apos;s AI employees in minutes.
+              Browse the marketplace or list your agency&apos;s AI tools in minutes.
             </p>
             <div className="flex flex-col gap-3 sm:flex-row">
               <Button asChild size="lg" variant="gradient">
                 <Link href="/marketplace">
-                  Browse Employees
+                  Browse AI Tools
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </Button>

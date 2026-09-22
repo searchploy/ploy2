@@ -144,7 +144,7 @@ function EmployeeLink({
   return (
     <Button asChild variant="outline" size="sm" className={className}>
       <Link href={`/marketplace/${listing.slug}?from_report=${reportId}`}>
-        View AI Employee <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
+        View AI Tool <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
       </Link>
     </Button>
   );
@@ -183,7 +183,7 @@ function WorkflowCard({
             </p>
           ) : (
             <p className="mt-1.5 text-sm text-muted-foreground">
-              This AI employee is no longer listed on the marketplace. Rebuild the roadmap to match a current listing.
+              This AI tool is no longer listed on the marketplace. Rebuild the roadmap to match a current listing.
             </p>
           )}
         </div>
@@ -223,7 +223,7 @@ function WorkflowCard({
           </div>
           {workflow.listedIntegrations.length > 0 && (
             <p className="mt-2 text-xs text-muted-foreground">
-              Listed by this AI employee: {workflow.listedIntegrations.join(", ")}
+              Listed by this AI tool: {workflow.listedIntegrations.join(", ")}
             </p>
           )}
         </Panel>
@@ -621,13 +621,13 @@ export function DetailedRoadmapView({
       </div>
 
       <div>
-        <SectionHeading icon={Bot} eyebrow="Deployment" title="AI employee deployment plan" />
+        <SectionHeading icon={Bot} eyebrow="Deployment" title="AI tool deployment plan" />
         <div className="overflow-x-auto rounded-2xl border border-border">
           <table className="w-full min-w-[760px] border-collapse text-sm">
             <thead>
               <tr className="border-b border-border bg-secondary/30 text-left">
                 <th className="p-3 font-semibold">#</th>
-                <th className="p-3 font-semibold">AI employee</th>
+                <th className="p-3 font-semibold">AI tool</th>
                 <th className="p-3 font-semibold">Workflow / department</th>
                 <th className="p-3 font-semibold">Timeline</th>
                 <th className="p-3 font-semibold">Difficulty</th>

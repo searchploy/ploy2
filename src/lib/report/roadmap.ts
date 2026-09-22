@@ -994,7 +994,7 @@ export function buildDetailedRoadmap(source: RoadmapSource): DetailedRoadmap {
 
   const gaps: string[] = [];
   if (workflows.length === 0) {
-    gaps.push("Your report has no recommended AI employees that are currently listed on the marketplace.");
+    gaps.push("Your report has no recommended AI tools that are currently listed on the marketplace.");
   }
   if (!source.revenueRange) gaps.push("No revenue range was provided, so labor value isn't estimated.");
   if (source.currentSoftware.length === 0) {
@@ -1002,7 +1002,7 @@ export function buildDetailedRoadmap(source: RoadmapSource): DetailedRoadmap {
   }
   if (source.departments.length === 0) gaps.push("No departments were reported, so workflow owners can't be suggested.");
   for (const pain of customPains) {
-    gaps.push(`“${pain}” isn't mapped to a specific workflow. Check whether a recommended AI employee covers it.`);
+    gaps.push(`“${pain}” isn't mapped to a specific workflow. Check whether a recommended AI tool covers it.`);
   }
 
   const first = workflows[0] ?? null;
@@ -1102,7 +1102,7 @@ function buildObjective(source: RoadmapSource, knownPains: string[]): string {
   }
   const lead = topPains.length ? capitalize(joinPhrases(topPains)) : capitalize(goalPhrase!);
   const tail = topPains.length && goalPhrase ? `, so ${who} can ${goalPhrase}` : "";
-  return `${lead}${tail}, with AI employees taking on repetitive work while your team keeps ownership of decisions and customer relationships.`;
+  return `${lead}${tail}, with AI tools taking on repetitive work while your team keeps ownership of decisions and customer relationships.`;
 }
 
 function buildTargets(source: RoadmapSource, workflows: RoadmapWorkflow[], reportHours: number | null): TargetArea[] {

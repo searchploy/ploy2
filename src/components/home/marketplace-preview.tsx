@@ -15,8 +15,8 @@ export async function MarketplacePreview() {
           <SectionHeading
             align="left"
             eyebrow="Marketplace"
-            title="Hire AI employees, not software"
-            description="Every listing is an AI employee built to solve a specific business problem, by a vetted agency."
+            title="AI tools built for real business problems"
+            description="Every listing is an AI tool built to solve a specific business problem, by a vetted agency."
             className="sm:items-start sm:text-left"
           />
           <Button asChild variant="outline" className="shrink-0">

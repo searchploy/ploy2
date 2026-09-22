@@ -8,8 +8,8 @@ import { ListingForm } from "@/components/listing/listing-form";
 import { getEntitlements } from "@/lib/auth/entitlements";
 
 export const metadata = {
-  title: "List your AI Employee",
-  description: "Add your AI employee to the Ploy marketplace",
+  title: "List your AI Tool",
+  description: "Add your AI tool to the Ploy marketplace",
 };
 
 export default async function CreateListingPage() {
@@ -51,8 +51,8 @@ export default async function CreateListingPage() {
             </p>
             <p className="mt-1 text-sm text-muted-foreground">
               {entitlements.pro
-                ? "Ploy Pro accounts can list up to 5 AI employees."
-                : "Free accounts can list 1 AI employee. Upgrade to Ploy Pro for up to 5 listings."}
+                ? "Ploy Pro accounts can list up to 5 AI tools."
+                : "Free accounts can list 1 AI tool. Upgrade to Ploy Pro for up to 5 listings."}
             </p>
           </div>
           <div className="flex flex-wrap justify-center gap-3">
@@ -73,7 +73,7 @@ export default async function CreateListingPage() {
   return (
     <div className="container max-w-3xl py-10">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight">List your AI Employee</h1>
+        <h1 className="text-3xl font-bold tracking-tight">List your AI Tool</h1>
         <p className="mt-1 text-muted-foreground">
           Takes about 2 minutes. Businesses browse these listings to find AI solutions.
         </p>

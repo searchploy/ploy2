@@ -9,9 +9,9 @@ import { Button } from "@/components/ui/button";
 const paths = [
   {
     icon: Bot,
-    title: "I Build AI Employees",
-    description: "List your AI employees, reach new customers, and grow your agency through the Ploy marketplace.",
-    cta: "List an AI Employee",
+    title: "I Build AI Tools",
+    description: "List your AI tools, reach new customers, and grow your agency through the Ploy marketplace.",
+    cta: "List an AI Tool",
     href: "/sign-up?role=agency",
   },
   {

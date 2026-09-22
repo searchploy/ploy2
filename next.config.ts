@@ -28,6 +28,30 @@ const securityHeaders = [
   { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
 ];
 
+/**
+ * Alias URLs that people guess or link to, pointed at the page that actually
+ * owns the intent. These are variants deliberately *not* built as their own
+ * pages — a separate /ai-for-recruiting would compete with
+ * /ai-tools-for-recruiting for the same result rather than adding anything.
+ *
+ * No existing URL is redirected away: the /ai-employee* pages target their own
+ * keywords and keep earning, so they stay live.
+ */
+const seoAliases: { source: string; destination: string }[] = [
+  { source: "/ai-tools-marketplace", destination: "/ai-tools" },
+  { source: "/ai-tool-marketplace", destination: "/ai-tools" },
+  { source: "/best-ai-tools", destination: "/ai-tools" },
+  { source: "/ai-tools-for-business", destination: "/ai-tools" },
+  { source: "/ai-tools-for-businesses", destination: "/ai-tools" },
+  { source: "/ai-tools-for-customer-support", destination: "/ai-tools-for-customer-service" },
+  { source: "/ai-for-sales", destination: "/ai-tools-for-sales" },
+  { source: "/ai-for-marketing", destination: "/ai-tools-for-marketing" },
+  { source: "/ai-for-recruiting", destination: "/ai-tools-for-recruiting" },
+  { source: "/ai-for-customer-service", destination: "/ai-for-customer-support" },
+  { source: "/ai-for-reporting", destination: "/ai-for-data-entry" },
+  { source: "/ai-for-research", destination: "/ai-for-content-creation" },
+];
+
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
@@ -37,6 +61,9 @@ const nextConfig: NextConfig = {
   },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
+  },
+  async redirects() {
+    return seoAliases.map((alias) => ({ ...alias, permanent: true }));
   },
 };
 

@@ -12,7 +12,7 @@ import { RoadmapLoading, RoadmapSection } from "@/app/report/[id]/roadmap-sectio
 
 export const metadata: Metadata = { title: "Your AI Workforce Report" };
 
-/** How many recommended AI employees a report shows without Ploy Pro. */
+/** How many recommended AI tools a report shows without Ploy Pro. */
 const FREE_RECOMMENDATION_LIMIT = 2;
 
 /** Shape returned by get_public_report_recommendations (no join). */
@@ -210,7 +210,7 @@ export default async function ReportResultsPage({ params }: { params: Promise<{ 
       <section className="mb-10">
         <h2 className="mb-4 flex items-center gap-2.5 text-lg font-bold">
           <span className="block h-4 w-1 rounded-full bg-ploy-gold" />
-          Recommended AI Employees
+          Recommended AI Tools
         </h2>
         <div className="flex flex-col gap-3.5">
           {visibleRecs.map((rec) => (
@@ -277,12 +277,12 @@ export default async function ReportResultsPage({ params }: { params: Promise<{ 
                 title="Unlock your full AI Report"
                 description={
                   lockedCount > 0
-                    ? `This is your free AI Snapshot. Upgrade to see ${lockedCount} more AI employee match${lockedCount > 1 ? "es" : ""}, your complete 30/90/1-year roadmap, department analysis, priority matrix, and agency recommendations.`
+                    ? `This is your free AI Snapshot. Upgrade to see ${lockedCount} more AI tool match${lockedCount > 1 ? "es" : ""}, your complete 30/90/1-year roadmap, department analysis, priority matrix, and agency recommendations.`
                     : "This is your free AI Snapshot. Upgrade to see your complete 30/90/1-year roadmap, department analysis, priority matrix, and agency recommendations."
                 }
                 features={[
                   "Complete 30/90/1-year roadmap",
-                  "Unlimited AI employee recommendations",
+                  "Unlimited AI tool recommendations",
                   "Agency recommendations",
                   "Unlimited reports & PDF export",
                 ]}
@@ -311,7 +311,7 @@ export default async function ReportResultsPage({ params }: { params: Promise<{ 
           </span>
           <h2 className="text-lg font-bold">AI Transformation Roadmap</h2>
           <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
-            This roadmap is available with Ploy Pro. It sequences your recommended AI employees across 30 days, 90 days
+            This roadmap is available with Ploy Pro. It sequences your recommended AI tools across 30 days, 90 days
             and a year, with owners, dependencies, KPIs and estimated impact.
           </p>
         </section>
@@ -319,7 +319,7 @@ export default async function ReportResultsPage({ params }: { params: Promise<{ 
 
       <div className="flex flex-wrap justify-center gap-3 border-t border-border pt-8">
         <Button asChild size="lg">
-          <Link href="/marketplace">Browse Recommended AI Employees →</Link>
+          <Link href="/marketplace">Browse Recommended AI Tools →</Link>
         </Button>
         <Button asChild size="lg" variant="outline">
           <Link href="/report">Generate New Report</Link>

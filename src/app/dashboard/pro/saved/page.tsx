@@ -34,8 +34,8 @@ export default async function ProSavedPage() {
   return (
     <div className="flex flex-col gap-8">
       <DashboardPageHeader
-        title="Saved AI Employees"
-        description="AI employees you're researching. Visit a listing to reach the agency's own website."
+        title="Saved AI Tools"
+        description="AI tools you're researching. Visit a listing to reach the agency's own website."
       />
 
       {saved.length > 0 ? (
@@ -60,8 +60,8 @@ export default async function ProSavedPage() {
       ) : (
         <EmptyState
           icon={Heart}
-          title="You haven't saved any AI employees yet"
-          description="Browse the marketplace and save the AI employees you want to research."
+          title="You haven't saved any AI tools yet"
+          description="Browse the marketplace and save the AI tools you want to research."
           actionLabel="Browse Marketplace"
           actionHref="/marketplace"
         />

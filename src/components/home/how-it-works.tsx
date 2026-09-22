@@ -14,13 +14,13 @@ const steps = [
   },
   {
     icon: ShoppingCart,
-    title: "Hire AI employees",
+    title: "Find your AI tools",
     description: "Every recommendation links directly to a marketplace listing. Compare, demo, and purchase in one place.",
   },
   {
     icon: TrendingUp,
     title: "Grow your business",
-    description: "Your AI employees go to work immediately. Track time saved, money saved, and revenue gained.",
+    description: "Your AI tools go to work immediately. Track time saved, money saved, and revenue gained.",
   },
 ];
 
@@ -28,7 +28,7 @@ export function HowItWorks() {
   return (
     <section id="how-it-works" className="py-24">
       <div className="container flex flex-col gap-16">
-        <SectionHeading eyebrow="How Ploy works" title="From business problem to hired AI employee" />
+        <SectionHeading eyebrow="How Ploy works" title="From business problem to the right AI tool" />
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {steps.map((step, i) => (
             <div

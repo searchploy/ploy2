@@ -23,7 +23,7 @@ const STATUS_UI = {
     label: "Marketplace Approved",
     icon: CheckCircle2,
     badge: "bg-green-500/15 text-green-400",
-    body: "Your AI employee is live on the marketplace.",
+    body: "Your AI tool is live on the marketplace.",
   },
   rejected: {
     label: "Rejected",
@@ -54,7 +54,7 @@ export function ListingManagementContent({ listing }: { listing: Employee }) {
       const result = await deleteMyListing();
       if (result.ok) {
         toast.success("Listing deleted", {
-          description: "Your AI employee has been removed from Ploy.",
+          description: "Your AI tool has been removed from Ploy.",
         });
         router.refresh();
       } else {
@@ -181,7 +181,7 @@ export function ListingManagementContent({ listing }: { listing: Employee }) {
       <AlertDialog
         open={confirmDelete}
         onOpenChange={setConfirmDelete}
-        title="Delete your AI employee?"
+        title="Delete your AI tool?"
         description={`"${listing.name}" will be removed from the marketplace and from your account. This can't be undone.`}
         confirmLabel="Delete"
         onConfirm={handleDelete}

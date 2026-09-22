@@ -85,7 +85,7 @@ export default async function SubscriptionsPage() {
         <div>
           <h1 className="text-3xl font-bold">Subscriptions</h1>
           <p className="mt-1 text-muted-foreground">
-            The AI employees you&apos;ve set up for clients, and what each one bills
+            The AI tools you&apos;ve set up for clients, and what each one bills
           </p>
         </div>
         <Button asChild variant="gradient">
@@ -117,7 +117,7 @@ export default async function SubscriptionsPage() {
             <TableHeader>
               <TableRow>
                 <TableHead>Client</TableHead>
-                <TableHead>AI Employee</TableHead>
+                <TableHead>AI Tool</TableHead>
                 <TableHead>Vendor</TableHead>
                 <TableHead className="text-right">Vendor / mo</TableHead>
                 <TableHead className="text-right">Setup</TableHead>
@@ -191,7 +191,7 @@ export default async function SubscriptionsPage() {
                     <div className="flex flex-col items-center gap-3">
                       <p>Nothing set up yet</p>
                       <p className="max-w-md text-sm">
-                        When you buy an AI employee subscription for a client, log it here so you
+                        When you buy an AI tool subscription for a client, log it here so you
                         know what you&apos;re managing and what you&apos;re billing for it.
                       </p>
                       <Button asChild size="sm">

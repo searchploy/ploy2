@@ -350,7 +350,7 @@ export function MarketplaceBrowser({
           onToggle={(value) => toggle(selectedProblems, setSelectedProblems, value)}
         />
         <FilterGroup
-          title="AI Employee"
+          title="Role"
           options={options.roles}
           selected={selectedEmployeeTypes}
           onToggle={(value) => toggle(selectedEmployeeTypes, setSelectedEmployeeTypes, value)}
@@ -420,7 +420,7 @@ export function MarketplaceBrowser({
         </div>
 
         <div className="flex flex-col gap-2">
-          <p className="text-sm text-muted-foreground">{filtered.length} AI employees</p>
+          <p className="text-sm text-muted-foreground">{filtered.length} AI tools</p>
           <MarketplaceBrowseDisclosure />
         </div>
 
@@ -432,7 +432,7 @@ export function MarketplaceBrowser({
           </div>
         ) : (
           <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-border py-24 text-center">
-            <p className="font-medium">No AI employees match your filters</p>
+            <p className="font-medium">No AI tools match your filters</p>
             <Button variant="outline" size="sm" onClick={clearFilters}>
               Clear filters
             </Button>

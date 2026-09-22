@@ -50,7 +50,7 @@ function NotGenerated({ reportId, outdated }: { reportId: string; outdated: bool
         <p className="max-w-md text-sm text-muted-foreground">
           {outdated
             ? "Your roadmap was built with an earlier version of the planner. Rebuild it to get the current plan."
-            : "Build a personalized implementation plan from this report: your recommended AI employees sequenced across 30 days, 90 days and a year, with owners, dependencies, KPIs and estimated impact."}
+            : "Build a personalized implementation plan from this report: your recommended AI tools sequenced across 30 days, 90 days and a year, with owners, dependencies, KPIs and estimated impact."}
         </p>
         <GenerateRoadmapButton reportId={reportId} label={outdated ? "Rebuild roadmap" : "Build my roadmap"} />
       </div>

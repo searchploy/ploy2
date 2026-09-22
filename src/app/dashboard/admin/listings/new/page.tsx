@@ -7,7 +7,7 @@ export default async function AdminNewListingPage() {
 
   return (
     <div className="flex flex-col gap-8">
-      <DashboardPageHeader title="Create AI employee" description="Add a new listing on behalf of an agency." />
+      <DashboardPageHeader title="Create AI tool" description="Add a new listing on behalf of an agency." />
       <ListingForm
         agencies={agencies.map((a) => ({ id: a.id, name: a.name }))}
         redirectTo="/dashboard/admin/listings"

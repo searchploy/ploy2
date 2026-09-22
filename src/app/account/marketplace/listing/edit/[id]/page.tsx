@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { ListingForm } from "@/components/listing/listing-form";
 
 export const metadata = {
-  title: "Edit your AI Employee",
+  title: "Edit your AI Tool",
   description: "Update your Ploy marketplace listing",
 };
 
@@ -39,7 +39,7 @@ export default async function EditListingPage({ params }: { params: Promise<{ id
   return (
     <div className="container max-w-3xl py-10">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight">Edit your AI Employee</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Edit your AI Tool</h1>
         <p className="mt-1 text-muted-foreground">
           Changes are reviewed before they go live. Your listing is temporarily removed from the
           marketplace until the update is approved.

@@ -20,7 +20,7 @@ const reasons = [
   {
     icon: Users,
     title: "Real products, ready to hire",
-    description: "Skip the DIY prompt engineering. Every recommendation links to a working AI employee from an agency you can go and evaluate yourself.",
+    description: "Skip the DIY prompt engineering. Every recommendation links to a working AI tool from an agency you can go and evaluate yourself.",
   },
   {
     icon: ShieldCheck,

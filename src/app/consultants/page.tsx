@@ -65,7 +65,7 @@ const workflow = [
   { icon: Phone, label: "Book Discovery Call" },
   { icon: FileBarChart, label: "Generate AI Workforce Report" },
   { icon: Presentation, label: "Present Recommendations" },
-  { icon: Zap, label: "You Set Up the AI Employee" },
+  { icon: Zap, label: "You Set Up the AI Tool" },
   { icon: DollarSign, label: "Setup Fee + Monthly" },
 ];
 
@@ -88,7 +88,7 @@ export default async function ConsultantsPage() {
             Build an AI Consulting Business with Ploy
           </h1>
           <p className="max-w-2xl text-balance text-lg text-muted-foreground">
-            Everything you need to find clients, generate AI Workforce Reports, set up the AI employees they need, and charge for the implementation—all in one platform.
+            Everything you need to find clients, generate AI Workforce Reports, set up the AI tools they need, and charge for the implementation—all in one platform.
           </p>
         </div>
       </header>
@@ -227,7 +227,7 @@ export default async function ConsultantsPage() {
               <div className="text-4xl">🛠️</div>
               <div>
                 <p className="font-semibold">Instead of building AI...</p>
-                <p className="mt-1 text-sm text-muted-foreground">Set up AI Employees that already exist in the Ploy Marketplace, configured around how the business actually works.</p>
+                <p className="mt-1 text-sm text-muted-foreground">Set up AI tools that already exist in the Ploy Marketplace, configured around how the business actually works.</p>
               </div>
             </div>
             <div className="flex flex-col gap-4 text-center">

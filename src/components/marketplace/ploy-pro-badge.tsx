@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
  * Marks an approved listing whose owner has an active Ploy Pro subscription.
  *
  * It communicates membership and the visibility benefit that comes with it —
- * nothing about the AI employee's quality or performance, which Ploy does not
+ * nothing about the AI tool's quality or performance, which Ploy does not
  * assess. Keep the copy away from anything that reads as an endorsement.
  */
 export function PloyProBadge({ className, size = "sm" }: { className?: string; size?: "sm" | "md" }) {

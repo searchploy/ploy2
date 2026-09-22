@@ -114,7 +114,7 @@ export function HeroDashboardPreview() {
           {/* Recommendations */}
           <div className="rounded-2xl border border-border bg-secondary/20 p-5">
             <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-ploy-gold">
-              Top Recommended AI Employees
+              Top Recommended AI Tools
             </p>
             <div className="flex flex-col gap-3">
               {recommendations.map((r) => (

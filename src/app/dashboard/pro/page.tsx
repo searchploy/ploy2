@@ -56,7 +56,7 @@ export default async function ProOverviewPage() {
       {/* Summary — only metrics backed by real data */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <StatCard label="Reports Generated" value={String(reportCount)} icon={FileText} />
-        <StatCard label="Saved AI Employees" value={String(savedCount)} icon={Heart} />
+        <StatCard label="Saved AI Tools" value={String(savedCount)} icon={Heart} />
         <StatCard
           label="AI Readiness"
           value={latestReadiness !== null ? String(latestReadiness) : "—"}
@@ -96,7 +96,7 @@ export default async function ProOverviewPage() {
               </Card>
             ))}
             <p className="px-1 text-xs text-muted-foreground">
-              Ploy Pro unlocks the full AI Adoption Report — opportunities, recommended AI employees,
+              Ploy Pro unlocks the full AI Adoption Report — opportunities, recommended AI tools,
               potential impact and priority recommendations.
             </p>
           </div>
@@ -111,9 +111,9 @@ export default async function ProOverviewPage() {
         )}
       </section>
 
-      {/* 2. Saved AI Employees */}
+      {/* 2. Saved AI Tools */}
       <section>
-        <SectionHeader title="Saved AI Employees" href="/marketplace" linkLabel="View marketplace" />
+        <SectionHeader title="Saved AI Tools" href="/marketplace" linkLabel="View marketplace" />
         {savedEmployees.length > 0 ? (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {savedEmployees.map((employee) => (
@@ -136,17 +136,17 @@ export default async function ProOverviewPage() {
         ) : (
           <EmptyState
             icon={Heart}
-            title="You haven't saved any AI employees yet"
-            description="Browse the marketplace and save the AI employees you want to research."
+            title="You haven't saved any AI tools yet"
+            description="Browse the marketplace and save the AI tools you want to research."
             actionLabel="Browse Marketplace"
             actionHref="/marketplace"
           />
         )}
       </section>
 
-      {/* 3. My AI Employee — one listing per user */}
+      {/* 3. My AI Tool — one listing per user */}
       <section>
-        <SectionHeader title={listing ? "My AI Employee" : "List Your AI Employee"} />
+        <SectionHeader title={listing ? "My AI Tool" : "List Your AI Tool"} />
         {listing ? (
           <Card className="flex flex-col gap-5 p-6">
             <div className="flex flex-wrap items-start justify-between gap-4">
@@ -194,9 +194,9 @@ export default async function ProOverviewPage() {
         ) : (
           <EmptyState
             icon={Store}
-            title="You haven't listed an AI employee yet"
+            title="You haven't listed an AI tool yet"
             description="Get discovered by businesses looking for AI solutions — and get higher marketplace placement with Ploy Pro."
-            actionLabel="List AI Employee"
+            actionLabel="List AI Tool"
             actionHref="/account/marketplace/listing/create"
           />
         )}
@@ -215,7 +215,7 @@ export default async function ProOverviewPage() {
           <Button asChild variant="outline">
             <Link href="/marketplace">
               <Search className="h-4 w-4" />
-              Browse AI Employees
+              Browse AI Tools
             </Link>
           </Button>
           <Button asChild variant="outline">
@@ -225,7 +225,7 @@ export default async function ProOverviewPage() {
               }
             >
               <Store className="h-4 w-4" />
-              {listing ? "Edit My AI Employee" : "List AI Employee"}
+              {listing ? "Edit My AI Tool" : "List AI Tool"}
             </Link>
           </Button>
         </div>

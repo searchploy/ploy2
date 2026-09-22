@@ -42,7 +42,7 @@ export function AiReportPreview() {
               Like hiring McKinsey — for your AI workforce
             </h2>
             <p className="max-w-xl text-balance text-muted-foreground sm:text-lg">
-              We analyze your entire operation and tell you exactly which AI employees to hire, in what
+              We analyze your entire operation and tell you exactly which AI tools to consider, in what
               order, and what return to expect. Every recommendation links directly to a marketplace
               listing.
             </p>
@@ -123,7 +123,7 @@ export function AiReportPreview() {
 
           <div className="rounded-xl bg-secondary/40 p-4">
             <p className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-ploy-gold">
-              Top Recommended AI Employees
+              Top Recommended AI Tools
             </p>
             <div className="flex flex-col gap-1.5">
               {recommendations.map((rec) => (

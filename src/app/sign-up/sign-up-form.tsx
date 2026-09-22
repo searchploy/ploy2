@@ -154,7 +154,7 @@ export function SignUpForm() {
         <Card className="w-full max-w-md p-8">
           <div className="mb-8 flex flex-col gap-2 text-center">
             <h1 className="text-2xl font-semibold">Create your account</h1>
-            <p className="text-sm text-muted-foreground">Hire AI employees or list your agency&apos;s on Ploy.</p>
+            <p className="text-sm text-muted-foreground">Find AI tools or list your agency&apos;s on Ploy.</p>
           </div>
 
           <div className="mb-6 grid grid-cols-2 gap-2.5">

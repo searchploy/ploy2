@@ -20,8 +20,8 @@ export default async function ProfilePage() {
   return (
     <div className="container max-w-2xl py-8">
       <DashboardPageHeader
-        title="Your AI Employee Profile"
-        description="Create or edit your AI employee listing. As a free member, you can list one AI employee on the Ploy marketplace."
+        title="Your AI Tool Profile"
+        description="Create or edit your AI tool listing. As a free member, you can list one AI tool on the Ploy marketplace."
       />
       <ListingForm employee={userEmployee || undefined} />
     </div>

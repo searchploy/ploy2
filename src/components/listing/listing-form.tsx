@@ -179,7 +179,7 @@ export function ListingForm({
 
   /** Returns the first validation error, or null when the form is publishable. */
   const validate = (): string | null => {
-    if (!form.name.trim()) return "Add an AI employee name.";
+    if (!form.name.trim()) return "Add an AI tool name.";
     if (!form.categoryId) return "Choose a category.";
     if (form.categoryId === OTHER_CATEGORY && !form.customCategory.trim())
       return "Name your custom category.";
@@ -266,8 +266,8 @@ export function ListingForm({
       // price block on the detail page.
       price_monthly: form.pricingType === "monthly" ? Number(form.priceMonthly) : null,
       price_type: form.pricingType === "monthly" ? "monthly" : "custom",
-      // Ploy refers buyers to the agency — it never sells the AI employee.
-      role: form.primaryTasks[0] ?? "AI Employee",
+      // Ploy refers buyers to the agency — it never sells the AI tool.
+      role: form.primaryTasks[0] ?? "AI Tool",
       // Everything a user saves — new listing, edit of an approved one, or a
       // resubmitted rejection — enters review. An approved listing must not
       // stay live carrying changes nobody has looked at, and this is the only
@@ -299,7 +299,7 @@ export function ListingForm({
     toast.success(isEditing ? "Changes submitted for review" : "Submitted for review", {
       description: isEditing
         ? "Your listing is off the marketplace until the update is approved."
-        : "We'll let you know once your AI employee is approved.",
+        : "We'll let you know once your AI tool is approved.",
     });
     router.push("/account/marketplace/listing");
     router.refresh();
@@ -340,7 +340,7 @@ export function ListingForm({
             <p className="mt-1 text-sm text-muted-foreground">
               {isEditing
                 ? "Your changes go to our team for review. Your listing is temporarily removed from the marketplace until the update is approved."
-                : "Our team reviews every AI employee before it goes on the marketplace. You'll see the status on your listing page."}
+                : "Our team reviews every AI tool before it goes on the marketplace. You'll see the status on your listing page."}
             </p>
           </div>
 
@@ -369,7 +369,7 @@ export function ListingForm({
                 Ploy Marketplace Provider Terms
               </Link>{" "}
               and confirm that the information in this listing — including its pricing and what it
-              claims this AI employee does — is accurate, and that I have the right to list it.
+              claims this AI tool does — is accurate, and that I have the right to list it.
             </span>
           </label>
 
@@ -401,7 +401,7 @@ export function ListingForm({
     <div className="flex flex-col gap-6">
       <Section step={1} title="Basic information">
         <div className="flex flex-col gap-1.5">
-          <Label htmlFor="name">AI Employee Name *</Label>
+          <Label htmlFor="name">AI Tool Name *</Label>
           <Input
             id="name"
             value={form.name}
@@ -463,7 +463,7 @@ export function ListingForm({
 
         <div className="flex flex-col gap-1.5">
           <div className="flex items-center justify-between">
-            <Label htmlFor="tagline">AI Employee Tagline *</Label>
+            <Label htmlFor="tagline">AI Tool Tagline *</Label>
             <Counter value={form.tagline.length} max={MAX_TAGLINE} />
           </div>
           <Input
@@ -484,7 +484,7 @@ export function ListingForm({
             id="description"
             value={form.description}
             maxLength={MAX_DESCRIPTION}
-            placeholder="Explain what this AI employee does, who it helps, and the main outcome it provides."
+            placeholder="Explain what this AI tool does, who it helps, and the main outcome it provides."
             className="min-h-28"
             onChange={(e) => set("description", e.target.value)}
           />
@@ -494,7 +494,7 @@ export function ListingForm({
       <Section
         step={2}
         title="What it does"
-        hint={`Select up to ${MAX_PRIMARY_TASKS} tasks so businesses can see at a glance what this AI employee handles.`}
+        hint={`Select up to ${MAX_PRIMARY_TASKS} tasks so businesses can see at a glance what this AI tool handles.`}
       >
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between">

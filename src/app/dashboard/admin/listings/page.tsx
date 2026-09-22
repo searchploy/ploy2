@@ -16,12 +16,12 @@ export default async function AdminListingsPage() {
     <div className="flex flex-col gap-8">
       <DashboardPageHeader
         title="Listings"
-        description="Review AI employee submissions. Only approved listings appear on the marketplace."
+        description="Review AI tool submissions. Only approved listings appear on the marketplace."
         action={
           <Button asChild variant="gradient">
             <Link href="/dashboard/admin/listings/new">
               <Plus className="h-4 w-4" />
-              Create AI employee
+              Create AI tool
             </Link>
           </Button>
         }

@@ -46,7 +46,7 @@ export function AgencyCard({
         <p className="line-clamp-2 text-xs text-muted-foreground">{agency.tagline}</p>
 
         <div className="flex flex-col items-center gap-2 pt-2 w-full">
-          <span className="text-xs text-muted-foreground">{employeeCount} AI employees</span>
+          <span className="text-xs text-muted-foreground">{employeeCount} AI tools</span>
           <Button asChild size="sm" variant="outline" className="w-full">
             <Link href={`/agencies/${agency.slug}`}>Visit profile</Link>
           </Button>

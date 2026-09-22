@@ -46,7 +46,7 @@ export default function PrivacyPage() {
 
       <Section id="introduction" number={1} heading="Introduction">
         <p>
-          Ploy (&quot;Ploy&quot;, &quot;we&quot;, &quot;us&quot;) provides AI Reports, an AI employee
+          Ploy (&quot;Ploy&quot;, &quot;we&quot;, &quot;us&quot;) provides AI Reports, an AI tools
           marketplace, and subscription tools for businesses and consultants. This policy applies to
           information we handle through the Ploy website and Service.
         </p>
@@ -81,7 +81,7 @@ export default function PrivacyPage() {
             </>,
             <>
               <strong className="text-foreground">Marketplace listing information</strong> — if you
-              list an AI employee: the listing name, category, tagline, description, tasks,
+              list an AI tool: the listing name, category, tagline, description, tasks,
               industries, pricing, agency name, website URL and any logo image you upload.
             </>,
             <>

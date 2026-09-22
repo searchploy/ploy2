@@ -60,7 +60,7 @@ export function EmployeeGrid({ employees }: EmployeeGridProps) {
         <div className="relative">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
-            placeholder="Search AI employees..."
+            placeholder="Search AI tools..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="pl-10"
@@ -184,7 +184,7 @@ export function EmployeeGrid({ employees }: EmployeeGridProps) {
           </div>
         ) : (
           <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-border py-24 text-center">
-            <p className="font-medium">No AI employees match your filters</p>
+            <p className="font-medium">No AI tools match your filters</p>
             <button
               onClick={() => {
                 setSearch("");

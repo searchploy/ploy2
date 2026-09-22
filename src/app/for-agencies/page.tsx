@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 };
 
 const freeKeyFeatures = [
-  "List 1 AI employee",
+  "List 1 AI tool",
   "Limited AI reports",
   "Basic analytics",
   "Agency profile",
@@ -53,7 +53,7 @@ export default async function ForAgenciesPage() {
             Unlock More with <span className="gradient-text">Ploy Pro</span>
           </h1>
           <p className="max-w-xl text-balance text-lg text-muted-foreground">
-            List your AI employees on the marketplace, then get premium visibility, featured
+            List your AI tool on the marketplace, then get premium visibility, featured
             placement, and appear in more AI reports.
           </p>
         </div>
@@ -73,7 +73,7 @@ export default async function ForAgenciesPage() {
                     $0<span className="text-base font-normal text-muted-foreground">/mo</span>
                   </p>
                 </div>
-                <p className="text-sm text-muted-foreground">Get started listing your AI employees and reaching businesses on Ploy.</p>
+                <p className="text-sm text-muted-foreground">Get started listing your AI tool and reaching businesses on Ploy.</p>
 
                 {/* Key Features */}
                 <div className="space-y-2 py-4">

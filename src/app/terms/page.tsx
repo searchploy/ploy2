@@ -6,7 +6,7 @@ import { LEGAL_VERSIONS, SUPPORT_EMAIL, SITE_DOMAIN } from "@/lib/legal/constant
 export const metadata: Metadata = {
   title: "Terms of Service",
   description:
-    "The terms that govern your use of Ploy — AI Reports, the AI employee marketplace, and Ploy Pro and Consulting Pro subscriptions.",
+    "The terms that govern your use of Ploy — AI Reports, the AI tools marketplace, and Ploy Pro and Consulting Pro subscriptions.",
 };
 
 const SECTIONS = [
@@ -120,17 +120,17 @@ export default function TermsPage() {
         <p>Ploy provides:</p>
         <List
           items={[
-            "AI Reports — an automated analysis of information you provide about your business, producing readiness scores, identified bottlenecks, suggested AI employees and estimated impact.",
+            "AI Reports — an automated analysis of information you provide about your business, producing readiness scores, identified bottlenecks, suggested AI tools and estimated impact.",
             "Implementation roadmaps — a sequenced 30-day, 90-day and one-year plan built from your report, available with a Ploy Pro subscription.",
-            "The marketplace — a directory where businesses discover AI employees listed by independent third-party providers, and click through to those providers' own websites.",
-            "Provider listings — the ability for a provider to submit one AI employee listing for review and, if approved, display on the marketplace.",
+            "The marketplace — a directory where businesses discover AI tools listed by independent third-party providers, and click through to those providers' own websites.",
+            "Provider listings — the ability for a provider to submit one AI tool listing for review and, if approved, display on the marketplace.",
             "Consulting Pro — tools and training for independent consultants who help businesses adopt AI, including a client CRM and course material.",
           ]}
         />
         <Callout title="What Ploy is, and is not">
           <p>
             Ploy is a discovery, analysis and listing platform. Ploy does not build, operate, host,
-            resell or support the AI employees in the marketplace; does not sell them or process
+            resell or support the AI tools in the marketplace; does not sell them or process
             payment for them; and is not a party to any agreement you make with a provider. Ploy
             does not charge providers a commission, referral fee or revenue share on sales.
           </p>
@@ -143,7 +143,7 @@ export default function TermsPage() {
           information you enter, and the listings published on the marketplace when the report runs.
           They are informational and planning outputs.
         </p>
-        <p>A report may include recommendations, estimates, potential savings, suggested workflows, suggested AI employees, implementation priorities and roadmaps. In every case:</p>
+        <p>A report may include recommendations, estimates, potential savings, suggested workflows, suggested AI tools, implementation priorities and roadmaps. In every case:</p>
         <List
           items={[
             "A recommendation means a listing scored well against the information you supplied. It is not an endorsement, certification or finding of suitability.",
@@ -182,11 +182,11 @@ export default function TermsPage() {
 
       <Section id="marketplace" number={8} heading="Marketplace and third-party providers">
         <p>
-          AI employees listed on Ploy are offered by independent third-party providers. Ploy does
+          AI tools listed on Ploy are offered by independent third-party providers. Ploy does
           not develop, operate, control, test or guarantee those products and services.
         </p>
         <p>
-          When you select an AI employee you are directed to the provider&apos;s own website. Any
+          When you select an AI tool you are directed to the provider&apos;s own website. Any
           purchase, subscription, agreement or relationship you enter into with a provider is
           between you and that provider, on their terms, with their pricing, and subject to their
           privacy and security practices. Ploy is not a party to it and cannot resolve disputes
@@ -227,7 +227,7 @@ export default function TermsPage() {
 
       <Section id="provider-responsibilities" number={10} heading="Provider responsibilities">
         <p>
-          If you list an AI employee on Ploy, the{" "}
+          If you list an AI tool on Ploy, the{" "}
           <Link
             href="/marketplace-provider-terms"
             className="text-ploy-gold underline-offset-4 hover:underline"
@@ -298,7 +298,7 @@ export default function TermsPage() {
         <List
           items={[
             "That listings, provider claims, ratings or reviews are accurate or complete",
-            "The quality, reliability, security or safety of any third-party AI employee or service",
+            "The quality, reliability, security or safety of any third-party AI tool or service",
             "That the Service will be uninterrupted, timely, error-free or free of harmful components",
             "That any recommendation, estimate, roadmap or projection will prove accurate",
             "That defects in the Service will be corrected",
@@ -320,7 +320,7 @@ export default function TermsPage() {
           items={[
             "Revenue increases, sales, leads, conversions, customers or business growth",
             "Cost savings, hours saved, productivity improvements or return on investment",
-            "That a recommended AI employee, workflow, provider or strategy will suit your business",
+            "That a recommended AI tool, workflow, provider or strategy will suit your business",
             "That any third-party product will perform as described",
             "That an implementation will succeed, or succeed within an estimated timeframe",
             "For providers: impressions, clicks, website traffic, enquiries, leads, sales, conversions or revenue from a listing, including a Ploy Pro listing",

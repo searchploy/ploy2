@@ -22,7 +22,7 @@ const PLANS: Record<string, { name: string; description: string; features: strin
     name: "Free",
     description: "Perfect for getting started",
     features: [
-      "Browse AI employees",
+      "Browse AI tools",
       "AI Readiness Score",
       "Limited AI reports",
       "Basic analytics",

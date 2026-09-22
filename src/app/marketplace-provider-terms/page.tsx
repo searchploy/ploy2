@@ -6,7 +6,7 @@ import { LEGAL_VERSIONS, SUPPORT_EMAIL } from "@/lib/legal/constants";
 export const metadata: Metadata = {
   title: "Marketplace Provider Terms",
   description:
-    "The terms that apply when you list an AI employee on the Ploy marketplace: what you're representing, what you remain responsible for, and how Ploy moderates listings.",
+    "The terms that apply when you list an AI tool on the Ploy marketplace: what you're representing, what you remain responsible for, and how Ploy moderates listings.",
 };
 
 const SECTIONS = [
@@ -33,7 +33,7 @@ export default function MarketplaceProviderTermsPage() {
       sections={SECTIONS}
       intro={
         <p>
-          These terms apply when you submit an AI employee listing to the Ploy marketplace. You
+          These terms apply when you submit an AI tool listing to the Ploy marketplace. You
           accept them when you submit or update a listing. They are in addition to the{" "}
           <Link href="/terms" className="text-ploy-gold underline-offset-4 hover:underline">
             Ploy Terms of Service
@@ -47,7 +47,7 @@ export default function MarketplaceProviderTermsPage() {
       <Section id="who" number={1} heading="Who these terms apply to">
         <p>
           These terms apply to you if you create, submit, edit or maintain a marketplace listing on
-          Ploy — whether you built the AI employee yourself, work for the company that did, or are
+          Ploy — whether you built the AI tool yourself, work for the company that did, or are
           authorised to represent it. In these terms &quot;you&quot; means both you personally and
           the business you are listing on behalf of.
         </p>

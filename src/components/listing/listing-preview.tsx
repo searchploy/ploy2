@@ -39,7 +39,7 @@ export function ListingPreview({ data }: { data: ListingPreviewData }) {
         )}
         <div className="min-w-0">
           <h3 className="truncate text-xl font-semibold">
-            {data.name.trim() || "Your AI employee"}
+            {data.name.trim() || "Your AI tool"}
           </h3>
           <div className="mt-1 flex flex-wrap items-center gap-2">
             {data.categoryName && (

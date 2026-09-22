@@ -14,7 +14,7 @@ const items = [
 export default function DevelopersPage() {
   return (
     <div className="container max-w-3xl py-20">
-      <SectionHeading eyebrow="Developers" title="Build on Ploy" description="A public API for the AI Employee marketplace is coming soon." />
+      <SectionHeading eyebrow="Developers" title="Build on Ploy" description="A public API for the AI tools marketplace is coming soon." />
       <div className="mt-14 grid gap-6 sm:grid-cols-3">
         {items.map((item) => (
           <Card key={item.title} className="flex flex-col gap-3 p-6">

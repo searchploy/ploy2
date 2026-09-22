@@ -1,7 +1,7 @@
 import type { Category } from "@/lib/types/mock";
 
 export const categories: Category[] = [
-  { id: "cat-sales", name: "Sales", slug: "sales", description: "AI employees that book meetings and close deals.", icon: "TrendingUp", sort_order: 1, created_at: "2025-01-01" },
+  { id: "cat-sales", name: "Sales", slug: "sales", description: "AI tools that book meetings and close deals.", icon: "TrendingUp", sort_order: 1, created_at: "2025-01-01" },
   { id: "cat-marketing", name: "Marketing", slug: "marketing", description: "Content, campaigns, and growth on autopilot.", icon: "Megaphone", sort_order: 2, created_at: "2025-01-01" },
   { id: "cat-support", name: "Support", slug: "support", description: "24/7 customer support that resolves tickets instantly.", icon: "Headset", sort_order: 3, created_at: "2025-01-01" },
   { id: "cat-finance", name: "Finance", slug: "finance", description: "Bookkeeping, invoicing, and financial reporting.", icon: "Landmark", sort_order: 4, created_at: "2025-01-01" },

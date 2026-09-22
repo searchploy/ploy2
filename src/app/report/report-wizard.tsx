@@ -86,7 +86,7 @@ const LOADING_MESSAGES = [
   "Reading your business profile…",
   "Identifying bottlenecks…",
   "Calculating ROI estimates…",
-  "Matching AI employees…",
+  "Matching AI tools…",
   "Building your roadmap…",
   "Finalizing report…",
 ];
@@ -284,7 +284,7 @@ export function ReportWizard() {
             <p className="mb-1 text-xs font-bold uppercase tracking-wide text-ploy-gold">Step 1 of 5</p>
             <h1 className="font-display text-3xl font-bold">Tell us about your business</h1>
             <p className="mt-2 text-muted-foreground">
-              We&apos;ll use this to personalize your AI Report and match you with the right AI employees.
+              We&apos;ll use this to personalize your AI Report and match you with the right AI tools.
             </p>
           </div>
           <Field label="Business name">
@@ -489,7 +489,7 @@ export function ReportWizard() {
                 <span>✓ Annual Savings Estimate</span>
                 <span>✓ ROI Projections</span>
                 <span>✓ Top Bottlenecks</span>
-                <span>✓ Recommended AI Employees</span>
+                <span>✓ Recommended AI Tools</span>
                 <span>✓ 30/90/1-Year Roadmap</span>
                 <span>✓ Implementation Priority</span>
               </div>
@@ -500,7 +500,7 @@ export function ReportWizard() {
               <div className="grid grid-cols-2 gap-2 text-sm text-muted-foreground">
                 <span>✓ AI Readiness Score</span>
                 <span>✓ Top Bottlenecks</span>
-                <span>✓ Recommended AI Employees</span>
+                <span>✓ Recommended AI Tools</span>
               </div>
               <p className="mt-3 text-xs text-muted-foreground">Upgrade to Pro for full analysis, ROI projections, and implementation roadmap.</p>
             </div>

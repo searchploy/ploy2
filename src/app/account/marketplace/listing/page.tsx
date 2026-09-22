@@ -66,12 +66,12 @@ export default async function MarketplaceListingPage() {
               No listings yet
             </h2>
             <p className="text-muted-foreground mb-6">
-              List your AI employees to start reaching businesses on Ploy. Every listing is reviewed
+              List your AI tools to start reaching businesses on Ploy. Every listing is reviewed
               before it goes on the marketplace.
             </p>
             <Button asChild>
               <Link href="/account/marketplace/listing/create">
-                List Your AI Employee
+                List Your AI Tool
               </Link>
             </Button>
           </div>

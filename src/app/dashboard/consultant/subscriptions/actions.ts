@@ -44,7 +44,7 @@ export async function saveSubscriptionAction(formData: FormData, subscriptionId?
   const startedOn = ((formData.get("startedOn") as string) || "").trim() || null;
 
   if (!clientId) throw new Error("Pick a client");
-  if (!employeeName) throw new Error("AI employee name is required");
+  if (!employeeName) throw new Error("AI tool name is required");
 
   const vendorCostCents = toCents(formData.get("vendorCost"), "vendor cost");
   const setupFeeCents = toCents(formData.get("setupFee"), "setup fee");

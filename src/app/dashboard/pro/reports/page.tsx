@@ -23,7 +23,7 @@ export default async function ProReportsPage() {
     <div className="flex flex-col gap-8">
       <DashboardPageHeader
         title="AI Reports"
-        description="Your full AI Adoption Reports — opportunities, recommended AI employees and priority recommendations."
+        description="Your full AI Adoption Reports — opportunities, recommended AI tools and priority recommendations."
         action={
           <Button asChild>
             <Link href="/report">Generate Report</Link>
