@@ -164,7 +164,7 @@ export default async function ConsultantsPage() {
                 returnTo="/consultants"
                 size="lg"
                 variant="gradient"
-                className="self-center rounded-none px-12 text-[11px] font-bold uppercase tracking-[0.2em]"
+                className="w-full max-w-lg self-center rounded-none text-[11px] font-bold uppercase tracking-[0.2em]"
               >
                 Start Your Consulting Business
               </UpgradeButton>
