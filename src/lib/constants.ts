@@ -4,10 +4,6 @@ export const SITE_DESCRIPTION =
 
 export const NAV_LINKS = [
   { label: "Marketplace", href: "/marketplace" },
-  // Hub for the AI-employee landing pages, which link on to the role pages.
-  // Kept to a single entry rather than a dropdown so the bar stays at five
-  // items — the pages themselves carry the rest of the navigation.
-  { label: "AI Employees", href: "/ai-employees" },
   { label: "AI Report", href: "/report" },
   { label: "For Agencies", href: "/for-agencies" },
   { label: "Consultants", href: "/consultants" },
