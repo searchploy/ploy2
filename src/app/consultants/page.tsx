@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { FloatingEarnings } from "@/components/consultants/floating-earnings";
+import { ConsultantEarningsDisclosure } from "@/components/legal/disclosures";
 import { UpgradeButton } from "@/components/pricing/upgrade-button";
 import { CheckoutStatusToast } from "@/components/pricing/checkout-status-toast";
 import { getPrice } from "@/lib/stripe/server";
@@ -174,6 +175,7 @@ export default async function ConsultantsPage() {
               <p className="text-center text-xs text-muted-foreground">
                 Cancel anytime from your account settings.
               </p>
+              <ConsultantEarningsDisclosure />
             </div>
           </div>
         </div>

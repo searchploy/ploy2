@@ -54,6 +54,12 @@ export const DISCLOSURES = {
     "Marketplace approval means the listing has been reviewed for inclusion on Ploy. It does not guarantee the provider's performance, security, results, or suitability.",
   consultantTemplate:
     "Ploy's templates are starting points for your own business, not legal, tax, or professional advice. A proposal is a commercial document, not a services agreement — you should have your own contract terms prepared or reviewed by a qualified professional in your jurisdiction, and you are responsible for what you send to your clients.",
+  // Covers the decorative currency figures drifting in the consultant page
+  // margins. They are ornamental, but on a page selling a paid programme a
+  // reader can take them as an earnings claim, so they are disclaimed as
+  // illustrative at the point of the decision.
+  consultantEarnings:
+    "Any currency figures shown on this page are illustrative only. They are not earnings, projections, or a representation of actual or typical results. Ploy does not guarantee that you will find clients or generate any income, and what you earn depends on your own effort, skill, market and business decisions.",
 } as const;
 
 /** Reasons a visitor can report a marketplace listing. Mirrors the listing_report_reason enum. */

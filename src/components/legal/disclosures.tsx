@@ -101,6 +101,16 @@ export function ProVisibilityDisclosure({ className = "" }: { className?: string
   );
 }
 
+/** Sits with the consultant plan, where the drifting currency figures are in view. */
+export function ConsultantEarningsDisclosure({ className = "" }: { className?: string }) {
+  return (
+    <Note icon={<Info className="h-3.5 w-3.5" />} className={className}>
+      <span className="font-medium text-foreground">Illustrative figures.</span>{" "}
+      {DISCLOSURES.consultantEarnings} <LearnMore href="/terms#no-guarantees" />
+    </Note>
+  );
+}
+
 /** Explains what a marketplace approval badge does and does not mean. */
 export function ApprovalMeaningDisclosure({ className = "" }: { className?: string }) {
   return (
