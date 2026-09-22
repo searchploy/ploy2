@@ -47,7 +47,7 @@ export function LiveEmployeeCard({
       ? employee.outcomes
       : (employee.primary_tasks ?? []);
 
-  const cardClassName = "hover-glow-border relative flex flex-col gap-4 rounded-2xl border border-border bg-card p-6 transition-colors sm:flex-row sm:items-start";
+  const cardClassName = "metal-border metal-shine relative flex flex-col gap-4 rounded-2xl bg-secondary/30 p-6 transition-colors sm:flex-row sm:items-start";
 
   const websiteUrl = employee.website_url;
 
@@ -65,7 +65,7 @@ export function LiveEmployeeCard({
         <button
           onClick={handleToggleFavorite}
           disabled={isLoading}
-          className="absolute right-4 top-4 rounded-lg bg-card/80 p-2 backdrop-blur-sm transition-colors hover:bg-card disabled:opacity-50"
+          className="absolute right-4 top-4 rounded-lg bg-secondary/40 p-2 backdrop-blur-sm transition-colors hover:bg-secondary/60 disabled:opacity-50"
           title={isFavorited ? "Remove from saved" : "Save for later"}
         >
           <Heart
