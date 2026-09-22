@@ -116,7 +116,13 @@ export default async function BusinessPricingPage() {
                   ))}
                 </div>
 
-                <UpgradeButton subscriptionType="pro" returnTo="/pricing" size="lg" className="mt-auto">
+                <UpgradeButton
+                  subscriptionType="pro"
+                  returnTo="/pricing"
+                  size="lg"
+                  variant="gradient"
+                  className="mt-auto rounded-none text-[11px] font-bold uppercase tracking-[0.2em]"
+                >
                   Upgrade to Ploy Pro
                 </UpgradeButton>
               </div>

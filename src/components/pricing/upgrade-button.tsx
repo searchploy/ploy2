@@ -14,12 +14,14 @@ export function UpgradeButton({
   children,
   className,
   size = "lg",
+  variant,
 }: {
   subscriptionType: SubscriptionType;
   returnTo: string;
   children: React.ReactNode;
   className?: string;
   size?: "default" | "sm" | "lg";
+  variant?: React.ComponentProps<typeof Button>["variant"];
 }) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -53,6 +55,7 @@ export function UpgradeButton({
       onClick={handleClick}
       disabled={isLoading}
       size={size}
+      variant={variant}
       className={className}
     >
       {isLoading ? (

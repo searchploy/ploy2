@@ -159,7 +159,13 @@ export default async function ConsultantsPage() {
                 ))}
               </div>
 
-              <UpgradeButton subscriptionType="consulting" returnTo="/consultants" size="lg">
+              <UpgradeButton
+                subscriptionType="consulting"
+                returnTo="/consultants"
+                size="lg"
+                variant="gradient"
+                className="rounded-none text-[11px] font-bold uppercase tracking-[0.2em]"
+              >
                 Start Your Consulting Business
               </UpgradeButton>
               <p className="text-center text-xs text-muted-foreground">
@@ -247,7 +253,13 @@ export default async function ConsultantsPage() {
           <h2 className="text-balance text-3xl font-bold tracking-tighter sm:text-4xl">
             Ready to build your AI consulting business?
           </h2>
-          <UpgradeButton subscriptionType="consulting" returnTo="/consultants" size="lg">
+          <UpgradeButton
+            subscriptionType="consulting"
+            returnTo="/consultants"
+            size="lg"
+            variant="gradient"
+            className="rounded-none text-[11px] font-bold uppercase tracking-[0.2em]"
+          >
             Start Your Consulting Business
             <ArrowRight className="h-4 w-4" />
           </UpgradeButton>
