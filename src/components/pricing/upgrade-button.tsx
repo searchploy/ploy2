@@ -1,7 +1,8 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, unstable_rethrow } from "next/navigation";
 import { useState } from "react";
+import { Loader2 } from "lucide-react";
 import { createCheckoutAction } from "@/app/pricing/actions";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
@@ -38,6 +39,10 @@ export function UpgradeButton({
       // If authenticated, proceed with checkout
       await createCheckoutAction(subscriptionType, returnTo);
     } catch (error) {
+      // createCheckoutAction hands off to Stripe via redirect(), which works by
+      // throwing. Swallowing that here left the visitor on the page with the
+      // button re-enabled, looking like the click had done nothing.
+      unstable_rethrow(error);
       console.error("Checkout error:", error);
       setIsLoading(false);
     }
@@ -50,7 +55,14 @@ export function UpgradeButton({
       size={size}
       className={className}
     >
-      {children}
+      {isLoading ? (
+        <>
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          Redirecting to checkout...
+        </>
+      ) : (
+        children
+      )}
     </Button>
   );
 }
