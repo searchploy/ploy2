@@ -47,7 +47,7 @@ export function LiveEmployeeCard({
       ? employee.outcomes
       : (employee.primary_tasks ?? []);
 
-  const cardClassName = "metal-border metal-shine relative flex flex-col gap-4 rounded-2xl bg-secondary/30 p-6 transition-colors sm:flex-row sm:items-start";
+  const cardClassName = "metal-border relative flex flex-col gap-4 rounded-2xl bg-white/[0.05] p-6 backdrop-blur-xl transition-colors sm:flex-row sm:items-start";
 
   const websiteUrl = employee.website_url;
 
@@ -65,7 +65,7 @@ export function LiveEmployeeCard({
         <button
           onClick={handleToggleFavorite}
           disabled={isLoading}
-          className="absolute right-4 top-4 rounded-lg bg-secondary/40 p-2 backdrop-blur-sm transition-colors hover:bg-secondary/60 disabled:opacity-50"
+          className="absolute right-4 top-4 rounded-lg bg-white/10 p-2 backdrop-blur-sm transition-colors hover:bg-white/[0.16] disabled:opacity-50"
           title={isFavorited ? "Remove from saved" : "Save for later"}
         >
           <Heart
@@ -150,7 +150,7 @@ export function LiveEmployeeCard({
               <Button
                 size="sm"
                 variant="outline"
-                className="metal-border metal-shine text-ploy-gold hover:text-ploy-gold-light"
+                className="metal-border text-ploy-gold hover:text-ploy-gold-light"
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
