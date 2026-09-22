@@ -650,9 +650,38 @@
   }
 }
 
+/*
+ * Each figure is visible for roughly the first third of its cycle and absent
+ * for the rest, so with staggered delays only a few are on screen at once —
+ * a steady drift rather than a wall of numbers.
+ */
+@keyframes moneyDrift {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  10% {
+    opacity: 0.38;
+  }
+  26% {
+    opacity: 0.38;
+  }
+  38%,
+  100% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+}
+
 @layer utilities {
   .animate-fade-in {
     animation: fadeIn 0.6s ease-out forwards;
+  }
+  .money-drift-item {
+    opacity: 0;
+    animation-name: moneyDrift;
+    animation-timing-function: ease-out;
+    animation-iteration-count: infinite;
   }
   .animate-slide-right {
     animation: slideRight 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
@@ -853,6 +882,13 @@
   /* Loader still needs to read as "busy", so hold the rings mid-swell. */
   .loader .box {
     transform: scale(1.15);
+  }
+  /*
+   * Pure decoration with nothing to say when it stops — held still it is just
+   * numbers stranded in the margins, so it goes entirely.
+   */
+  .money-drift {
+    display: none;
   }
   /*
    * The ring is slowed rather than stopped: held still it reads as a stray

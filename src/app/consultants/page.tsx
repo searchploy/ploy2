@@ -12,6 +12,7 @@ import {
   Zap,
 } from "lucide-react";
 import { SectionHeading } from "@/components/shared/section-heading";
+import { FloatingEarnings } from "@/components/consultants/floating-earnings";
 import { UpgradeButton } from "@/components/pricing/upgrade-button";
 import { CheckoutStatusToast } from "@/components/pricing/checkout-status-toast";
 import { getPrice } from "@/lib/stripe/server";
@@ -79,6 +80,8 @@ export default async function ConsultantsPage() {
       <Suspense fallback={null}>
         <CheckoutStatusToast />
       </Suspense>
+
+      <FloatingEarnings />
 
       {/* Hero */}
       <header className="relative overflow-hidden py-24">
