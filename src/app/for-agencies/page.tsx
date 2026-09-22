@@ -54,7 +54,8 @@ export default async function ForAgenciesPage() {
             Unlock More with <span className="gradient-text">Ploy Pro</span>
           </h1>
           <p className="max-w-xl text-balance text-lg text-muted-foreground">
-            Agencies: Get premium marketplace visibility, featured placement, and appear in more AI reports.
+            List your AI employees on the marketplace, then get premium visibility, featured
+            placement, and appear in more AI reports.
           </p>
         </div>
       </header>
