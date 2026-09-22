@@ -52,7 +52,7 @@ export function WhatBringsYou() {
               </div>
               <h3 className="text-xl font-bold tracking-tight">{path.title}</h3>
               <p className="flex-1 text-sm leading-relaxed text-muted-foreground">{path.description}</p>
-              <Button asChild size="lg" className="mt-2 w-full">
+              <Button asChild size="lg" variant="outline" className="metal-border metal-shine mt-2 w-full text-ploy-gold hover:text-ploy-gold-light">
                 <Link href={path.href}>
                   {path.cta}
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
