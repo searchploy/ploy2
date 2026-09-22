@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Store, Sparkles, Users2, Building2, LayoutDashboard, User, type LucideIcon } from "lucide-react";
+import { Menu, X, Store, Sparkles, Users2, Building2, Bot, LayoutDashboard, User, type LucideIcon } from "lucide-react";
 import type { User as AuthUser } from "@supabase/supabase-js";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/shared/logo";
@@ -15,6 +15,7 @@ import { createClient } from "@/lib/supabase/client";
 
 const NAV_ICONS: Record<string, LucideIcon> = {
   "/marketplace": Store,
+  "/ai-employees": Bot,
   "/report": Sparkles,
   "/for-agencies": Building2,
   "/consultants": Users2,

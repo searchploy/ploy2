@@ -156,6 +156,40 @@ export async function getLiveRelatedEmployees(employeeId: string, categoryId: st
   return data ?? [];
 }
 
+/**
+ * Published listings in the given categories, Ploy Pro first then best rated —
+ * the same ordering intent as the marketplace's default view. Used by the
+ * AI-employee landing pages to preview real listings for their role; returns
+ * an empty array when a category has nothing published yet, and the caller
+ * falls back to a marketplace link.
+ */
+export async function getLiveEmployeesByCategorySlugs(
+  slugs: string[],
+  limit = 3
+): Promise<EmployeeWithCategory[]> {
+  if (slugs.length === 0) return [];
+  const supabase = await createClient();
+
+  const { data: categories } = await supabase.from("categories").select("id").in("slug", slugs);
+  const categoryIds = (categories ?? []).map((c) => c.id);
+  if (categoryIds.length === 0) return [];
+
+  const [{ data }, boosted] = await Promise.all([
+    supabase
+      .from("employees")
+      .select("*, category:categories(slug, name, icon)")
+      .eq("status", "published")
+      .in("category_id", categoryIds)
+      .order("avg_rating", { ascending: false }),
+    getProBoostedEmployeeIds(),
+  ]);
+
+  const rows = withProBoost(((data as EmployeeWithCategory[] | null) ?? []).map(withoutOwner), boosted);
+  return rows
+    .sort((a, b) => Number(b.is_pro_boosted ?? false) - Number(a.is_pro_boosted ?? false))
+    .slice(0, limit);
+}
+
 export async function getLiveAgencies(): Promise<Agency[]> {
   const supabase = await createClient();
   const { data } = await supabase.from("agencies").select("*").order("avg_rating", { ascending: false });

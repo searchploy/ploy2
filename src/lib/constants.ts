@@ -4,6 +4,10 @@ export const SITE_DESCRIPTION =
 
 export const NAV_LINKS = [
   { label: "Marketplace", href: "/marketplace" },
+  // Hub for the AI-employee landing pages, which link on to the role pages.
+  // Kept to a single entry rather than a dropdown so the bar stays at five
+  // items — the pages themselves carry the rest of the navigation.
+  { label: "AI Employees", href: "/ai-employees" },
   { label: "AI Report", href: "/report" },
   { label: "For Agencies", href: "/for-agencies" },
   { label: "Consultants", href: "/consultants" },
@@ -14,6 +18,15 @@ export const FOOTER_LINKS = {
     { label: "AI Report", href: "/report" },
     { label: "Marketplace", href: "/marketplace" },
     { label: "Pricing", href: "/pricing" },
+  ],
+  "AI Employees": [
+    { label: "AI Employees", href: "/ai-employees" },
+    { label: "AI Employee Marketplace", href: "/ai-employee-marketplace" },
+    { label: "For Small Business", href: "/ai-employees-for-small-business" },
+    { label: "AI Sales Employees", href: "/ai-sales-employees" },
+    { label: "AI Marketing Employees", href: "/ai-marketing-employees" },
+    { label: "AI Customer Service", href: "/ai-customer-service-employees" },
+    { label: "AI Recruiting Employees", href: "/ai-recruiting-employees" },
   ],
   Ecosystem: [
     { label: "For Consultants", href: "/consultants" },

@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { Manrope, IBM_Plex_Mono, Caveat_Brush } from "next/font/google";
 import { SiteChrome } from "@/components/layout/site-chrome";
 import { Toaster } from "@/components/ui/sonner";
+import { JsonLd } from "@/components/seo/json-ld";
 import { SITE_DESCRIPTION, SITE_NAME } from "@/lib/constants";
+import { siteUrl } from "@/lib/seo/pages";
 import "./globals.css";
 
 /**
@@ -54,11 +56,37 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const base = siteUrl();
+
   return (
     <html lang="en" className="dark">
       <body
         className={`${sans.variable} ${mono.variable} ${script.variable} font-sans flex min-h-screen flex-col antialiased`}
       >
+        {/* Site-wide identity, declared once here so individual pages only
+            need to describe themselves. */}
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "Organization",
+                "@id": `${base}/#organization`,
+                name: SITE_NAME,
+                url: base,
+                logo: `${base}/ploy-mark.png`,
+                description: SITE_DESCRIPTION,
+              },
+              {
+                "@type": "WebSite",
+                "@id": `${base}/#website`,
+                name: SITE_NAME,
+                url: base,
+                publisher: { "@id": `${base}/#organization` },
+              },
+            ],
+          }}
+        />
         <SiteChrome>{children}</SiteChrome>
         <Toaster />
       </body>

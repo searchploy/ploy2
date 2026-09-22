@@ -5,7 +5,7 @@ import { FOOTER_LINKS, SITE_DESCRIPTION } from "@/lib/constants";
 export function Footer() {
   return (
     <footer className="border-t border-border bg-secondary/40">
-      <div className="container grid gap-12 py-16 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-[1.4fr_repeat(4,1fr)]">
+      <div className="container grid gap-12 py-16 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-[1.4fr_repeat(5,1fr)]">
         <div className="flex flex-col gap-4">
           <Link href="/">
             <Logo size="md" />
