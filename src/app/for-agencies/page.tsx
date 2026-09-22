@@ -25,7 +25,6 @@ const proKeyFeatures = [
   "Featured listings",
   "Up to 5 employee listings",
   "Unlimited AI reports",
-  "Homepage placement",
   "Verified agency badge",
   "Priority review",
   "Advanced analytics",
