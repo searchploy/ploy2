@@ -149,6 +149,8 @@ export function LiveEmployeeCard({
             {websiteUrl ? (
               <Button
                 size="sm"
+                variant="outline"
+                className="metal-border metal-shine text-ploy-gold hover:text-ploy-gold-light"
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();

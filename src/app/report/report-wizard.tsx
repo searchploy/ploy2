@@ -510,7 +510,7 @@ export function ReportWizard() {
               <ArrowLeft className="h-4 w-4" />
               Back
             </Button>
-            <Button size="lg" onClick={submit}>
+            <Button size="lg" variant="outline" className="metal-border metal-shine text-ploy-gold hover:text-ploy-gold-light" onClick={submit}>
               <Sparkles className="h-4 w-4" />
               Generate My AI Report
             </Button>

@@ -61,7 +61,7 @@ export function AiReportPreview() {
             ))}
           </div>
           <div className="flex items-center gap-4">
-            <Button asChild size="lg">
+            <Button asChild size="lg" variant="outline" className="metal-border metal-shine text-ploy-gold hover:text-ploy-gold-light">
               <Link href="/report">Generate My AI Report</Link>
             </Button>
             <span className="text-sm text-muted-foreground">Free on the basic plan</span>
