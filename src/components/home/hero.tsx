@@ -76,7 +76,7 @@ export function Hero() {
 
               {/*
                * One sentence broken across four lines so the emphasis lands on
-               * "right". The connecting lines stay at 400 rather than the
+               * "effective". The connecting lines stay at 400 rather than the
                * display weight — at this size a 200 is too faint to read.
                */}
               <h1 className="mt-10 flex flex-col items-start">
@@ -85,14 +85,14 @@ export function Hero() {
                   transition={{ duration: 0.7, delay: 0.1, ease: "easeOut" }}
                   className="display-caps text-[0.7rem] font-normal leading-none tracking-[0.32em] text-white/50 sm:text-xs lg:text-[0.8rem]"
                 >
-                  Find the
+                  Find the most
                 </motion.span>
                 <motion.span
                   {...rise}
                   transition={{ duration: 0.7, delay: 0.18, ease: "easeOut" }}
                   className="font-script mt-4 text-[3rem] uppercase leading-[0.95] tracking-[0.06em] text-white sm:text-6xl lg:text-[4.5rem]"
                 >
-                  Right
+                  Effective
                 </motion.span>
                 <motion.span
                   {...rise}
