@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { Manrope, IBM_Plex_Mono, Caveat_Brush } from "next/font/google";
 import { SiteChrome } from "@/components/layout/site-chrome";
 import { Toaster } from "@/components/ui/sonner";
@@ -89,6 +90,7 @@ export default function RootLayout({
         />
         <SiteChrome>{children}</SiteChrome>
         <Toaster />
+        <Analytics />
       </body>
     </html>
   );
