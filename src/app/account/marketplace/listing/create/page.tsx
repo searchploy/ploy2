@@ -79,7 +79,7 @@ export default async function CreateListingPage() {
         </p>
       </div>
 
-      <ListingForm categories={categories ?? []} />
+      <ListingForm categories={categories ?? []} showProUpsell={!entitlements.pro} />
     </div>
   );
 }

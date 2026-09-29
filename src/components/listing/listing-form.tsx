@@ -13,6 +13,7 @@ import Link from "next/link";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ListingPreview } from "@/components/listing/listing-preview";
 import { LogoUpload } from "@/components/listing/logo-upload";
+import { ProUpsellDialog } from "@/components/listing/pro-upsell-dialog";
 import { ProVisibilityDisclosure } from "@/components/legal/disclosures";
 import { acceptProviderTerms } from "@/app/actions/legal";
 import { createClient } from "@/lib/supabase/client";
@@ -105,9 +106,12 @@ function Counter({ value, max }: { value: number; max: number }) {
 export function ListingForm({
   categories,
   existing,
+  showProUpsell = false,
 }: {
   categories: Category[];
   existing?: Employee | null;
+  /** Set by the create page for accounts without an active Ploy Pro subscription. */
+  showProUpsell?: boolean;
 }) {
   const router = useRouter();
   const supabase = createClient();
@@ -115,6 +119,7 @@ export function ListingForm({
 
   const [mode, setMode] = useState<"edit" | "preview">("edit");
   const [saving, setSaving] = useState(false);
+  const [proUpsellOpen, setProUpsellOpen] = useState(false);
   const [slugTouched, setSlugTouched] = useState(Boolean(existing));
   // Never pre-checked, and never remembered from a previous submission: the
   // provider re-confirms the listing is accurate each time they publish. The
@@ -301,6 +306,18 @@ export function ListingForm({
         ? "Your listing is off the marketplace until the update is approved."
         : "We'll let you know once your AI tool is approved.",
     });
+
+    // The listing is already saved, so this is an offer rather than a step —
+    // closing it lands on the same page the redirect would have.
+    if (showProUpsell && !isEditing) {
+      setProUpsellOpen(true);
+      return;
+    }
+
+    goToListings();
+  };
+
+  const goToListings = () => {
     router.push("/account/marketplace/listing");
     router.refresh();
   };
@@ -393,6 +410,14 @@ export function ListingForm({
             </Button>
           </div>
         </Card>
+
+        <ProUpsellDialog
+          open={proUpsellOpen}
+          onOpenChange={(next) => {
+            setProUpsellOpen(next);
+            if (!next) goToListings();
+          }}
+        />
       </div>
     );
   }

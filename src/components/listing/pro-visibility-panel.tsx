@@ -45,12 +45,12 @@ export function ProVisibilityPanel({
   return (
     <div className="flex flex-col gap-3">
       <Panel
-        tone="muted"
-        icon={<TrendingUp className="h-4 w-4 text-muted-foreground" />}
+        tone="promo"
+        icon={<TrendingUp className="h-4 w-4 text-ploy-gold" />}
         title="Ploy Pro visibility"
         action={
-          <Button asChild size="sm" variant="outline">
-            <Link href="/pricing">See Ploy Pro</Link>
+          <Button asChild size="sm">
+            <Link href="/for-agencies">Learn more</Link>
           </Button>
         }
       >
@@ -62,6 +62,17 @@ export function ProVisibilityPanel({
   );
 }
 
+/*
+ * "promo" is the only upsell state, so it is the only one that draws the eye:
+ * the travelling gold frame is reserved for the panel a non-subscriber sees.
+ * It carries no `border-*` class because .metal-border supplies its own.
+ */
+const TONES = {
+  gold: "border border-ploy-gold/25 bg-ploy-gold/5",
+  muted: "border border-border bg-card",
+  promo: "metal-border metal-shine bg-card",
+} as const;
+
 function Panel({
   tone,
   icon,
@@ -69,22 +80,21 @@ function Panel({
   children,
   action,
 }: {
-  tone: "gold" | "muted";
+  tone: keyof typeof TONES;
   icon: React.ReactNode;
   title: string;
   children: React.ReactNode;
   action?: React.ReactNode;
 }) {
+  const accented = tone !== "muted";
   return (
     <div
-      className={`flex flex-col gap-3 rounded-lg border p-4 sm:flex-row sm:items-center sm:justify-between ${
-        tone === "gold" ? "border-ploy-gold/25 bg-ploy-gold/5" : "border-border bg-card"
-      }`}
+      className={`flex flex-col gap-3 rounded-lg p-4 sm:flex-row sm:items-center sm:justify-between ${TONES[tone]}`}
     >
       <div className="flex gap-3">
         <span className="mt-0.5 shrink-0">{icon}</span>
         <div>
-          <p className={`text-sm font-semibold ${tone === "gold" ? "text-ploy-gold" : ""}`}>{title}</p>
+          <p className={`text-sm font-semibold ${accented ? "text-ploy-gold" : ""}`}>{title}</p>
           <p className="mt-1 text-sm text-muted-foreground">{children}</p>
         </div>
       </div>
