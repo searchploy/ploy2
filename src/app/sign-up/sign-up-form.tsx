@@ -23,6 +23,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { MIN_PASSWORD_LENGTH, validatePassword } from "@/lib/auth/password";
 import { OTPInput } from "@/components/auth/otp-input";
 import { acceptSignupTerms } from "@/app/actions/legal";
+import { trackMetaEvent } from "@/lib/analytics/meta-pixel";
 import type { UserRole } from "@/lib/types/database";
 
 // Map signup selection to user role
@@ -95,6 +96,8 @@ export function SignUpForm() {
       return;
     }
 
+    trackMetaEvent("Lead", { content_name: "Account created", content_category: role });
+
     setSignUpEmail(email);
     setShowCodeModal(true);
     toast.success("Account created", { description: "Check your email for the 6-digit code." });
@@ -124,6 +127,8 @@ export function SignUpForm() {
 
       // profiles.email_verified is mirrored from auth by a DB trigger — it is
       // deliberately not writable from the client.
+
+      trackMetaEvent("CompleteRegistration", { content_name: "Email verified" });
 
       // Recorded here rather than at submit because there is no authenticated
       // user to attach an acceptance to until the code is verified. The user

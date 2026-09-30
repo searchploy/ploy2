@@ -17,6 +17,7 @@ import { ProUpsellDialog } from "@/components/listing/pro-upsell-dialog";
 import { ProVisibilityDisclosure } from "@/components/legal/disclosures";
 import { acceptProviderTerms } from "@/app/actions/legal";
 import { createClient } from "@/lib/supabase/client";
+import { trackMetaEvent } from "@/lib/analytics/meta-pixel";
 import { cn } from "@/lib/utils";
 import {
   PRIMARY_TASKS,
@@ -299,6 +300,11 @@ export function ListingForm({
           : dbError.message,
       });
       return;
+    }
+
+    // Edits re-enter review too, but only a first submission is a funnel conversion.
+    if (!isEditing) {
+      trackMetaEvent("SubmitApplication", { content_name: "AI tool listing", status: "pending_review" });
     }
 
     toast.success(isEditing ? "Changes submitted for review" : "Submitted for review", {

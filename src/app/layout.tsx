@@ -4,6 +4,7 @@ import { Manrope, IBM_Plex_Mono, Caveat_Brush } from "next/font/google";
 import { SiteChrome } from "@/components/layout/site-chrome";
 import { Toaster } from "@/components/ui/sonner";
 import { JsonLd } from "@/components/seo/json-ld";
+import { MetaPixel } from "@/components/analytics/meta-pixel";
 import { SITE_DESCRIPTION, SITE_NAME } from "@/lib/constants";
 import { siteUrl } from "@/lib/seo/pages";
 import "./globals.css";
@@ -91,6 +92,7 @@ export default function RootLayout({
         <SiteChrome>{children}</SiteChrome>
         <Toaster />
         <Analytics />
+        <MetaPixel />
       </body>
     </html>
   );

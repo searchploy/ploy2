@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { createClient } from "@/lib/supabase/client";
 import { OTPInput } from "@/components/auth/otp-input";
+import { trackMetaEvent } from "@/lib/analytics/meta-pixel";
 
 export function VerifyEmailForm() {
   const router = useRouter();
@@ -69,6 +70,8 @@ export function VerifyEmailForm() {
 
       // profiles.email_verified is mirrored from auth by a DB trigger — it is
       // deliberately not writable from the client.
+
+      trackMetaEvent("CompleteRegistration", { content_name: "Email verified" });
 
       toast.success("Email verified!", { description: "Redirecting..." });
       setTimeout(() => {

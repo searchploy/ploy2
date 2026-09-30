@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getServerUser } from "@/lib/supabase/server";
+import { MetaViewContent } from "@/components/analytics/meta-pixel-events";
 
 export const metadata: Metadata = {
   title: "List Your AI Tool for Free",
@@ -18,6 +19,7 @@ export default async function ListYourAIToolPage() {
 
   return (
     <div className="flex flex-col">
+      <MetaViewContent contentName="List Your AI Tool landing page" />
       {/* HERO SECTION */}
       <section className="relative overflow-hidden py-24 sm:py-32">
         <div className="container max-w-4xl flex flex-col items-center text-center gap-8">
@@ -99,7 +101,7 @@ export default async function ListYourAIToolPage() {
                 <div>
                   <h3 className="text-lg font-semibold mb-2">Get Discovered</h3>
                   <p className="text-muted-foreground">
-                    Showcase your AI tool in Ploy's AI tools marketplace.
+                    Showcase your AI tool in Ploy&apos;s AI tools marketplace.
                   </p>
                 </div>
               </div>
@@ -133,7 +135,7 @@ export default async function ListYourAIToolPage() {
                 <div>
                   <h3 className="text-lg font-semibold mb-2">Build Your Presence</h3>
                   <p className="text-muted-foreground">
-                    Create a dedicated marketplace listing that explains what your tool does and who it's built for.
+                    Create a dedicated marketplace listing that explains what your tool does and who it&apos;s built for.
                   </p>
                 </div>
               </div>
