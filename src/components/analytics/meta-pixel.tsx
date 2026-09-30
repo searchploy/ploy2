@@ -3,10 +3,13 @@ import { META_PIXEL_HOSTS, META_PIXEL_ID } from "@/lib/analytics/meta-pixel";
 import { MetaPixelPageViews } from "@/components/analytics/meta-pixel-events";
 
 /*
- * Meta's standard base code, with three changes:
+ * Meta's standard base code, with these changes:
  * - disablePushState: the pixel otherwise fires its own PageView on every
  *   history.pushState, which the App Router calls on each navigation. Route
  *   PageViews are sent by MetaPixelPageViews instead, so each counts once.
+ * - allowDuplicatePageViews: without it fbevents silently drops every PageView
+ *   after the first in a page load, which is every client-side navigation.
+ *   MetaPixelPageViews already sends at most one per pathname change.
  * - autoConfig off: stops Meta scraping button text and page metadata into
  *   events it invents; only the events sent explicitly are reported.
  * - the replay of __metaPixelQueue, for events fired before this ran.
@@ -20,6 +23,7 @@ const baseCode = `
   t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
   document,'script','https://connect.facebook.net/en_US/fbevents.js');
   fbq.disablePushState = true;
+  fbq.allowDuplicatePageViews = true;
   fbq('set', 'autoConfig', false, '${META_PIXEL_ID}');
   fbq('init', '${META_PIXEL_ID}');
   fbq('track', 'PageView');
