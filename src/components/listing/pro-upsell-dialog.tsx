@@ -48,10 +48,9 @@ export function ProUpsellDialog({
             <Sparkles className="h-3.5 w-3.5" />
             Ploy Pro
           </span>
-          <DialogTitle className="text-2xl">Your AI tool is in for review</DialogTitle>
+          <DialogTitle className="text-2xl">Upgrade to Ploy Pro and unlock these benefits</DialogTitle>
           <DialogDescription>
-            It will appear on the marketplace once approved. Ploy Pro changes how far it
-            travels once it is there.
+            Your AI tool is in for review. It will appear on the marketplace once approved. Ploy Pro changes how far it travels once it is there.
           </DialogDescription>
         </DialogHeader>
 
