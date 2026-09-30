@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { getServerUser } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
-  title: "List Your AI Tool for Free | Ploy",
+  title: "List Your AI Tool for Free",
   description:
     "List your AI tool on Ploy for free and showcase your product to businesses exploring AI solutions.",
 };
@@ -46,12 +46,16 @@ export default async function ListYourAIToolPage() {
             </p>
           </div>
 
-          <div className="mt-4 max-w-2xl mx-auto text-muted-foreground">
-            <p className="text-base leading-relaxed">
-              Have you built an AI employee, AI agent, automation, software product, or other AI-powered solution for businesses?
-              <br />
-              <br />
-              Ploy gives AI companies a place to showcase their tools to businesses actively exploring AI solutions.
+          <div className="metal-border mt-6 w-full max-w-2xl rounded-2xl bg-card/60 p-6 text-left backdrop-blur-sm sm:p-8">
+            <span className="eyebrow-caps text-[0.7rem] text-ploy-gold">Who it&apos;s for</span>
+            <p className="mt-3 text-lg font-medium leading-snug text-white sm:text-xl">
+              Have you built an AI employee, AI agent, automation, software product, or other
+              AI-powered solution for businesses?
+            </p>
+            <div className="my-5 h-px bg-gradient-to-r from-ploy-gold/50 via-border to-transparent" />
+            <p className="leading-relaxed text-muted-foreground">
+              Ploy gives AI companies a place to showcase their tools to businesses actively
+              exploring AI solutions.
             </p>
           </div>
         </div>
