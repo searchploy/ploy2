@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Clarity from "@microsoft/clarity";
 
-const PROJECT_ID = process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID;
+const PROJECT_ID = "yqp4ukol28";
 
 // Local dev and Vercel preview deployments must not record into the live project.
 const HOSTS = ["searchploy.com", "www.searchploy.com"];
@@ -23,7 +23,7 @@ export function MicrosoftClarity() {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (!PROJECT_ID || !HOSTS.includes(window.location.hostname)) return;
+    if (!HOSTS.includes(window.location.hostname)) return;
     if (NEVER_START_ON.includes(pathname) || /access_token|refresh_token/.test(window.location.hash)) return;
     try {
       Clarity.init(PROJECT_ID);
