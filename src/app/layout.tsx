@@ -5,6 +5,7 @@ import { SiteChrome } from "@/components/layout/site-chrome";
 import { Toaster } from "@/components/ui/sonner";
 import { JsonLd } from "@/components/seo/json-ld";
 import { MetaPixel } from "@/components/analytics/meta-pixel";
+import { MicrosoftClarity } from "@/components/analytics/microsoft-clarity";
 import { SITE_DESCRIPTION, SITE_NAME } from "@/lib/constants";
 import { siteUrl } from "@/lib/seo/pages";
 import "./globals.css";
@@ -93,6 +94,7 @@ export default function RootLayout({
         <Toaster />
         <Analytics />
         <MetaPixel />
+        <MicrosoftClarity />
       </body>
     </html>
   );
