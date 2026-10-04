@@ -4,8 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Sparkles, Heart, User } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { PloyProBadge } from "@/components/marketplace/ploy-pro-badge";
+import { CardAccessButtons } from "@/components/marketplace/listing-access-buttons";
 import { toggleEmployeeFavorite } from "@/app/marketplace/actions";
 import type { EmployeeWithCategory } from "@/lib/data/live-marketplace";
 
@@ -48,8 +48,6 @@ export function LiveEmployeeCard({
       : (employee.primary_tasks ?? []);
 
   const cardClassName = "metal-border relative flex flex-col gap-4 rounded-2xl bg-white/[0.05] p-6 backdrop-blur-xl transition-colors sm:flex-row sm:items-start";
-
-  const websiteUrl = employee.website_url;
 
   return (
     <motion.div
@@ -146,22 +144,7 @@ export function LiveEmployeeCard({
                 </span>
               )}
             </div>
-            {websiteUrl ? (
-              <Button
-                size="sm"
-                variant="outline"
-                className="metal-border text-ploy-gold hover:text-ploy-gold-light"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  window.open(websiteUrl, "_blank", "noopener,noreferrer");
-                }}
-              >
-                Go to website
-              </Button>
-            ) : (
-              <Button size="sm">View Details</Button>
-            )}
+            <CardAccessButtons listing={employee} />
           </div>
         </div>
       </Link>

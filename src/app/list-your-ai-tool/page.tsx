@@ -73,7 +73,8 @@ export default async function ListYourAIToolPage() {
             <div className="my-5 h-px bg-gradient-to-r from-ploy-gold/50 via-border to-transparent" />
             <p className="leading-relaxed text-muted-foreground">
               List your AI employee, AI agent, automation, or AI-powered software, and showcase it
-              to businesses exploring AI solutions.
+              to businesses exploring AI solutions. Websites, SaaS products, and mobile apps are
+              welcome.
             </p>
           </div>
         </div>

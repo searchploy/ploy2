@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { BadgeCheck, Check, Star, Clock, TrendingUp, ExternalLink } from "lucide-react";
+import { BadgeCheck, Check, Star, Clock, TrendingUp } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { CategoryIcon } from "@/components/shared/category-icon";
 import { LiveEmployeeCard } from "@/components/marketplace/live-employee-card";
@@ -12,6 +11,8 @@ import { DemoRequestDialog } from "@/components/marketplace/demo-request-dialog"
 import { ReportListingDialog } from "@/components/marketplace/report-listing-dialog";
 import { MarketplaceListingDisclosure } from "@/components/legal/disclosures";
 import { BackToMarketplace } from "@/components/marketplace/back-to-marketplace";
+import { DetailAccessButtons } from "@/components/marketplace/listing-access-buttons";
+import { getAccessLinks } from "@/lib/listing/access";
 import { createClient } from "@/lib/supabase/server";
 import {
   getLiveEmployeeBySlugWithCategory,
@@ -261,19 +262,8 @@ export default async function EmployeeDetailPage({ params }: { params: Promise<{
             <div className="flex flex-col gap-3">
               {/* Ploy refers interested businesses to the agency — it does not
                   process the sale, so this leaves Ploy entirely. */}
-              {employee.website_url ? (
-                <>
-                  <Button asChild size="lg">
-                    <a href={employee.website_url} target="_blank" rel="noopener noreferrer">
-                      Visit Agency Website
-                      <ExternalLink className="h-4 w-4" />
-                    </a>
-                  </Button>
-                  <p className="text-center text-xs text-muted-foreground">
-                    You&apos;re leaving Ploy for {employee.agency_name ?? "the agency"}&apos;s
-                    website. Ploy doesn&apos;t control that site or its terms.
-                  </p>
-                </>
+              {getAccessLinks(employee).length > 0 ? (
+                <DetailAccessButtons listing={employee} />
               ) : (
                 <DemoRequestDialog
                   employeeName={employee.name}

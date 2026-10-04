@@ -26,8 +26,14 @@ import {
   MAX_DESCRIPTION,
   MAX_TAGLINE,
   slugify,
-  normaliseUrl,
 } from "@/lib/listing/options";
+import {
+  ACCESS_METHODS,
+  ACCESS_METHOD_LABELS,
+  ACCESS_URL_ERRORS,
+  normaliseAccessUrl,
+  type AccessMethod,
+} from "@/lib/listing/access";
 import type { Database } from "@/lib/types/database";
 
 type Category = Pick<Database["public"]["Tables"]["categories"]["Row"], "id" | "name">;
@@ -96,6 +102,12 @@ function Chip({
  */
 const OTHER_CATEGORY = "other";
 
+const ACCESS_URL_PLACEHOLDERS: Record<AccessMethod, string> = {
+  website: "e.g. fieldstonelabs.com",
+  app_store: "https://apps.apple.com/...",
+  google_play: "https://play.google.com/store/apps/details?id=...",
+};
+
 function Counter({ value, max }: { value: number; max: number }) {
   return (
     <span className={cn("text-xs", value > max ? "text-destructive" : "text-muted-foreground")}>
@@ -142,7 +154,20 @@ export function ListingForm({
     bestFor: existing?.industries ?? ([] as string[]),
     bestForDescription: existing?.best_for_description ?? "",
     agencyName: existing?.agency_name ?? "",
-    websiteUrl: existing?.website_url ?? "",
+    // A new listing starts with Website ticked, since most tools have one; an
+    // existing listing ticks exactly the methods it already has.
+    access: {
+      website: existing ? Boolean(existing.website_url) : true,
+      app_store: Boolean(existing?.app_store_url),
+      google_play: Boolean(existing?.google_play_url),
+    } as Record<AccessMethod, boolean>,
+    // Kept when a method is unticked so re-ticking restores it; only ticked
+    // methods are saved.
+    accessUrls: {
+      website: existing?.website_url ?? "",
+      app_store: existing?.app_store_url ?? "",
+      google_play: existing?.google_play_url ?? "",
+    } as Record<AccessMethod, string>,
     logoUrl: existing?.thumbnail_url ?? "",
     // A listing with no price is shown as "Custom Pricing" on the marketplace,
     // which is a legitimate choice — plenty of agencies quote per engagement.
@@ -200,10 +225,19 @@ export function ListingForm({
       if (!Number.isFinite(price) || price < 0) return "That monthly price doesn't look valid.";
     }
     if (!form.agencyName.trim()) return "Add your agency or company name.";
-    if (!form.websiteUrl.trim()) return "Add your website URL.";
-    if (!normaliseUrl(form.websiteUrl)) return "That website URL doesn't look valid.";
+    const methods = ACCESS_METHODS.filter((m) => form.access[m]);
+    if (methods.length === 0)
+      return "Please provide at least one way for customers to access your AI Tool.";
+    for (const method of methods) {
+      if (!form.accessUrls[method].trim()) return `Add your ${ACCESS_METHOD_LABELS[method]} URL.`;
+      if (!normaliseAccessUrl(method, form.accessUrls[method])) return ACCESS_URL_ERRORS[method];
+    }
     return null;
   };
+
+  /** The normalised URL to save for a method, or null when it isn't ticked. */
+  const accessUrl = (method: AccessMethod) =>
+    form.access[method] ? normaliseAccessUrl(method, form.accessUrls[method]) : null;
 
   const goToPreview = () => {
     const error = validate();
@@ -266,7 +300,9 @@ export function ListingForm({
       industries: form.bestFor,
       best_for_description: form.bestForDescription.trim() || null,
       agency_name: form.agencyName.trim(),
-      website_url: normaliseUrl(form.websiteUrl),
+      website_url: accessUrl("website"),
+      app_store_url: accessUrl("app_store"),
+      google_play_url: accessUrl("google_play"),
       thumbnail_url: form.logoUrl.trim() || null,
       // null renders as "Custom Pricing" on the marketplace card and hides the
       // price block on the detail page.
@@ -294,11 +330,18 @@ export function ListingForm({
       // employees.slug is unique across the whole table, so this fires when the
       // name a provider chose slugifies onto one that already exists.
       const duplicate = dbError.code === "23505";
-      toast.error(duplicate ? "That name is already taken" : "Couldn't save your listing", {
-        description: duplicate
-          ? "Another listing already uses this name. Try a more specific one."
-          : dbError.message,
-      });
+      // 23514: a CHECK constraint — the database's own URL / access-method rules.
+      const badLinks = dbError.code === "23514";
+      toast.error(
+        duplicate ? "That name is already taken" : badLinks ? "Check your access links" : "Couldn't save your listing",
+        {
+          description: duplicate
+            ? "Another listing already uses this name. Try a more specific one."
+            : badLinks
+              ? "Please provide at least one valid way for customers to access your AI Tool."
+              : dbError.message,
+        }
+      );
       return;
     }
 
@@ -348,7 +391,7 @@ export function ListingForm({
             bestFor: form.bestFor,
             bestForDescription: form.bestForDescription,
             agencyName: form.agencyName,
-            websiteUrl: form.websiteUrl,
+            accessMethods: ACCESS_METHODS.filter((m) => form.access[m]),
             logoUrl: form.logoUrl,
             priceMonthly:
               form.pricingType === "monthly" && form.priceMonthly.trim()
@@ -659,7 +702,7 @@ export function ListingForm({
       <Section
         step={5}
         title="Company / agency"
-        hint="Interested businesses are sent to your website — Ploy doesn't handle the sale."
+        hint="Interested businesses are sent to your website or app store page — Ploy doesn't handle the sale."
       >
         <div className="flex flex-col gap-1.5">
           <Label htmlFor="agencyName">Agency / Company Name *</Label>
@@ -671,19 +714,6 @@ export function ListingForm({
           />
         </div>
 
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="websiteUrl">Website URL *</Label>
-          <Input
-            id="websiteUrl"
-            value={form.websiteUrl}
-            placeholder="e.g. fieldstonelabs.com"
-            onChange={(e) => set("websiteUrl", e.target.value)}
-          />
-          <p className="text-xs text-muted-foreground">
-            Where the &quot;Visit Agency Website&quot; button sends businesses.
-          </p>
-        </div>
-
         <div className="flex flex-col gap-2">
           <Label>Company Logo</Label>
           <LogoUpload value={form.logoUrl} onChange={(url) => set("logoUrl", url)} />
@@ -691,6 +721,46 @@ export function ListingForm({
             Optional. Shown on your marketplace card and listing page.
           </p>
         </div>
+      </Section>
+
+      <Section
+        step={6}
+        title="Where can people access your AI Tool?"
+        hint="Select all that apply. At least one is required."
+      >
+        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-5">
+          {ACCESS_METHODS.map((method) => (
+            <label
+              key={method}
+              htmlFor={`access-${method}`}
+              className="flex min-h-11 cursor-pointer items-center gap-2.5 text-sm"
+            >
+              <Checkbox
+                id={`access-${method}`}
+                checked={form.access[method]}
+                onCheckedChange={(checked) =>
+                  set("access", { ...form.access, [method]: checked === true })
+                }
+              />
+              {ACCESS_METHOD_LABELS[method]}
+            </label>
+          ))}
+        </div>
+
+        {ACCESS_METHODS.filter((m) => form.access[m]).map((method) => (
+          <div key={method} className="flex flex-col gap-1.5">
+            <Label htmlFor={`access-url-${method}`}>{ACCESS_METHOD_LABELS[method]} URL *</Label>
+            <Input
+              id={`access-url-${method}`}
+              type="url"
+              inputMode="url"
+              autoComplete="off"
+              value={form.accessUrls[method]}
+              placeholder={ACCESS_URL_PLACEHOLDERS[method]}
+              onChange={(e) => set("accessUrls", { ...form.accessUrls, [method]: e.target.value })}
+            />
+          </div>
+        ))}
       </Section>
 
       <ProVisibilityDisclosure />

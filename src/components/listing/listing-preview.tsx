@@ -1,6 +1,13 @@
 import { Check, ExternalLink } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import type { AccessMethod } from "@/lib/listing/access";
+
+const ACCESS_CTA: Record<AccessMethod, string> = {
+  website: "Visit Agency Website",
+  app_store: "Download on the App Store",
+  google_play: "Get it on Google Play",
+};
 
 export interface ListingPreviewData {
   name: string;
@@ -11,7 +18,8 @@ export interface ListingPreviewData {
   bestFor: string[];
   bestForDescription: string;
   agencyName: string;
-  websiteUrl: string;
+  /** Ticked access methods, in display order. */
+  accessMethods: AccessMethod[];
   logoUrl: string;
   /** null means the listing is shown as "Custom Pricing". */
   priceMonthly: number | null;
@@ -119,10 +127,19 @@ export function ListingPreview({ data }: { data: ListingPreviewData }) {
         </p>
       </div>
 
-      <Button disabled className="w-full sm:w-auto">
-        Visit Agency Website
-        <ExternalLink className="h-4 w-4" />
-      </Button>
+      <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+        {data.accessMethods.map((method, i) => (
+          <Button
+            key={method}
+            disabled
+            variant={i === 0 ? "default" : "outline"}
+            className="w-full sm:w-auto"
+          >
+            {ACCESS_CTA[method]}
+            <ExternalLink className="h-4 w-4" />
+          </Button>
+        ))}
+      </div>
     </Card>
   );
 }

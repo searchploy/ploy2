@@ -746,6 +746,8 @@ export type Database = {
           custom_category: string | null
           primary_tasks: string[] | null
           website_url: string | null
+          app_store_url: string | null
+          google_play_url: string | null
           rejection_reason: string | null
           reviewed_at: string | null
           reviewed_by: string | null
@@ -787,6 +789,8 @@ export type Database = {
           custom_category?: string | null
           primary_tasks?: string[] | null
           website_url?: string | null
+          app_store_url?: string | null
+          google_play_url?: string | null
           rejection_reason?: string | null
           reviewed_at?: string | null
           reviewed_by?: string | null
@@ -828,6 +832,8 @@ export type Database = {
           custom_category?: string | null
           primary_tasks?: string[] | null
           website_url?: string | null
+          app_store_url?: string | null
+          google_play_url?: string | null
           rejection_reason?: string | null
           reviewed_at?: string | null
           reviewed_by?: string | null

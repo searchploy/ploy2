@@ -7,6 +7,13 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import type { EmployeeWithCategory } from "@/lib/data/live-marketplace";
+import { ACCESS_METHODS, ACCESS_METHOD_LABELS, type AccessMethod } from "@/lib/listing/access";
+
+function accessUrlOf(listing: EmployeeWithCategory, method: AccessMethod): string | null {
+  if (method === "website") return listing.website_url;
+  if (method === "app_store") return listing.app_store_url;
+  return listing.google_play_url;
+}
 
 /**
  * Full listing preview so the admin decides from the same information a
@@ -105,21 +112,38 @@ export function ListingReviewDialog({
                 {listing.price_monthly != null ? `$${listing.price_monthly}/mo` : "Not listed"}
               </p>
             </Field>
-            <Field label="Website">
-              {listing.website_url ? (
-                <a
-                  href={listing.website_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-sm text-ploy-gold hover:underline"
-                >
-                  {listing.website_url}
-                  <ExternalLink className="h-3 w-3" />
-                </a>
-              ) : (
-                <p className="text-sm text-muted-foreground">—</p>
-              )}
-            </Field>
+            <div className="sm:col-span-2">
+              <Field label="Access">
+                <ul className="flex flex-col gap-2">
+                  {ACCESS_METHODS.map((method) => {
+                    const url = accessUrlOf(listing, method);
+                    return (
+                      <li key={method} className="flex min-w-0 items-start gap-2 text-sm">
+                        {url ? (
+                          <Check className="mt-0.5 h-4 w-4 shrink-0 text-green-400" aria-label="Provided" />
+                        ) : (
+                          <X className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" aria-label="Not provided" />
+                        )}
+                        <span className="shrink-0 font-medium">{ACCESS_METHOD_LABELS[method]}</span>
+                        {url ? (
+                          <a
+                            href={url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex min-w-0 items-center gap-1 break-all text-ploy-gold hover:underline"
+                          >
+                            {url}
+                            <ExternalLink className="h-3 w-3 shrink-0" />
+                          </a>
+                        ) : (
+                          <span className="text-muted-foreground">—</span>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </Field>
+            </div>
             <Field label="Submitted">
               <p className="text-sm">
                 {new Date(listing.created_at).toLocaleDateString(undefined, {
