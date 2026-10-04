@@ -4,8 +4,10 @@ import { revalidatePath } from "next/cache";
 import { createClient, getServerUser } from "@/lib/supabase/server";
 import { isAdminUser } from "@/lib/auth/admin";
 import { logSecurityEvent } from "@/lib/auth/security-log";
+import { sendListingApprovedEmail } from "@/lib/listing/approval-email";
 
-export type ModerationResult = { ok: true } | { ok: false; error: string };
+// warning: the action itself succeeded but a follow-up (the owner email) did not.
+export type ModerationResult = { ok: true; warning?: string } | { ok: false; error: string };
 
 /**
  * Every moderation action re-checks admin status here, on the server. The
@@ -53,13 +55,24 @@ export async function approveListing(id: string): Promise<ModerationResult> {
       reviewed_by: adminId,
     })
     .eq("id", id)
-    .select("slug")
+    .select("id, name, slug, profile_id, status")
     .single();
 
   if (error) return { ok: false, error: error.message };
 
   await logSecurityEvent({ action: "listing.approve", targetType: "listing", targetId: id });
   revalidateListingSurfaces(data?.slug);
+
+  // The approval is committed either way; the email never rolls it back.
+  if (data?.status === "published") {
+    const outcome = await sendListingApprovedEmail(data);
+    if (outcome === "failed") {
+      return {
+        ok: true,
+        warning: "The approval email to the owner couldn't be sent. You may want to let them know directly.",
+      };
+    }
+  }
   return { ok: true };
 }
 

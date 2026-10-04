@@ -1001,6 +1001,38 @@ export type Database = {
           },
         ]
       }
+      listing_notifications: {
+        Row: {
+          claimed_at: string
+          employee_id: string
+          kind: string
+          resend_id: string | null
+          sent_at: string | null
+        }
+        Insert: {
+          claimed_at?: string
+          employee_id: string
+          kind: string
+          resend_id?: string | null
+          sent_at?: string | null
+        }
+        Update: {
+          claimed_at?: string
+          employee_id?: string
+          kind?: string
+          resend_id?: string | null
+          sent_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "listing_notifications_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notifications: {
         Row: {
           body: string | null

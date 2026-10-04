@@ -70,11 +70,15 @@ export function ListingsModerationTabs({ listings }: { listings: EmployeeWithCat
   const rejected = matching.filter((l) => l.status === "rejected");
   const isSearching = search.trim().length > 0;
 
-  function run(action: () => Promise<{ ok: true } | { ok: false; error: string }>, success: string) {
+  function run(
+    action: () => Promise<{ ok: true; warning?: string } | { ok: false; error: string }>,
+    success: string
+  ) {
     startTransition(async () => {
       const result = await action();
       if (result.ok) {
-        toast.success(success);
+        if (result.warning) toast.warning(success, { description: result.warning });
+        else toast.success(success);
         setReviewing(null);
         setRejectionReason("");
         router.refresh();
