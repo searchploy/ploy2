@@ -47,11 +47,19 @@ export function buildListingApprovedEmail({
     <td align="center" style="padding:32px 16px;">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;">
         <tr>
-          <td style="padding:0 4px 24px 4px;">
-            <a href="${home}" style="text-decoration:none;color:#F3F4F6;">
-              <img src="${home}/ploy-mark.png" width="28" height="28" alt="" style="display:inline-block;vertical-align:middle;border:0;">
-              <span style="display:inline-block;vertical-align:middle;margin-left:10px;font-family:Helvetica,Arial,sans-serif;font-size:22px;font-weight:700;letter-spacing:-0.5px;color:#F3F4F6;">ploy</span>
-            </a>
+          <td style="padding:0 0 24px 0;">
+            <!-- Own black box: some clients (Gmail) drop the page background, and
+                 the white mark and wordmark would vanish on white. -->
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td bgcolor="#08090D" style="background-color:#08090D;border:1px solid #3a2c12;border-radius:12px;padding:10px 16px;">
+                  <a href="${home}" style="text-decoration:none;color:#F3F4F6;">
+                    <img src="${home}/ploy-mark.png" width="28" height="28" alt="" style="display:inline-block;vertical-align:middle;border:0;">
+                    <span style="display:inline-block;vertical-align:middle;margin-left:10px;font-family:Helvetica,Arial,sans-serif;font-size:22px;font-weight:700;letter-spacing:-0.5px;color:#F3F4F6;">ploy</span>
+                  </a>
+                </td>
+              </tr>
+            </table>
           </td>
         </tr>
         <tr>
